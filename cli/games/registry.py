@@ -5,6 +5,15 @@ from pathlib import Path
 
 
 @dataclass(frozen=True, slots=True)
+class StringTableDefinition:
+    """Metadata required to extract a game's translatable string table."""
+
+    source_path: Path
+    csv_path: Path
+    executable_iso_offset: int
+
+
+@dataclass(frozen=True, slots=True)
 class GameDefinition:
     """Metadata for a supported game target."""
 
@@ -16,6 +25,7 @@ class GameDefinition:
     project_dir: Path
     notes: tuple[str, ...] = field(default_factory=tuple)
     rom_markers: tuple[bytes, ...] = field(default_factory=tuple)
+    string_table: StringTableDefinition | None = None
 
 
 GAME_REGISTRY: dict[str, GameDefinition] = {}
