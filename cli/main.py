@@ -2,7 +2,7 @@
 
 from typer import Typer
 
-from cli.commands import extract, mount, patch, release, validate, wad
+from cli.commands import extract, init, mount, patch, release, validate, wad
 from cli.games import ps1  # noqa: F401
 
 app = Typer(
@@ -11,6 +11,7 @@ app = Typer(
     rich_markup_mode="rich",
 )
 
+init.register(app)
 app.add_typer(extract.app, name="extract")
 app.add_typer(patch.app, name="patch")
 app.add_typer(mount.app, name="mount")

@@ -15,6 +15,7 @@ class GameDefinition:
     serial: str
     project_dir: Path
     notes: tuple[str, ...] = field(default_factory=tuple)
+    rom_markers: tuple[bytes, ...] = field(default_factory=tuple)
 
 
 GAME_REGISTRY: dict[str, GameDefinition] = {}
@@ -29,3 +30,8 @@ def register_game(game: GameDefinition) -> GameDefinition:
 def get_game(key: str) -> GameDefinition:
     """Look up a game by registry key."""
     return GAME_REGISTRY[key]
+
+
+def get_game_by_parts(console: str, game: str) -> GameDefinition:
+    """Look up a game by console and short game name."""
+    return get_game(f"{console}.{game}")
