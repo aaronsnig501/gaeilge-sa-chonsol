@@ -16,5 +16,9 @@ SPYRO1 = register_game(
             "Irish replaces the English string slot in SCES_014.38.",
             "Homeworld transition text is patched in the French slot.",
         ),
+        rom_markers=(
+            b"SCES_014.38",
+            b"SPYRO",
+        ),
     )
 )
