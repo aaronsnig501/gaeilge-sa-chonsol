@@ -48,13 +48,18 @@ This installs the `gsc` console script and the initial dependencies:
 ```bash
 gsc --help
 gsc init --console ps1 --game spyro1 --rom ~/roms/spyro.bin
-gsc extract --help
+gsc extract
+gsc extract --output custom.csv
 gsc patch --help
 gsc validate image ps1.spyro1 original.bin
 ```
 
 The `init` command validates the ROM path, checks it matches the expected game,
 and writes a local `.gsc/config.toml` file in the repository root.
+
+The `extract` command reads the configured ROM, extracts the game's registered
+string table, and writes `offset,budget,english,irish` rows while preserving any
+existing Irish translations already present in the target CSV.
 
 Current command groups are scaffolded for:
 - `init`

@@ -2,7 +2,7 @@
 
 from pathlib import Path
 
-from cli.games.registry import GameDefinition, register_game
+from cli.games.registry import GameDefinition, StringTableDefinition, register_game
 
 SPYRO1 = register_game(
     GameDefinition(
@@ -19,6 +19,11 @@ SPYRO1 = register_game(
         rom_markers=(
             b"SCES_014.38",
             b"SPYRO",
+        ),
+        string_table=StringTableDefinition(
+            source_path=Path("ps1/spyro/1/data/strings.py"),
+            csv_path=Path("ps1/spyro/1/data/translations.csv"),
+            executable_iso_offset=0xC000,
         ),
     )
 )
