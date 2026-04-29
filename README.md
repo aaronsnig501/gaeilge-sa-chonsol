@@ -29,3 +29,35 @@ notes/     - Technical documentation and offset discoveries
 - Python 3
 - Flips (for BPS patch generation)
 - DuckStation or similar PS1 emulator for testing
+
+## CLI
+
+The repository now includes a Typer-based CLI scaffold under [`cli/`](/home/aaronsinnott/Documents/projects/romhacks/gaeilge-sa-chonsol/cli).
+
+### Install
+```bash
+python3 -m pip install -e .
+```
+
+This installs the `gsc` console script and the initial dependencies:
+- `typer`
+- `rich`
+- `pillow`
+
+### Usage
+```bash
+gsc --help
+gsc extract --help
+gsc patch --help
+gsc validate image ps1.spyro1 original.bin
+```
+
+Current command groups are scaffolded for:
+- `extract`
+- `patch`
+- `mount`
+- `wad`
+- `validate`
+- `release`
+
+The first registered game is `ps1.spyro1`, defined in [`cli/games/ps1/spyro1.py`](/home/aaronsinnott/Documents/projects/romhacks/gaeilge-sa-chonsol/cli/games/ps1/spyro1.py).
