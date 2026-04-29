@@ -1,0 +1,30 @@
+.venv/
+__pycache__/
+*.py[cod]
+
+# Packaging artifacts
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+build/
+dist/
+
+# ROM and disc image files
+*.bin
+*.cue
+*.img
+*.iso
+*.mdf
+*.nrg
+*.pbp
+*.toc
+
+# Patch and archive outputs
+*.bps
+*.ips
+*.ppf
+*.xdelta
+*.zip
+*.7z
+*.rar
