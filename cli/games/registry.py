@@ -47,6 +47,10 @@ class GameDefinition:
     serial: str
     project_dir: Path
     executable_name: str
+    console_label: str = ""
+    version: str = "0.1"
+    description: str = ""
+    accent: str = "#2ecc71"
     notes: tuple[str, ...] = field(default_factory=tuple)
     rom_markers: tuple[bytes, ...] = field(default_factory=tuple)
     release_messages: tuple[str, ...] = field(default_factory=tuple)

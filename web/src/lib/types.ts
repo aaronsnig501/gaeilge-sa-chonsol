@@ -1,10 +1,50 @@
 export type GameState = 'complete' | 'progress' | 'wanted';
+export type GeneratedGameStatus = 'complete' | 'in-progress' | 'planned';
 
 export interface CategoryStatus {
 	name: string;
 	translated: number;
 	total: number;
 	progress: number;
+}
+
+export interface GeneratedProgress {
+	total: number;
+	translated: number;
+	percent: number;
+}
+
+export interface GeneratedCategoryStatus {
+	name: string;
+	total: number;
+	translated: number;
+	percent: number;
+}
+
+export interface GeneratedGameRecord {
+	id: string;
+	title: string;
+	console: string;
+	console_label: string;
+	status: GeneratedGameStatus;
+	version: string;
+	repo_path: string;
+	patch_available: boolean;
+	help_wanted: boolean;
+	progress: GeneratedProgress;
+	categories: GeneratedCategoryStatus[];
+	region?: string;
+	serial?: string;
+	description?: string;
+	accent?: string;
+	repo_url?: string;
+	issues_url?: string;
+	notes_path?: string;
+}
+
+export interface GeneratedSiteStatus {
+	generated: string;
+	games: GeneratedGameRecord[];
 }
 
 export interface GameLinks {
