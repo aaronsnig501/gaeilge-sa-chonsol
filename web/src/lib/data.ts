@@ -8,6 +8,8 @@ import type {
 } from '$lib/types';
 
 const GENERATED_GAME_STATES: GeneratedGameStatus[] = ['complete', 'in-progress', 'planned'];
+const REPO_URL = 'https://github.com/aaronsnig501/gaeilge-sa-chonsol';
+const ISSUES_URL = `${REPO_URL}/issues`;
 
 function clampProgress(value: unknown): number {
 	if (typeof value !== 'number' || Number.isNaN(value)) return 0;
@@ -161,4 +163,16 @@ export function topCategories(game: GameStatus, limit = 3): CategoryStatus[] {
 
 export function consoleName(game: Pick<GameStatus, 'console' | 'consoleLabel'>): string {
 	return game.consoleLabel || game.console.toUpperCase();
+}
+
+export function getNeedsNativeReviewUrl(): string {
+	return `${ISSUES_URL}?q=${encodeURIComponent('is:issue label:needs-native-review')}`;
+}
+
+export function getRepoUrl(): string {
+	return REPO_URL;
+}
+
+export function helpWantedGames(status: SiteStatus): GameStatus[] {
+	return status.games.filter((game) => game.helpWanted);
 }

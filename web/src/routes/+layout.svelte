@@ -27,6 +27,9 @@
 				<a class="font-mono text-[0.72rem] tracking-[0.12em] text-console-muted hover:text-console-green" href="/guide">
 					TREORACHA
 				</a>
+				<a class="font-mono text-[0.72rem] tracking-[0.12em] text-console-muted hover:text-console-green" href="/contribute">
+					RANNÍOCAÍOCHT
+				</a>
 				<ExternalLink
 					className="font-mono text-[0.72rem] tracking-[0.12em] text-console-muted hover:text-console-green"
 					href="https://github.com/aaronsnig501/gaeilge-sa-chonsol"
