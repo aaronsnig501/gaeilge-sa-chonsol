@@ -1,0 +1,105 @@
+{
+  "generatedAt": "2026-04-30T18:30:00Z",
+  "summary": {
+    "completedGames": 1,
+    "activeGames": 3,
+    "translatedStrings": 164,
+    "featuredProgress": 16
+  },
+  "games": [
+    {
+      "console": "ps1",
+      "game": "spyro1",
+      "title": "Spyro the Dragon",
+      "subtitle": "SCES-01438 · 1998",
+      "region": "PAL",
+      "serial": "SCES-01438",
+      "year": 1998,
+      "state": "progress",
+      "progress": 16,
+      "description": "Aistriúchán Gaeilge do Spyro the Dragon le fócas ar théacs cluiche, stádas beo tionscadail, agus uirlisí paisteála saincheaptha.",
+      "accent": "#2ecc71",
+      "categories": [
+        { "name": "UI Strings", "translated": 1, "total": 72, "progress": 1 },
+        { "name": "Homeworlds", "translated": 0, "total": 13, "progress": 0 },
+        { "name": "Balloonist", "translated": 21, "total": 21, "progress": 100 },
+        { "name": "Level Names", "translated": 0, "total": 28, "progress": 0 }
+      ],
+      "nightly": {
+        "label": "spyro1_gaeilge_nightly.bps",
+        "description": "Paiste BPS tógtha ón sreabhadh CLI reatha. Cuir i bhfeidhm ar chóip PAL bhunaidh de Spyro the Dragon.",
+        "href": "#"
+      },
+      "links": {
+        "patch": "#",
+        "repo": "https://github.com/aaronsnig501/gaeilge-sa-chonsol",
+        "notes": "/games/ps1/spyro1/notes",
+        "issues": "https://github.com/aaronsnig501/gaeilge-sa-chonsol/issues"
+      }
+    },
+    {
+      "console": "ps1",
+      "game": "spyro2",
+      "title": "Spyro 2: Gateway to Glimmer",
+      "subtitle": "PAL · 1999",
+      "region": "PAL",
+      "year": 1999,
+      "state": "wanted",
+      "progress": 0,
+      "description": "Gan aon obair fhoirmiúil tosaithe fós. Tá spás anseo do thaighde agus do ranníocaíocht nua.",
+      "accent": "#e74c3c",
+      "categories": [
+        { "name": "Taighde tosaigh", "translated": 0, "total": 1, "progress": 0 }
+      ],
+      "links": {
+        "repo": "https://github.com/aaronsnig501/gaeilge-sa-chonsol",
+        "issues": "https://github.com/aaronsnig501/gaeilge-sa-chonsol/issues"
+      }
+    },
+    {
+      "console": "ps1",
+      "game": "spyro3",
+      "title": "Spyro: Year of the Dragon",
+      "subtitle": "SCES-02835 · 2000",
+      "region": "PAL",
+      "serial": "SCES-02835",
+      "year": 2000,
+      "state": "wanted",
+      "progress": 0,
+      "description": "Fós le tosú. D’fhéadfadh an suíomh seo a bheith mar bhunús do chlárú an chluiche sin amach anseo.",
+      "accent": "#e74c3c",
+      "categories": [
+        { "name": "Taighde tosaigh", "translated": 0, "total": 1, "progress": 0 }
+      ],
+      "links": {
+        "repo": "https://github.com/aaronsnig501/gaeilge-sa-chonsol",
+        "issues": "https://github.com/aaronsnig501/gaeilge-sa-chonsol/issues"
+      }
+    },
+    {
+      "console": "nes",
+      "game": "smb1",
+      "title": "Super Mario Bros.",
+      "subtitle": "PRG ROM REV 1 · 1985",
+      "region": "NTSC",
+      "year": 1985,
+      "state": "complete",
+      "progress": 100,
+      "description": "Tagairt d’obair chríochnaithe le paistí inmharthana agus stádas glan le taispeáint ar an leathanach baile.",
+      "accent": "#3498db",
+      "categories": [
+        { "name": "Téacsanna UI", "translated": 10, "total": 10, "progress": 100 },
+        { "name": "Carachtair fada", "translated": 5, "total": 5, "progress": 100 }
+      ],
+      "nightly": {
+        "label": "smb1_gaeilge_v1.0.bps",
+        "description": "Eisiúint chríochnaithe mar shampla do chluiche atá 100% déanta.",
+        "href": "#"
+      },
+      "links": {
+        "patch": "#",
+        "repo": "https://github.com/aaronsnig501/gaeilge-sa-chonsol"
+      }
+    }
+  ]
+}
