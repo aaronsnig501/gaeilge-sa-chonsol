@@ -8,8 +8,7 @@ from rich import print
 
 from cli.config import REPO_ROOT, read_config
 from cli.games.registry import get_game_by_parts
-from cli.strings import read_translation_csv
-from cli.text import encode_rom_text
+from cli.strings import read_translation_csv, validate_translation_rows
 
 app = Typer(help="Validate ROMs, patches, and project data.", invoke_without_command=True)
 
@@ -40,33 +39,26 @@ def validate_translations(
     if not resolved_csv.exists():
         raise typer.BadParameter(f"Translations CSV does not exist: {resolved_csv}")
 
-    rows = read_translation_csv(resolved_csv)
-    total = len(rows)
-    translated_rows = [row for row in rows if row.irish.strip()]
-    untranslated = total - len(translated_rows)
+    try:
+        validation = validate_translation_rows(read_translation_csv(resolved_csv))
+    except ValueError as error:
+        raise typer.BadParameter(str(error)) from error
 
-    over_budget: list[tuple[str, str, int, int]] = []
-    for row in translated_rows:
-        encoded = encode_rom_text(row.irish.strip())
-        try:
-            encoded_bytes = encoded.encode("ascii")
-        except UnicodeEncodeError as error:
-            raise typer.BadParameter(f"{row.offset}: translation contains unsupported characters") from error
-        encoded_length = len(encoded_bytes)
-        if encoded_length > row.budget:
-            over_budget.append((row.offset, encoded, encoded_length, row.budget))
+    total = len(validation.rows)
+    progress = (len(validation.translated_rows) / total * 100) if total else 0.0
 
-    progress = (len(translated_rows) / total * 100) if total else 0.0
-
-    print(f"[green]\u2713[/green] {len(translated_rows)} strings translated")
-    if over_budget:
-        print(f"[red]\u2717[/red] {len(over_budget)} strings exceed budget:")
-        for offset, encoded, encoded_length, budget in over_budget:
-            print(f"   {offset}: {encoded} ({encoded_length} bytes, budget {budget})")
+    print(f"[green]\u2713[/green] {len(validation.translated_rows)} strings translated")
+    if validation.over_budget:
+        print(f"[red]\u2717[/red] {len(validation.over_budget)} strings exceed budget:")
+        for violation in validation.over_budget:
+            print(
+                f"   {violation.offset}: {violation.encoded} "
+                f"({violation.encoded_length} bytes, budget {violation.budget})"
+            )
     else:
         print("[green]\u2713[/green] No strings exceed budget")
-    print(f"[yellow]\u25cb[/yellow] {untranslated} strings untranslated")
-    print(f"Progress: {progress:.1f}% ({len(translated_rows)}/{total})")
+    print(f"[yellow]\u25cb[/yellow] {validation.untranslated_count} strings untranslated")
+    print(f"Progress: {progress:.1f}% ({len(validation.translated_rows)}/{total})")
 
-    if over_budget:
+    if validation.over_budget:
         raise typer.Exit(code=1)
