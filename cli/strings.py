@@ -22,6 +22,16 @@ class StringEntry:
     budget: int
 
 
+@dataclass(frozen=True, slots=True)
+class CsvTranslationRow:
+    """A translation row from the extracted CSV."""
+
+    offset: str
+    budget: int
+    english: str
+    irish: str
+
+
 def load_string_entries(source_path: Path) -> list[StringEntry]:
     """Load offset and budget data from an existing TRANSLATIONS table."""
     source_path = source_path if source_path.is_absolute() else REPO_ROOT / source_path
@@ -110,3 +120,18 @@ def write_translation_csv(rows: list[dict[str, str | int]], output_path: Path) -
                     "irish": existing_irish.get(offset_key, ""),
                 }
             )
+
+
+def read_translation_csv(csv_path: Path) -> list[CsvTranslationRow]:
+    """Read translation CSV rows."""
+    with csv_path.open("r", encoding="utf-8", newline="") as handle:
+        reader = csv.DictReader(handle)
+        return [
+            CsvTranslationRow(
+                offset=row["offset"],
+                budget=int(row["budget"]),
+                english=row["english"],
+                irish=row.get("irish", ""),
+            )
+            for row in reader
+        ]
