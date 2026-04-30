@@ -8,7 +8,7 @@
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
-	const { game } = data;
+	const game = $derived(data.game);
 	const notesComponent = $derived(getNotesComponent(game.console, game.game));
 	const totalTranslated = $derived(game.categories.reduce((sum, item) => sum + item.translated, 0));
 	const totalStrings = $derived(game.categories.reduce((sum, item) => sum + item.total, 0));
@@ -142,10 +142,11 @@
 			</div>
 
 			{#if notesComponent}
+				{@const NotesComponent = notesComponent}
 				<div class="panel p-6">
 					<p class="mono-label text-console-green">// Nótaí aistriúcháin</p>
 					<div class="prose-console mt-6 max-w-none">
-						<svelte:component this={notesComponent} />
+						<NotesComponent />
 					</div>
 				</div>
 			{/if}

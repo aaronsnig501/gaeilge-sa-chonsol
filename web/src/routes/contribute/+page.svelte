@@ -6,7 +6,7 @@
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
-	const { status } = data;
+	const status = $derived(data.status);
 	const repoUrl = getRepoUrl();
 	const nativeReviewUrl = getNeedsNativeReviewUrl();
 	const activeGames = $derived(helpWantedGames(status));

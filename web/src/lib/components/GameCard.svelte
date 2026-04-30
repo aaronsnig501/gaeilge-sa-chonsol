@@ -18,7 +18,7 @@
 	class="group relative flex h-full flex-col gap-5 overflow-hidden bg-console-bg-2 p-6 transition-all duration-200 hover:bg-console-bg-3"
 	style={`--card-accent:${game.accent}`}
 >
-	<div class="absolute inset-y-0 left-0 w-[3px] origin-bottom scale-y-0 bg-[var(--card-accent)] transition-transform duration-200 group-hover:scale-y-100" />
+	<div class="absolute inset-y-0 left-0 w-[3px] origin-bottom scale-y-0 bg-[var(--card-accent)] transition-transform duration-200 group-hover:scale-y-100"></div>
 
 	<div class="flex items-start justify-between gap-4">
 		<span class="status-chip border-white/8 bg-white/4 text-console-muted">
@@ -52,7 +52,7 @@
 					{category.name}
 				</span>
 				<div class="h-[3px] bg-white/5">
-					<div class="h-full" style={`width:${category.progress}%;background:${game.accent};opacity:.6`} />
+					<div class="h-full" style={`width:${category.progress}%;background:${game.accent};opacity:.6`}></div>
 				</div>
 				<span class="text-right font-mono text-[0.62rem] tracking-[0.08em] text-console-muted">
 					{category.progress}%
