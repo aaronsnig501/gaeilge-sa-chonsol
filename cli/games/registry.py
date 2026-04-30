@@ -11,6 +11,7 @@ class StringTableDefinition:
     source_path: Path
     csv_path: Path
     executable_iso_offset: int
+    category_groups: dict[str, str] = field(default_factory=dict)
     preserve_metadata: dict[int, int] = field(default_factory=dict)
     formula_checks: tuple[tuple[int, int], ...] = field(default_factory=tuple)
 
@@ -47,3 +48,13 @@ def get_game(key: str) -> GameDefinition:
 def get_game_by_parts(console: str, game: str) -> GameDefinition:
     """Look up a game by console and short game name."""
     return get_game(f"{console}.{game}")
+
+
+def find_game_by_short_name(game: str) -> GameDefinition:
+    """Find a game by its short name when it is unique in the registry."""
+    matches = [definition for key, definition in GAME_REGISTRY.items() if key.split(".", 1)[1] == game]
+    if not matches:
+        raise KeyError(game)
+    if len(matches) > 1:
+        raise ValueError(f"Ambiguous game name: {game}")
+    return matches[0]
