@@ -40,6 +40,18 @@ function toUiState(status: GeneratedGameStatus): GameState {
 	}
 }
 
+function buildStatusLabel(status: GeneratedGameStatus): string {
+	switch (status) {
+		case 'complete':
+			return 'complete';
+		case 'in-progress':
+			return 'in progress';
+		case 'planned':
+		default:
+			return 'help wanted';
+	}
+}
+
 function buildSubtitle(value: GeneratedGameRecord): string {
 	const parts = [asString(value.serial), asString(value.region), asString(value.version && `v${value.version}`)].filter(Boolean);
 	if (parts.length > 0) return parts.join(' · ');
@@ -57,6 +69,7 @@ function parseGame(game: unknown): GameStatus {
 
 	return {
 		console: asString(value.console),
+		consoleLabel: asString(value.console_label, asString(value.console).toUpperCase()),
 		game: asString(value.id),
 		title: asString(value.title),
 		subtitle: buildSubtitle(generated),
@@ -64,11 +77,14 @@ function parseGame(game: unknown): GameStatus {
 		serial: asString(value.serial) || undefined,
 		year: asNumber(value.year) || undefined,
 		state: toUiState(generatedState),
+		statusLabel: buildStatusLabel(generatedState),
 		progress,
+		version: asString(value.version) || undefined,
 		description:
 			asString(value.description) ||
 			`${translated}/${total} téacs aistrithe sa tionscadal seo faoi láthair.`,
 		accent: asString(value.accent, '#2ecc71'),
+		helpWanted: value.help_wanted === true || progress < 50,
 		categories: categories.map((entry) => {
 			const category = (entry && typeof entry === 'object' ? entry : {}) as Record<string, unknown>;
 			return {
@@ -139,4 +155,8 @@ export function getStateMeta(state: GameState): { label: string; className: stri
 
 export function topCategories(game: GameStatus, limit = 3): CategoryStatus[] {
 	return game.categories.slice(0, limit);
+}
+
+export function consoleName(game: Pick<GameStatus, 'console' | 'consoleLabel'>): string {
+	return game.consoleLabel || game.console.toUpperCase();
 }

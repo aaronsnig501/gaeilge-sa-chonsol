@@ -4,6 +4,43 @@
 
 	let { data }: PageProps = $props();
 	const { status } = data;
+	const helpWantedThreshold = 50;
+
+	type ConsoleFilter = 'all' | string;
+	type StatusFilter = 'all' | 'complete' | 'progress' | 'wanted' | 'help-wanted';
+	type SortMode = 'progress-desc' | 'progress-asc' | 'alphabetical';
+
+	const consoleOptions = $derived([
+		'all',
+		...new Set(status.games.map((game) => game.console))
+	]);
+
+	let selectedConsole = $state<ConsoleFilter>('all');
+	let selectedStatus = $state<StatusFilter>('all');
+	let sortMode = $state<SortMode>('progress-desc');
+
+	const helpWantedGames = $derived(
+		status.games.filter((game) => game.helpWanted || game.progress < helpWantedThreshold)
+	);
+
+	const filteredGames = $derived.by(() => {
+		const filtered = status.games.filter((game) => {
+			if (selectedConsole !== 'all' && game.console !== selectedConsole) return false;
+			if (selectedStatus === 'complete' && game.state !== 'complete') return false;
+			if (selectedStatus === 'progress' && game.state !== 'progress') return false;
+			if (selectedStatus === 'wanted' && game.state !== 'wanted') return false;
+			if (selectedStatus === 'help-wanted' && !(game.helpWanted || game.progress < helpWantedThreshold)) {
+				return false;
+			}
+			return true;
+		});
+
+		return filtered.sort((left, right) => {
+			if (sortMode === 'alphabetical') return left.title.localeCompare(right.title);
+			if (sortMode === 'progress-asc') return left.progress - right.progress || left.title.localeCompare(right.title);
+			return right.progress - left.progress || left.title.localeCompare(right.title);
+		});
+	});
 </script>
 
 <section class="section-wrap pt-20 pb-14">
@@ -66,6 +103,11 @@
 				Tá roinnt cluichí fós le haistriú go hiomlán. Má tá Gaeilge agat nó má tá suim agat i
 				gcódú, féach ar na heisiúintí oscailte agus beidh fáilte romhat ranníocaíocht a dhéanamh.
 			</p>
+			{#if helpWantedGames.length > 0}
+				<p class="mt-3 font-mono text-[0.68rem] uppercase tracking-[0.12em] text-console-red">
+					{helpWantedGames.length} cluiche faoi bhun {helpWantedThreshold}% faoi láthair
+				</p>
+			{/if}
 		</div>
 		<a class="console-button console-button-ghost mt-5 md:mt-0 md:ml-auto" href="https://github.com/aaronsnig501/gaeilge-sa-chonsol/issues">
 			Féach ar eisiúintí
@@ -82,13 +124,65 @@
 			</h2>
 		</div>
 		<span class="font-mono text-[0.72rem] tracking-[0.12em] text-console-muted">
-			// {status.games.length} cláraíodh
+			// {filteredGames.length}/{status.games.length} le feiceáil
 		</span>
 	</div>
 
+	<div class="mb-6 grid gap-4 rounded-sm border border-console-border bg-console-bg-2/85 p-4 md:grid-cols-[minmax(0,1fr)_220px]">
+		<div class="space-y-3">
+			<p class="mono-label text-console-green">scagairí</p>
+			<div class="flex flex-wrap gap-2">
+				{#each consoleOptions as option}
+					<button
+						class={`status-chip cursor-pointer ${selectedConsole === option ? 'border-console-green bg-console-green-glow text-console-green' : 'border-console-border text-console-muted hover:border-console-green hover:text-console-green'}`}
+						onclick={() => (selectedConsole = option)}
+						type="button"
+					>
+						{option === 'all' ? 'gach consól' : option.toUpperCase()}
+					</button>
+				{/each}
+			</div>
+			<div class="flex flex-wrap gap-2">
+				{#each [
+					['all', 'gach stádas'],
+					['progress', 'i mbun oibre'],
+					['help-wanted', 'cabhair ag teastáil'],
+					['complete', 'críochnaithe']
+				] as [value, label]}
+					<button
+						class={`status-chip cursor-pointer ${selectedStatus === value ? 'border-console-green bg-console-green-glow text-console-green' : 'border-console-border text-console-muted hover:border-console-green hover:text-console-green'}`}
+						onclick={() => (selectedStatus = value as StatusFilter)}
+						type="button"
+					>
+						{label}
+					</button>
+				{/each}
+			</div>
+		</div>
+
+		<div class="space-y-3">
+			<label class="mono-label block text-console-green" for="sort-mode">sórtáil</label>
+			<select
+				bind:value={sortMode}
+				class="w-full rounded-sm border border-console-border bg-console-bg px-3 py-3 font-mono text-xs uppercase tracking-[0.12em] text-console-text outline-none transition-colors focus:border-console-green"
+				id="sort-mode"
+			>
+				<option value="progress-desc">dul chun cinn: ard go híseal</option>
+				<option value="progress-asc">dul chun cinn: íseal go hard</option>
+				<option value="alphabetical">aibítre</option>
+			</select>
+		</div>
+	</div>
+
 	<div class="grid gap-px overflow-hidden border border-console-border bg-console-border md:grid-cols-2">
-		{#each status.games as game}
+		{#each filteredGames as game}
 			<GameCard {game} />
 		{/each}
 	</div>
+
+	{#if filteredGames.length === 0}
+		<div class="border border-console-border border-t-0 bg-console-bg-2/75 px-6 py-8 text-center font-mono text-[0.72rem] uppercase tracking-[0.12em] text-console-muted">
+			Níl cluichí ar bith ag meaitseáil na scagairí seo.
+		</div>
+	{/if}
 </section>
