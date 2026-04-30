@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { base } from '$app/paths';
 	import ExternalLink from '$lib/components/ExternalLink.svelte';
 	import GameCard from '$lib/components/GameCard.svelte';
 	import type { PageProps } from './$types';
@@ -58,7 +59,7 @@
 			</p>
 			<div class="mt-8 flex flex-wrap gap-4">
 				<a class="console-button console-button-primary" href="#games">Faigh an paiste</a>
-				<a class="console-button console-button-ghost" href="/guide">Treoir &rarr;</a>
+				<a class="console-button console-button-ghost" href={`${base}/guide`}>Treoir &rarr;</a>
 			</div>
 		</div>
 

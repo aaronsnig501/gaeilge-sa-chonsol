@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { base } from '$app/paths';
 	import ExternalLink from '$lib/components/ExternalLink.svelte';
 	import ProgressBar from '$lib/components/ProgressBar.svelte';
 	import StatusBadge from '$lib/components/StatusBadge.svelte';
@@ -12,7 +13,7 @@
 	const totalTranslated = $derived(game.categories.reduce((sum, item) => sum + item.translated, 0));
 	const totalStrings = $derived(game.categories.reduce((sum, item) => sum + item.total, 0));
 	const consoleLabel = $derived(consoleName(game));
-	const coverArtPath = $derived(`/covers/${game.game}.png`);
+	const coverArtPath = $derived(`${base}/covers/${game.game}.png`);
 </script>
 
 <svelte:head>

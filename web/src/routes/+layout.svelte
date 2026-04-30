@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { base } from '$app/paths';
 	import '../app.css';
 	import ExternalLink from '$lib/components/ExternalLink.svelte';
 
@@ -16,18 +17,18 @@
 <div class="relative min-h-screen bg-console-bg text-console-text">
 	<header class="sticky top-0 z-50 border-b border-console-border bg-console-bg/92 backdrop-blur-xl">
 		<div class="section-wrap flex h-14 items-center gap-6">
-			<a class="flex items-center gap-3 text-console-green" href="/">
-				<img alt="Gaeilge sa Chonsol" class="h-7 w-7" src="/logo.svg" />
+			<a class="flex items-center gap-3 text-console-green" href={base || '/'}>
+				<img alt="Gaeilge sa Chonsol" class="h-7 w-7" src={`${base}/logo.svg`} />
 				<span class="font-mono text-[0.82rem] tracking-[0.18em]">GAEILGE SA CHONSOL</span>
 			</a>
 			<nav class="ml-auto hidden items-center gap-6 sm:flex">
-				<a class="font-mono text-[0.72rem] tracking-[0.12em] text-console-muted hover:text-console-green" href="/">
+				<a class="font-mono text-[0.72rem] tracking-[0.12em] text-console-muted hover:text-console-green" href={base || '/'}>
 					CLUICHÍ
 				</a>
-				<a class="font-mono text-[0.72rem] tracking-[0.12em] text-console-muted hover:text-console-green" href="/guide">
+				<a class="font-mono text-[0.72rem] tracking-[0.12em] text-console-muted hover:text-console-green" href={`${base}/guide`}>
 					TREORACHA
 				</a>
-				<a class="font-mono text-[0.72rem] tracking-[0.12em] text-console-muted hover:text-console-green" href="/contribute">
+				<a class="font-mono text-[0.72rem] tracking-[0.12em] text-console-muted hover:text-console-green" href={`${base}/contribute`}>
 					RANNÍOCAÍOCHT
 				</a>
 				<ExternalLink

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { base } from '$app/paths';
 	import ExternalLink from '$lib/components/ExternalLink.svelte';
 	import ProgressBar from '$lib/components/ProgressBar.svelte';
 	import { getGameHref, getNeedsNativeReviewUrl, getRepoUrl, helpWantedGames } from '$lib/data';
@@ -158,7 +159,7 @@
 		<div class="panel p-6">
 			<p class="mono-label text-console-green">// Tuilleadh acmhainní</p>
 			<div class="mt-5 grid gap-4 sm:grid-cols-2">
-				<a class="rounded-sm border border-console-border bg-console-bg/55 p-4 hover:border-console-green" href="/guide">
+				<a class="rounded-sm border border-console-border bg-console-bg/55 p-4 hover:border-console-green" href={`${base}/guide`}>
 					<p class="font-display text-xl font-bold text-white">Treoir an tsuímh</p>
 					<p class="mt-2 text-sm leading-7 text-console-muted">Forléargas ar struchtúr an tsuímh agus ar an mbealach a úsáidtear `status.json` agus mdsvex.</p>
 				</a>

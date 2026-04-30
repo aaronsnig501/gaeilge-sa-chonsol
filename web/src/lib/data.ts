@@ -1,3 +1,4 @@
+import { base } from '$app/paths';
 import type {
 	CategoryStatus,
 	GeneratedGameRecord,
@@ -22,6 +23,12 @@ function asString(value: unknown, fallback = ''): string {
 
 function asNumber(value: unknown, fallback = 0): number {
 	return typeof value === 'number' && Number.isFinite(value) ? value : fallback;
+}
+
+function withBase(path: string): string {
+	if (!path) return base || '';
+	if (!path.startsWith('/')) return path;
+	return `${base}${path}`;
 }
 
 function parseGeneratedState(value: unknown): GeneratedGameStatus {
@@ -105,7 +112,7 @@ function parseGame(game: unknown): GameStatus {
 			: undefined,
 		links: {
 			repo: asString(value.repo_url) || undefined,
-			notes: asString(value.notes_path) || undefined,
+			notes: asString(value.notes_path) ? withBase(asString(value.notes_path)) : undefined,
 			issues: asString(value.issues_url)
 				? `${asString(value.issues_url)}?q=${encodeURIComponent(`is:issue ${asString(value.id)}`)}`
 				: undefined
@@ -114,7 +121,7 @@ function parseGame(game: unknown): GameStatus {
 }
 
 export async function fetchStatus(fetchFn: typeof fetch): Promise<SiteStatus> {
-	const response = await fetchFn('/status.json');
+	const response = await fetchFn(withBase('/status.json'));
 	if (!response.ok) {
 		throw new Error(`Failed to load status.json (${response.status})`);
 	}
@@ -142,7 +149,7 @@ export async function fetchStatus(fetchFn: typeof fetch): Promise<SiteStatus> {
 }
 
 export function getGameHref(game: Pick<GameStatus, 'console' | 'game'>): string {
-	return `/games/${game.console}/${game.game}`;
+	return withBase(`/games/${game.console}/${game.game}`);
 }
 
 export function getStateMeta(state: GameState): { label: string; className: string } {
