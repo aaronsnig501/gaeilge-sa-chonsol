@@ -181,6 +181,9 @@
 			<div class="panel p-6">
 				<p class="mono-label text-console-green">// Nascanna</p>
 				<div class="mt-4 grid gap-3">
+					{#if game.links.notes}
+						<a class="console-button console-button-ghost w-full" href={game.links.notes}>Nótaí</a>
+					{/if}
 					{#if game.links.repo}
 						<ExternalLink className="console-button console-button-ghost w-full" href={game.links.repo}>
 							GitHub
