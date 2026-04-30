@@ -2,7 +2,13 @@
 
 from pathlib import Path
 
-from cli.games.registry import GameDefinition, StringTableDefinition, WadDefinition, register_game
+from cli.games.registry import (
+    GameDefinition,
+    StringTableDefinition,
+    ThemeDefinition,
+    WadDefinition,
+    register_game,
+)
 
 SPYRO1 = register_game(
     GameDefinition(
@@ -19,6 +25,38 @@ SPYRO1 = register_game(
         rom_markers=(
             b"SCES_014.38",
             b"SPYRO",
+        ),
+        release_messages=(
+            "Convincing dragons to speak Gaeilge...",
+            "Politely ignoring Gnasty's spelling notes...",
+            "Sharpening fada accents for maximum dramatic effect...",
+            "Letting the balloonists argue over pronunciation...",
+            "Dusting off a suspiciously old memory card...",
+            "Warning sheep that localization is in progress...",
+            "Teaching druids not to panic at accented vowels...",
+            "Tuning portals to Irish-language frequency...",
+            "Asking fairies to stop touching the patch data...",
+            "Calming Toasty before the release build...",
+            "Trying not to wake Metalhead...",
+            "Reminding Spyro that this is still a PAL disc...",
+            "Checking if Sparx can proofread...",
+            "Bribing a thief to return lost apostrophes...",
+            "Translating dragon wisdom into all-caps...",
+            "Making sure the portals know where Gaeilge is...",
+            "Rescuing vowels from the Gnorc occupation...",
+            "Explaining fada marks to the flight levels...",
+            "Persuading fairies to stop rearranging bytes...",
+            "Double-checking that Spyro can read this upside down...",
+            "Searching for one more byte in Beast Makers...",
+            "Letting the artisans pretend they helped...",
+        ),
+        release_message_interval_range=(5.0, 9.0),
+        theme=ThemeDefinition(
+            header_style="bold gold1",
+            accent_style="medium_purple1",
+            success_style="spring_green3",
+            spinner_style="bright_magenta",
+            rule_style="gold3",
         ),
         string_table=StringTableDefinition(
             source_path=Path("ps1/spyro/1/data/strings.py"),

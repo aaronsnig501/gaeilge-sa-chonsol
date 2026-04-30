@@ -55,6 +55,8 @@ gsc validate --csv custom.csv
 gsc patch
 gsc patch --output spyro_gaeilge.bin
 gsc patch --dry-run
+gsc release --mode fast
+gsc release --mode compact --version 1.0 --output patches/spyro1_gaeilge_v1.0.bps
 gsc mount
 gsc umount
 gsc wad list
@@ -80,6 +82,11 @@ The `patch` command validates the configured CSV, skips any over-budget rows,
 copies the configured ROM to a new BIN, and applies valid translations using the
 verified PS1 sector mapping and preserve-metadata rules.
 
+The `release` command validates all strings, generates a patched BIN, and calls
+Flips to produce a distributable BPS patch file. You must choose `--mode fast`
+for quicker creation with a larger patch, or `--mode compact` for slower,
+smaller output.
+
 The `mount` and `umount` commands strip PS1 BIN sectors into a temporary ISO
 and mount or unmount it using the configured mount point from `.gsc/config.toml`.
 
@@ -93,6 +100,7 @@ Current command groups are scaffolded for:
 - `init`
 - `extract`
 - `patch`
+- `release`
 - `status`
 - `mount`
 - `umount`

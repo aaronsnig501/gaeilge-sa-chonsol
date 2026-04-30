@@ -25,6 +25,17 @@ class WadDefinition:
 
 
 @dataclass(frozen=True, slots=True)
+class ThemeDefinition:
+    """Presentation theme for game-specific CLI styling."""
+
+    header_style: str = "bold"
+    accent_style: str = "cyan"
+    success_style: str = "green"
+    spinner_style: str = "cyan"
+    rule_style: str = "dim"
+
+
+@dataclass(frozen=True, slots=True)
 class GameDefinition:
     """Metadata for a supported game target."""
 
@@ -36,6 +47,9 @@ class GameDefinition:
     project_dir: Path
     notes: tuple[str, ...] = field(default_factory=tuple)
     rom_markers: tuple[bytes, ...] = field(default_factory=tuple)
+    release_messages: tuple[str, ...] = field(default_factory=tuple)
+    release_message_interval_range: tuple[float, float] = (5.0, 8.0)
+    theme: ThemeDefinition = field(default_factory=ThemeDefinition)
     string_table: StringTableDefinition | None = None
     wad: WadDefinition | None = None
 
