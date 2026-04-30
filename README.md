@@ -55,6 +55,8 @@ gsc validate --csv custom.csv
 gsc patch
 gsc patch --output spyro_gaeilge.bin
 gsc patch --dry-run
+gsc status
+gsc status --game spyro1
 ```
 
 The `init` command validates the ROM path, checks it matches the expected game,
@@ -72,10 +74,14 @@ The `patch` command validates the configured CSV, skips any over-budget rows,
 copies the configured ROM to a new BIN, and applies valid translations using the
 verified PS1 sector mapping and preserve-metadata rules.
 
+The `status` command summarizes translation progress by category and overall,
+using the registered string table layout and highlighting any over-budget rows.
+
 Current command groups are scaffolded for:
 - `init`
 - `extract`
 - `patch`
+- `status`
 - `mount`
 - `wad`
 - `validate`

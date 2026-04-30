@@ -22,6 +22,7 @@ class StringEntry:
 
     offset: int
     budget: int
+    category: str = "Uncategorized"
 
 
 @dataclass(frozen=True, slots=True)
@@ -32,6 +33,7 @@ class CsvTranslationRow:
     budget: int
     english: str
     irish: str
+    category: str = "Uncategorized"
 
 
 @dataclass(frozen=True, slots=True)
@@ -54,9 +56,10 @@ class TranslationValidation:
     over_budget: list[BudgetViolation]
 
 
-def load_string_entries(source_path: Path) -> list[StringEntry]:
+def load_string_entries(source_path: Path, category_groups: dict[str, str] | None = None) -> list[StringEntry]:
     """Load offset and budget data from an existing TRANSLATIONS table."""
     source_path = source_path if source_path.is_absolute() else REPO_ROOT / source_path
+    categories = load_string_categories(source_path, category_groups or {})
     module = ast.parse(source_path.read_text(encoding="utf-8"))
     for node in module.body:
         if isinstance(node, ast.Assign):
@@ -64,10 +67,31 @@ def load_string_entries(source_path: Path) -> list[StringEntry]:
                 if isinstance(target, ast.Name) and target.id == "TRANSLATIONS":
                     translations = ast.literal_eval(node.value)
                     return [
-                        StringEntry(offset=offset, budget=value[3])
+                        StringEntry(
+                            offset=offset,
+                            budget=value[3],
+                            category=categories.get(offset, "Uncategorized"),
+                        )
                         for offset, value in sorted(translations.items())
                     ]
     raise ValueError(f"TRANSLATIONS table not found in {source_path}")
+
+
+def load_string_categories(source_path: Path, category_groups: dict[str, str]) -> dict[int, str]:
+    """Parse source comments to group string entries by category."""
+    categories: dict[int, str] = {}
+    active_category = "Uncategorized"
+    for line in source_path.read_text(encoding="utf-8").splitlines():
+        stripped = line.strip()
+        if stripped.startswith("#"):
+            label = stripped[1:].strip()
+            if label:
+                active_category = category_groups.get(label, label)
+            continue
+        match = re.match(r"^\s*(0x[0-9a-fA-F]+)\s*:", line)
+        if match:
+            categories[int(match.group(1), 16)] = active_category
+    return categories
 
 
 def load_existing_irish(csv_path: Path) -> dict[str, str]:
@@ -122,7 +146,7 @@ def extract_strings(rom_path: Path, table: StringTableDefinition) -> list[dict[s
     rom_bytes = rom_path.read_bytes()
     syncs = build_sync_map(rom_bytes)
     verify_formula(table, syncs)
-    entries = load_string_entries(table.source_path)
+    entries = load_string_entries(table.source_path, table.category_groups)
 
     rows: list[dict[str, str | int]] = []
     for entry in entries:
@@ -162,16 +186,27 @@ def write_translation_csv(rows: list[dict[str, str | int]], output_path: Path) -
             )
 
 
-def read_translation_csv(csv_path: Path) -> list[CsvTranslationRow]:
+def read_translation_csv(
+    csv_path: Path,
+    source_path: Path | None = None,
+    category_groups: dict[str, str] | None = None,
+) -> list[CsvTranslationRow]:
     """Read translation CSV rows."""
+    categories: dict[str, str] = {}
+    if source_path is not None:
+        categories = {
+            f"0x{entry.offset:x}": entry.category
+            for entry in load_string_entries(source_path, category_groups)
+        }
     with csv_path.open("r", encoding="utf-8", newline="") as handle:
         reader = csv.DictReader(handle)
         return [
             CsvTranslationRow(
-                offset=row["offset"],
+                offset=row["offset"].lower(),
                 budget=int(row["budget"]),
                 english=row["english"],
                 irish=row.get("irish", ""),
+                category=categories.get(row["offset"].lower(), "Uncategorized"),
             )
             for row in reader
         ]
