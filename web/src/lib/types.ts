@@ -56,6 +56,7 @@ export interface GameLinks {
 
 export interface GameStatus {
 	console: string;
+	consoleLabel: string;
 	game: string;
 	title: string;
 	subtitle: string;
@@ -63,9 +64,12 @@ export interface GameStatus {
 	serial?: string;
 	year?: number;
 	state: GameState;
+	statusLabel: string;
 	progress: number;
+	version?: string;
 	description: string;
 	accent: string;
+	helpWanted: boolean;
 	categories: CategoryStatus[];
 	nightly?: {
 		label: string;
