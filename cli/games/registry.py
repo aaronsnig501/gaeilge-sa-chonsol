@@ -40,11 +40,13 @@ class GameDefinition:
     """Metadata for a supported game target."""
 
     key: str
+    game_id: str
     title: str
     console: str
     region: str
     serial: str
     project_dir: Path
+    executable_name: str
     notes: tuple[str, ...] = field(default_factory=tuple)
     rom_markers: tuple[bytes, ...] = field(default_factory=tuple)
     release_messages: tuple[str, ...] = field(default_factory=tuple)
