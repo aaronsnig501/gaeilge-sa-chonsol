@@ -55,6 +55,8 @@ gsc validate --csv custom.csv
 gsc patch
 gsc patch --output spyro_gaeilge.bin
 gsc patch --dry-run
+gsc mount
+gsc umount
 gsc status
 gsc status --game spyro1
 ```
@@ -74,6 +76,9 @@ The `patch` command validates the configured CSV, skips any over-budget rows,
 copies the configured ROM to a new BIN, and applies valid translations using the
 verified PS1 sector mapping and preserve-metadata rules.
 
+The `mount` and `umount` commands strip PS1 BIN sectors into a temporary ISO
+and mount or unmount it using the configured mount point from `.gsc/config.toml`.
+
 The `status` command summarizes translation progress by category and overall,
 using the registered string table layout and highlighting any over-budget rows.
 
@@ -83,6 +88,7 @@ Current command groups are scaffolded for:
 - `patch`
 - `status`
 - `mount`
+- `umount`
 - `wad`
 - `validate`
 - `release`
