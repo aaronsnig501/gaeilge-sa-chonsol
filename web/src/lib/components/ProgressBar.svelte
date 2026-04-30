@@ -30,6 +30,6 @@
 		<div
 			class="h-full transition-[width] duration-700 ease-out"
 			style={`width:${progress}%;background:${accent};box-shadow:0 0 18px ${accent}33`}
-		/>
+		></div>
 	</div>
 </div>

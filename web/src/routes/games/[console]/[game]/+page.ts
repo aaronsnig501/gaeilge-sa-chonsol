@@ -1,5 +1,10 @@
 import { error } from '@sveltejs/kit';
 import { fetchStatus } from '$lib/data';
+import { getStaticGameParams } from '$lib/status-static';
+
+export function entries() {
+	return getStaticGameParams();
+}
 
 export async function load({ fetch, params }) {
 	const status = await fetchStatus(fetch);

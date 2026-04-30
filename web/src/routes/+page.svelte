@@ -5,7 +5,7 @@
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
-	const { status } = data;
+	const status = $derived(data.status);
 	const helpWantedThreshold = 50;
 
 	type ConsoleFilter = 'all' | string;
