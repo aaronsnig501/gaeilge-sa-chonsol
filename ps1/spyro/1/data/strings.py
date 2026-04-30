@@ -146,7 +146,7 @@ TRANSLATIONS = {
     0x4a70: ('WORLD IF YOU LIKE.',  'MÁ SÁILL LEAT.',       'MAa SAaILL LEAT.',     19),
     0x4a84: ('THE PEACE KEEPERS',   'NA CAOMHNÓIRÍ',        'NA CAOMHNOaIRIa',      19),
     0x4a98: ('YOU MAY TRAVEL TO',   'IS FÉIDIR LEAT DUL',   'IS FEaDIaR LEAT DUL',  19),
-    0x4bac: ('COULD DO IT.',        'NDÉANFÁ TÚ E.',        'NDEANFAa TUa E.',      15),
+    0x4bac: ('COULD DO IT.',        'DÉANFAÍ É.',          'DEaANFAIa Ea.',        15),
     0x4bbc: ("I DIDN'T THINK YOU",  'NÍOR CHEAP ME GO',     'NIaOR CHEAP ME GO',    19),
     0x4bd0: ('WELL DONE SPYRO!',    'MAITH THÚ, SPYRO!',    'MAITH THUa, SPYRO!',   19),
 

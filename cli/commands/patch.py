@@ -4,7 +4,9 @@ from pathlib import Path
 
 import typer
 from typer import Typer
+from rich.console import Console
 from rich import print
+from rich.rule import Rule
 
 from cli.config import REPO_ROOT, read_config
 from cli.games.registry import get_game_by_parts
@@ -18,6 +20,11 @@ from cli.strings import (
 )
 
 app = Typer(help="Apply or build binary patches.", invoke_without_command=True)
+console = Console()
+
+
+def _styled(text: str, style: str) -> str:
+    return f"[{style}]{text}[/{style}]"
 
 
 @app.callback()
@@ -64,14 +71,21 @@ def build_patch(
     translated = len(validation.translated_rows)
     applied = translated - len(validation.over_budget)
     output_path = output.expanduser().resolve()
+    theme = game.theme
 
-    print("[green]Sector formula verified[/green]")
+    console.print(
+        Rule(
+            _styled(f"{game.title} Patch Build", theme.header_style),
+            style=theme.rule_style,
+        )
+    )
+    print(_styled("✓ Sector formula verified", theme.success_style))
     if dry_run:
-        print(f"Would patch [bold]{applied}[/bold] strings into [bold]{output_path}[/bold]")
+        print(_styled(f"Would patch {applied} strings into {output_path}", theme.header_style))
     else:
         copy_rom(config.rom, output_path)
         applied, skipped = apply_translations_to_rom(output_path, game.string_table, rows)
-        print(f"[green]Patched[/green] {applied} strings into [bold]{output_path}[/bold]")
+        print(_styled(f"Patched {applied} strings into {output_path}", theme.success_style))
         validation = validation.__class__(
             rows=validation.rows,
             translated_rows=validation.translated_rows,
@@ -80,11 +94,11 @@ def build_patch(
         )
 
     if validation.over_budget:
-        print(f"[yellow]Skipped[/yellow] {len(validation.over_budget)} strings that exceed budget:")
+        print(_styled(f"Skipped {len(validation.over_budget)} strings that exceed budget:", "yellow"))
         for violation in validation.over_budget:
             print(
-                f"   {violation.offset}: {violation.encoded} "
-                f"({violation.encoded_length} bytes, budget {violation.budget})"
+                f"   {_styled(violation.offset, theme.accent_style)}: {violation.encoded} "
+                f"{_styled(f'({violation.encoded_length} bytes, budget {violation.budget})', 'yellow')}"
             )
     else:
-        print("[green]Skipped[/green] 0 strings")
+        print(_styled("Skipped 0 strings", theme.success_style))

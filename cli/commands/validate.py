@@ -4,13 +4,20 @@ from pathlib import Path
 
 import typer
 from typer import Typer
+from rich.console import Console
 from rich import print
+from rich.rule import Rule
 
 from cli.config import REPO_ROOT, read_config
 from cli.games.registry import get_game_by_parts
 from cli.strings import read_translation_csv, validate_translation_rows
 
 app = Typer(help="Validate ROMs, patches, and project data.", invoke_without_command=True)
+console = Console()
+
+
+def _styled(text: str, style: str) -> str:
+    return f"[{style}]{text}[/{style}]"
 
 
 @app.callback()
@@ -46,19 +53,26 @@ def validate_translations(
 
     total = len(validation.rows)
     progress = (len(validation.translated_rows) / total * 100) if total else 0.0
+    theme = game.theme
 
-    print(f"[green]\u2713[/green] {len(validation.translated_rows)} strings translated")
+    console.print(
+        Rule(
+            _styled(f"{game.title} Validation", theme.header_style),
+            style=theme.rule_style,
+        )
+    )
+    print(_styled(f"\u2713 {len(validation.translated_rows)} strings translated", theme.success_style))
     if validation.over_budget:
-        print(f"[red]\u2717[/red] {len(validation.over_budget)} strings exceed budget:")
+        print(_styled(f"\u2717 {len(validation.over_budget)} strings exceed budget:", "red"))
         for violation in validation.over_budget:
             print(
-                f"   {violation.offset}: {violation.encoded} "
-                f"({violation.encoded_length} bytes, budget {violation.budget})"
+                f"   {_styled(violation.offset, theme.accent_style)}: {violation.encoded} "
+                f"{_styled(f'({violation.encoded_length} bytes, budget {violation.budget})', 'red')}"
             )
     else:
-        print("[green]\u2713[/green] No strings exceed budget")
-    print(f"[yellow]\u25cb[/yellow] {validation.untranslated_count} strings untranslated")
-    print(f"Progress: {progress:.1f}% ({len(validation.translated_rows)}/{total})")
+        print(_styled("\u2713 No strings exceed budget", theme.success_style))
+    print(_styled(f"\u25cb {validation.untranslated_count} strings untranslated", theme.accent_style))
+    print(_styled(f"Progress: {progress:.1f}% ({len(validation.translated_rows)}/{total})", theme.header_style))
 
     if validation.over_budget:
         raise typer.Exit(code=1)
