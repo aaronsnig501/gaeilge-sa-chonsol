@@ -57,6 +57,10 @@ gsc patch --output spyro_gaeilge.bin
 gsc patch --dry-run
 gsc mount
 gsc umount
+gsc wad list
+gsc wad extract
+gsc wad extract --subfile 1
+gsc wad pack ./wad_subfiles
 gsc status
 gsc status --game spyro1
 ```
@@ -78,6 +82,9 @@ verified PS1 sector mapping and preserve-metadata rules.
 
 The `mount` and `umount` commands strip PS1 BIN sectors into a temporary ISO
 and mount or unmount it using the configured mount point from `.gsc/config.toml`.
+
+The `wad` commands list, extract, and repack WAD subfiles using the mounted disc
+and the registered game's WAD metadata.
 
 The `status` command summarizes translation progress by category and overall,
 using the registered string table layout and highlighting any over-budget rows.

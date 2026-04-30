@@ -17,6 +17,14 @@ class StringTableDefinition:
 
 
 @dataclass(frozen=True, slots=True)
+class WadDefinition:
+    """Metadata for a game's WAD archive."""
+
+    archive_path: Path
+    known_subfiles: dict[int, str] = field(default_factory=dict)
+
+
+@dataclass(frozen=True, slots=True)
 class GameDefinition:
     """Metadata for a supported game target."""
 
@@ -29,6 +37,7 @@ class GameDefinition:
     notes: tuple[str, ...] = field(default_factory=tuple)
     rom_markers: tuple[bytes, ...] = field(default_factory=tuple)
     string_table: StringTableDefinition | None = None
+    wad: WadDefinition | None = None
 
 
 GAME_REGISTRY: dict[str, GameDefinition] = {}
