@@ -11,6 +11,8 @@ class StringTableDefinition:
     source_path: Path
     csv_path: Path
     executable_iso_offset: int
+    preserve_metadata: dict[int, int] = field(default_factory=dict)
+    formula_checks: tuple[tuple[int, int], ...] = field(default_factory=tuple)
 
 
 @dataclass(frozen=True, slots=True)

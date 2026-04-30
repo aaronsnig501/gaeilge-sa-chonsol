@@ -52,7 +52,9 @@ gsc extract
 gsc extract --output custom.csv
 gsc validate
 gsc validate --csv custom.csv
-gsc patch --help
+gsc patch
+gsc patch --output spyro_gaeilge.bin
+gsc patch --dry-run
 ```
 
 The `init` command validates the ROM path, checks it matches the expected game,
@@ -65,6 +67,10 @@ existing Irish translations already present in the target CSV.
 The `validate` command reads the translations CSV, encodes Irish text using the
 ROM's fada scheme, and reports translation progress plus any rows that exceed
 their byte budgets.
+
+The `patch` command validates the configured CSV, skips any over-budget rows,
+copies the configured ROM to a new BIN, and applies valid translations using the
+verified PS1 sector mapping and preserve-metadata rules.
 
 Current command groups are scaffolded for:
 - `init`
