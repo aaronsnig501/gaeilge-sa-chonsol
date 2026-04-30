@@ -1,0 +1,90 @@
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow:wght@300;400;600&family=Barlow+Condensed:wght@700;900&display=swap');
+@import "tailwindcss";
+
+@theme {
+	--font-display: "Barlow Condensed", "Arial Narrow", sans-serif;
+	--font-body: "Barlow", sans-serif;
+	--font-mono: "Share Tech Mono", monospace;
+
+	--color-console-green: #2ecc71;
+	--color-console-green-dim: #1a7a43;
+	--color-console-green-glow: rgba(46, 204, 113, 0.16);
+	--color-console-bg: #0a0a12;
+	--color-console-bg-2: #0f0f1e;
+	--color-console-bg-3: #1a1a2e;
+	--color-console-border: rgba(46, 204, 113, 0.2);
+	--color-console-text: #e0e0e0;
+	--color-console-muted: #8e99a7;
+	--color-console-red: #e74c3c;
+	--color-console-amber: #f39c12;
+	--color-console-blue: #3498db;
+}
+
+:root {
+	color-scheme: dark;
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	@apply min-h-screen overflow-x-hidden bg-console-bg font-body font-light text-console-text antialiased;
+	background-image:
+		linear-gradient(rgba(46, 204, 113, 0.03) 1px, transparent 1px),
+		linear-gradient(90deg, rgba(46, 204, 113, 0.03) 1px, transparent 1px);
+	background-size: 40px 40px;
+}
+
+body::before {
+	content: "";
+	position: fixed;
+	inset: 0;
+	background: repeating-linear-gradient(
+		0deg,
+		transparent,
+		transparent 2px,
+		rgba(0, 0, 0, 0.03) 2px,
+		rgba(0, 0, 0, 0.03) 4px
+	);
+	pointer-events: none;
+	z-index: 1000;
+}
+
+a {
+	@apply transition-colors duration-200;
+}
+
+@utility panel {
+	@apply border border-console-border bg-console-bg-2/90 backdrop-blur;
+}
+
+@utility scanline-border {
+	box-shadow: inset 0 0 0 1px rgba(46, 204, 113, 0.05);
+}
+
+@utility mono-label {
+	@apply font-mono text-[0.7rem] uppercase tracking-[0.22em];
+}
+
+@utility section-wrap {
+	@apply relative z-10 mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
+}
+
+@layer components {
+	.console-button {
+		@apply inline-flex items-center justify-center rounded-sm border px-4 py-3 font-mono text-xs uppercase tracking-[0.16em] transition-all duration-200;
+	}
+
+	.console-button-primary {
+		@apply border-console-green bg-console-green text-black hover:bg-[#27ae60] hover:shadow-[0_0_24px_rgba(46,204,113,0.35)];
+	}
+
+	.console-button-ghost {
+		@apply border-console-border bg-transparent text-console-green hover:border-console-green hover:bg-console-green-glow;
+	}
+
+	.status-chip {
+		@apply rounded-sm border px-2.5 py-1 font-mono text-[0.62rem] uppercase tracking-[0.14em];
+	}
+}

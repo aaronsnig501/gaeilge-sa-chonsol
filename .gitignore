@@ -10,6 +10,9 @@ __pycache__/
 .ruff_cache/
 build/
 dist/
+web/node_modules/
+web/.svelte-kit/
+web/build/
 
 # ROM and disc image files
 *.bin
