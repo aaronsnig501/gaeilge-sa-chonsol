@@ -87,4 +87,56 @@ a {
 	.status-chip {
 		@apply rounded-sm border px-2.5 py-1 font-mono text-[0.62rem] uppercase tracking-[0.14em];
 	}
+
+	.prose-console {
+		@apply text-sm leading-7 text-console-muted;
+	}
+
+	.prose-console h1,
+	.prose-console h2,
+	.prose-console h3 {
+		@apply mt-8 font-display font-bold uppercase tracking-[0.04em] text-white;
+	}
+
+	.prose-console h1:first-child,
+	.prose-console h2:first-child,
+	.prose-console h3:first-child {
+		@apply mt-0;
+	}
+
+	.prose-console h1 {
+		@apply text-3xl;
+	}
+
+	.prose-console h2 {
+		@apply text-2xl;
+	}
+
+	.prose-console h3 {
+		@apply text-xl;
+	}
+
+	.prose-console p,
+	.prose-console ul,
+	.prose-console ol {
+		@apply mt-4;
+	}
+
+	.prose-console ul,
+	.prose-console ol {
+		@apply pl-5;
+	}
+
+	.prose-console li {
+		@apply mt-2;
+	}
+
+	.prose-console strong,
+	.prose-console code {
+		@apply text-console-green;
+	}
+
+	.prose-console a {
+		@apply text-console-green underline decoration-console-border underline-offset-4 hover:text-white;
+	}
 }

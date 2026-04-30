@@ -43,12 +43,12 @@ function toUiState(status: GeneratedGameStatus): GameState {
 function buildStatusLabel(status: GeneratedGameStatus): string {
 	switch (status) {
 		case 'complete':
-			return 'complete';
+			return 'Críochnaithe';
 		case 'in-progress':
-			return 'in progress';
+			return 'I mbun oibre';
 		case 'planned':
 		default:
-			return 'help wanted';
+			return 'Cabhair ag teastáil';
 	}
 }
 
@@ -104,7 +104,9 @@ function parseGame(game: unknown): GameStatus {
 		links: {
 			repo: asString(value.repo_url) || undefined,
 			notes: asString(value.notes_path) || undefined,
-			issues: asString(value.issues_url) || undefined
+			issues: asString(value.issues_url)
+				? `${asString(value.issues_url)}?q=${encodeURIComponent(`is:issue ${asString(value.id)}`)}`
+				: undefined
 		}
 	};
 }
