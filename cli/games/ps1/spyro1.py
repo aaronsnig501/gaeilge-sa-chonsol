@@ -2,7 +2,7 @@
 
 from pathlib import Path
 
-from cli.games.registry import GameDefinition, StringTableDefinition, register_game
+from cli.games.registry import GameDefinition, StringTableDefinition, WadDefinition, register_game
 
 SPYRO1 = register_game(
     GameDefinition(
@@ -78,6 +78,15 @@ SPYRO1 = register_game(
                 (0x10B0, 0xEFA8),
                 (0x2430, 0x10588),
             ),
+        ),
+        wad=WadDefinition(
+            archive_path=Path("wad.wad"),
+            known_subfiles={
+                1: "titlescreen sprite sheet (108KB)",
+                3: "game ID string",
+                20: "unknown small subfile (40KB)",
+                32: "timer format strings",
+            },
         ),
     )
 )
