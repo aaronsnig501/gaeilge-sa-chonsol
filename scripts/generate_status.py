@@ -1,0 +1,170 @@
+"""Generate web status data from registered game CSV files."""
+
+from __future__ import annotations
+
+import json
+import sys
+from collections import OrderedDict
+from datetime import datetime, timezone
+from pathlib import Path
+
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+from cli.games import ps1  # noqa: F401
+from cli.games.registry import GAME_REGISTRY, GameDefinition
+from cli.strings import read_translation_csv
+
+
+DEFAULT_OUTPUT = REPO_ROOT / "web" / "static" / "status.json"
+DEFAULT_REPO_URL = "https://github.com/aaronsnig501/gaeilge-sa-chonsol"
+DEFAULT_ISSUES_URL = f"{DEFAULT_REPO_URL}/issues"
+STATUS_PLANNED = "planned"
+STATUS_IN_PROGRESS = "in-progress"
+STATUS_COMPLETE = "complete"
+
+
+def translated_count(rows: list) -> int:
+    """Count rows with a non-empty Irish translation."""
+    return sum(1 for row in rows if row.irish.strip())
+
+
+def percent(translated: int, total: int) -> int:
+    """Build a rounded translation percentage."""
+    if total <= 0:
+        return 0
+    return round((translated / total) * 100)
+
+
+def build_categories(game: GameDefinition) -> list[dict[str, int | str]]:
+    """Group translation rows by category for a game."""
+    assert game.string_table is not None
+    rows = read_translation_csv(
+        game.string_table.csv_path,
+        source_path=game.string_table.source_path,
+        category_groups=game.string_table.category_groups,
+    )
+    grouped: OrderedDict[str, dict[str, int]] = OrderedDict()
+
+    for row in rows:
+        category = grouped.setdefault(row.category, {"total": 0, "translated": 0})
+        category["total"] += 1
+        if row.irish.strip():
+            category["translated"] += 1
+
+    return [
+        {
+            "name": name,
+            "total": values["total"],
+            "translated": values["translated"],
+            "percent": percent(values["translated"], values["total"]),
+        }
+        for name, values in grouped.items()
+    ]
+
+
+def infer_status(progress_percent: int, translated: int) -> str:
+    """Infer a site status label from translation progress."""
+    if progress_percent >= 100:
+        return STATUS_COMPLETE
+    if translated > 0:
+        return STATUS_IN_PROGRESS
+    return STATUS_PLANNED
+
+
+def find_notes_path(game: GameDefinition) -> str | None:
+    """Return a site notes route when a markdown page exists."""
+    short_name = game.key.split(".", 1)[1]
+    candidate = REPO_ROOT / "web" / "src" / "routes" / "games" / game.console / short_name / "notes" / "+page.md"
+    if candidate.exists():
+        return f"/games/{game.console}/{short_name}/notes"
+    return None
+
+
+def patch_available(game: GameDefinition) -> bool:
+    """Detect whether any BPS patch artifacts exist for a game."""
+    patches_dir = REPO_ROOT / game.project_dir / "patches"
+    return patches_dir.exists() and any(patches_dir.glob("*.bps"))
+
+
+def build_game_status(game: GameDefinition) -> dict[str, object]:
+    """Build site status data for one registered game."""
+    assert game.string_table is not None
+    rows = read_translation_csv(
+        game.string_table.csv_path,
+        source_path=game.string_table.source_path,
+        category_groups=game.string_table.category_groups,
+    )
+    translated = translated_count(rows)
+    total = len(rows)
+    progress_percent = percent(translated, total)
+    short_name = game.key.split(".", 1)[1]
+
+    payload: dict[str, object] = {
+        "id": short_name,
+        "title": game.title,
+        "console": game.console,
+        "console_label": game.console_label or game.console.upper(),
+        "status": infer_status(progress_percent, translated),
+        "version": game.version,
+        "repo_path": game.project_dir.as_posix(),
+        "patch_available": patch_available(game),
+        "help_wanted": progress_percent < 100,
+        "progress": {
+            "total": total,
+            "translated": translated,
+            "percent": progress_percent,
+        },
+        "categories": build_categories(game),
+        "region": game.region,
+        "serial": game.serial,
+        "description": game.description,
+        "accent": game.accent,
+        "repo_url": DEFAULT_REPO_URL,
+        "issues_url": DEFAULT_ISSUES_URL,
+    }
+
+    notes_path = find_notes_path(game)
+    if notes_path:
+        payload["notes_path"] = notes_path
+
+    return payload
+
+
+def generate_status_payload() -> dict[str, object]:
+    """Generate the full site payload from all registered games with CSVs."""
+    games = []
+    for key in sorted(GAME_REGISTRY):
+        game = GAME_REGISTRY[key]
+        if game.string_table is None:
+            continue
+        csv_path = REPO_ROOT / game.string_table.csv_path
+        if not csv_path.exists():
+            continue
+        games.append(build_game_status(game))
+
+    return {
+        "generated": datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
+        "games": games,
+    }
+
+
+def write_status(output_path: Path) -> Path:
+    """Write generated status JSON to disk."""
+    payload = generate_status_payload()
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    return output_path
+
+
+def main() -> None:
+    """CLI entry point for local and CI usage."""
+    output = Path(sys.argv[1]).expanduser().resolve() if len(sys.argv) > 1 else DEFAULT_OUTPUT
+    written = write_status(output)
+    print(written.relative_to(REPO_ROOT))
+
+
+if __name__ == "__main__":
+    main()

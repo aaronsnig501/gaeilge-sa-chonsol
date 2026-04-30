@@ -1,6 +1,13 @@
-import type { GameState, GameStatus, SiteStatus } from '$lib/types';
+import type {
+	CategoryStatus,
+	GeneratedGameRecord,
+	GeneratedGameStatus,
+	GameState,
+	GameStatus,
+	SiteStatus
+} from '$lib/types';
 
-const GAME_STATES: GameState[] = ['complete', 'progress', 'wanted'];
+const GENERATED_GAME_STATES: GeneratedGameStatus[] = ['complete', 'in-progress', 'planned'];
 
 function clampProgress(value: unknown): number {
 	if (typeof value !== 'number' || Number.isNaN(value)) return 0;
@@ -15,22 +22,52 @@ function asNumber(value: unknown, fallback = 0): number {
 	return typeof value === 'number' && Number.isFinite(value) ? value : fallback;
 }
 
+function parseGeneratedState(value: unknown): GeneratedGameStatus {
+	return GENERATED_GAME_STATES.includes(value as GeneratedGameStatus)
+		? (value as GeneratedGameStatus)
+		: 'planned';
+}
+
+function toUiState(status: GeneratedGameStatus): GameState {
+	switch (status) {
+		case 'complete':
+			return 'complete';
+		case 'in-progress':
+			return 'progress';
+		case 'planned':
+		default:
+			return 'wanted';
+	}
+}
+
+function buildSubtitle(value: GeneratedGameRecord): string {
+	const parts = [asString(value.serial), asString(value.region), asString(value.version && `v${value.version}`)].filter(Boolean);
+	if (parts.length > 0) return parts.join(' · ');
+	return asString(value.console_label).toUpperCase();
+}
+
 function parseGame(game: unknown): GameStatus {
 	const value = (game && typeof game === 'object' ? game : {}) as Record<string, unknown>;
 	const categories = Array.isArray(value.categories) ? value.categories : [];
-	const state = GAME_STATES.includes(value.state as GameState) ? (value.state as GameState) : 'wanted';
+	const generated = value as unknown as GeneratedGameRecord;
+	const generatedState = parseGeneratedState(value.status);
+	const translated = asNumber((value.progress as Record<string, unknown> | undefined)?.translated);
+	const total = asNumber((value.progress as Record<string, unknown> | undefined)?.total);
+	const progress = clampProgress((value.progress as Record<string, unknown> | undefined)?.percent);
 
 	return {
 		console: asString(value.console),
-		game: asString(value.game),
+		game: asString(value.id),
 		title: asString(value.title),
-		subtitle: asString(value.subtitle),
-		region: asString(value.region),
+		subtitle: buildSubtitle(generated),
+		region: asString(value.region, asString(value.console_label)),
 		serial: asString(value.serial) || undefined,
 		year: asNumber(value.year) || undefined,
-		state,
-		progress: clampProgress(value.progress),
-		description: asString(value.description),
+		state: toUiState(generatedState),
+		progress,
+		description:
+			asString(value.description) ||
+			`${translated}/${total} téacs aistrithe sa tionscadal seo faoi láthair.`,
 		accent: asString(value.accent, '#2ecc71'),
 		categories: categories.map((entry) => {
 			const category = (entry && typeof entry === 'object' ? entry : {}) as Record<string, unknown>;
@@ -38,26 +75,21 @@ function parseGame(game: unknown): GameStatus {
 				name: asString(category.name),
 				translated: asNumber(category.translated),
 				total: asNumber(category.total),
-				progress: clampProgress(category.progress)
+				progress: clampProgress(category.percent)
 			};
 		}),
-		nightly:
-			value.nightly && typeof value.nightly === 'object'
-				? {
-						label: asString((value.nightly as Record<string, unknown>).label),
-						description: asString((value.nightly as Record<string, unknown>).description),
-						href: asString((value.nightly as Record<string, unknown>).href)
-					}
-				: undefined,
-		links:
-			value.links && typeof value.links === 'object'
-				? {
-						patch: asString((value.links as Record<string, unknown>).patch) || undefined,
-						repo: asString((value.links as Record<string, unknown>).repo) || undefined,
-						notes: asString((value.links as Record<string, unknown>).notes) || undefined,
-						issues: asString((value.links as Record<string, unknown>).issues) || undefined
-					}
-				: {}
+		nightly: value.patch_available === true
+			? {
+					label: `${asString(value.id)}_gaeilge_v${asString(value.version, '0.1')}.bps`,
+					description: 'Paiste BPS ar fáil don chluiche seo sa stóras nuair a fhoilsítear é.',
+					href: '#'
+				}
+			: undefined,
+		links: {
+			repo: asString(value.repo_url) || undefined,
+			notes: asString(value.notes_path) || undefined,
+			issues: asString(value.issues_url) || undefined
+		}
 	};
 }
 
@@ -69,17 +101,21 @@ export async function fetchStatus(fetchFn: typeof fetch): Promise<SiteStatus> {
 
 	const payload = (await response.json()) as Record<string, unknown>;
 	const games = Array.isArray(payload.games) ? payload.games.map(parseGame) : [];
-	const summary = (payload.summary && typeof payload.summary === 'object'
-		? payload.summary
-		: {}) as Record<string, unknown>;
+	const completedGames = games.filter((game) => game.state === 'complete').length;
+	const activeGames = games.filter((game) => game.state === 'progress').length;
+	const translatedStrings = games.reduce(
+		(sum, game) => sum + game.categories.reduce((categorySum, category) => categorySum + category.translated, 0),
+		0
+	);
+	const featuredProgress = games.reduce((best, game) => Math.max(best, game.progress), 0);
 
 	return {
-		generatedAt: asString(payload.generatedAt),
+		generatedAt: asString(payload.generated),
 		summary: {
-			completedGames: asNumber(summary.completedGames),
-			activeGames: asNumber(summary.activeGames),
-			translatedStrings: asNumber(summary.translatedStrings),
-			featuredProgress: clampProgress(summary.featuredProgress)
+			completedGames,
+			activeGames,
+			translatedStrings,
+			featuredProgress
 		},
 		games
 	};
