@@ -3,18 +3,25 @@
 from collections import OrderedDict
 
 import typer
+from rich.console import Console
 from rich import print
+from rich.rule import Rule
 
 from cli.config import REPO_ROOT, read_config
 from cli.games.registry import find_game_by_short_name, get_game_by_parts
 from cli.strings import read_translation_csv, validate_translation_rows
 
 BAR_WIDTH = 20
+console = Console()
 
 
 def _render_bar(progress: float) -> str:
     filled = round(progress * BAR_WIDTH)
     return ("█" * filled) + ("░" * (BAR_WIDTH - filled))
+
+
+def _styled(text: str, style: str) -> str:
+    return f"[{style}]{text}[/{style}]"
 
 
 def _load_game(game: str | None):
@@ -67,35 +74,43 @@ def register(app: typer.Typer) -> None:
             category_rows.setdefault(row.category, []).append(row)
 
         label_width = max([len(category) for category in category_rows] + [len("Overall")]) + 2
+        theme = game_definition.theme
 
-        print(f"{game_definition.title} ({game_definition.console.upper()}) - Translation Status")
-        print("=" * 44)
+        console.print(
+            Rule(
+                _styled(f"{game_definition.title} ({game_definition.console.upper()}) - Translation Status", theme.header_style),
+                style=theme.rule_style,
+            )
+        )
 
         for category, category_group in category_rows.items():
             translated = sum(1 for row in category_group if row.irish.strip())
             total = len(category_group)
             progress = translated / total if total else 0.0
             over_budget = sum(1 for row in category_group if row.offset in over_budget_offsets)
-            suffix = f" [red]! {over_budget} over budget[/red]" if over_budget else ""
+            suffix = f" {_styled(f'! {over_budget} over budget', 'red')}" if over_budget else ""
             print(
-                f"{category:<{label_width}} {_render_bar(progress)} "
-                f"{progress * 100:>3.0f}% ({translated}/{total}){suffix}"
+                f"{_styled(f'{category:<{label_width}}', theme.accent_style)} "
+                f"{_styled(_render_bar(progress), theme.header_style)} "
+                f"{_styled(f'{progress * 100:>3.0f}% ({translated}/{total})', theme.success_style)}{suffix}"
             )
 
         overall_total = len(validation.rows)
         overall_translated = len(validation.translated_rows)
         overall_progress = overall_translated / overall_total if overall_total else 0.0
-        print("-" * 44)
+        overall_label = f"{'Overall':<{label_width}}"
+        console.print(Rule(style=theme.rule_style))
         print(
-            f"{'Overall':<{label_width}} {_render_bar(overall_progress)} "
-            f"{overall_progress * 100:>3.0f}% ({overall_translated}/{overall_total})"
+            f"{_styled(overall_label, theme.accent_style)} "
+            f"{_styled(_render_bar(overall_progress), theme.header_style)} "
+            f"{_styled(f'{overall_progress * 100:>3.0f}% ({overall_translated}/{overall_total})', theme.success_style)}"
         )
 
         if validation.over_budget:
             print("")
-            print(f"[red]{len(validation.over_budget)} strings over budget:[/red]")
+            print(_styled(f"{len(validation.over_budget)} strings over budget:", "red"))
             for violation in validation.over_budget:
                 print(
-                    f"  {violation.offset}: {violation.encoded} "
-                    f"({violation.encoded_length} bytes, budget {violation.budget})"
+                    f"  {_styled(violation.offset, theme.accent_style)}: {violation.encoded} "
+                    f"{_styled(f'({violation.encoded_length} bytes, budget {violation.budget})', 'red')}"
                 )
