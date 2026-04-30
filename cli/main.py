@@ -12,10 +12,10 @@ app = Typer(
 )
 
 init.register(app)
+mount.register(app)
 status.register(app)
 app.add_typer(extract.app, name="extract")
 app.add_typer(patch.app, name="patch")
-app.add_typer(mount.app, name="mount")
 app.add_typer(wad.app, name="wad")
 app.add_typer(validate.app, name="validate")
 app.add_typer(release.app, name="release")
