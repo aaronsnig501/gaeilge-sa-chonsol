@@ -4,6 +4,10 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
+    "sync:notes": "python3 ../scripts/sync_game_notes.py",
+    "predev": "npm run sync:notes",
+    "prebuild": "npm run sync:notes",
+    "precheck": "npm run sync:notes",
     "dev": "vite dev",
     "build": "vite build",
     "preview": "vite preview",
