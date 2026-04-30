@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ExternalLink from '$lib/components/ExternalLink.svelte';
 	import GameCard from '$lib/components/GameCard.svelte';
 	import type { PageProps } from './$types';
 
@@ -109,9 +110,12 @@
 				</p>
 			{/if}
 		</div>
-		<a class="console-button console-button-ghost mt-5 md:mt-0 md:ml-auto" href="https://github.com/aaronsnig501/gaeilge-sa-chonsol/issues">
+		<ExternalLink
+			className="console-button console-button-ghost mt-5 md:mt-0 md:ml-auto"
+			href="https://github.com/aaronsnig501/gaeilge-sa-chonsol/issues"
+		>
 			Féach ar eisiúintí
-		</a>
+		</ExternalLink>
 	</div>
 </section>
 

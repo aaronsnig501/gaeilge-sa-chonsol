@@ -1,5 +1,6 @@
 <script lang="ts">
 	import '../app.css';
+	import ExternalLink from '$lib/components/ExternalLink.svelte';
 
 	let { children } = $props();
 </script>
@@ -26,14 +27,12 @@
 				<a class="font-mono text-[0.72rem] tracking-[0.12em] text-console-muted hover:text-console-green" href="/guide">
 					TREORACHA
 				</a>
-				<a
-					class="font-mono text-[0.72rem] tracking-[0.12em] text-console-muted hover:text-console-green"
+				<ExternalLink
+					className="font-mono text-[0.72rem] tracking-[0.12em] text-console-muted hover:text-console-green"
 					href="https://github.com/aaronsnig501/gaeilge-sa-chonsol"
-					rel="noreferrer"
-					target="_blank"
 				>
 					GITHUB
-				</a>
+				</ExternalLink>
 			</nav>
 			<span class="status-chip border-console-green/30 bg-console-green-glow text-console-green">v0.1-nightly</span>
 		</div>
@@ -48,9 +47,12 @@
 			<p class="font-mono text-xs tracking-[0.24em] text-console-green">GAEILGE SA CHONSOL</p>
 			<p class="mt-2 font-mono text-[0.68rem] tracking-[0.12em] text-console-muted">
 				Foinse oscailte ·
-				<a class="text-console-green hover:text-white" href="https://github.com/aaronsnig501/gaeilge-sa-chonsol">
+				<ExternalLink
+					className="text-console-green hover:text-white"
+					href="https://github.com/aaronsnig501/gaeilge-sa-chonsol"
+				>
 					GitHub
-				</a>
+				</ExternalLink>
 				· Déanta le cúram don Ghaeilge
 			</p>
 		</div>
