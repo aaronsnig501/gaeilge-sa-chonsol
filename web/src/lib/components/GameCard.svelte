@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ExternalLink from '$lib/components/ExternalLink.svelte';
 	import ProgressBar from '$lib/components/ProgressBar.svelte';
 	import StatusBadge from '$lib/components/StatusBadge.svelte';
 	import { consoleName, getGameHref, topCategories } from '$lib/data';
@@ -62,6 +63,14 @@
 	</div>
 
 	<div class="mt-auto flex flex-wrap gap-2 border-t border-console-border pt-4">
+		{#if game.links.patch}
+			<ExternalLink
+				className="flex-1 rounded-sm border border-console-green/30 bg-console-green/10 px-3 py-2 text-center font-mono text-[0.65rem] uppercase tracking-[0.12em] text-console-green hover:border-console-green hover:bg-console-green/18"
+				href={game.links.patch}
+			>
+				Íoslódáil
+			</ExternalLink>
+		{/if}
 		<a
 			class="flex-1 rounded-sm border border-console-border px-3 py-2 text-center font-mono text-[0.65rem] uppercase tracking-[0.12em] text-console-muted group-hover:border-console-green group-hover:text-console-green"
 			href={href}
