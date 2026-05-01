@@ -25,6 +25,10 @@ function asNumber(value: unknown, fallback = 0): number {
 	return typeof value === 'number' && Number.isFinite(value) ? value : fallback;
 }
 
+function asBoolean(value: unknown): boolean {
+	return value === true;
+}
+
 function withBase(path: string): string {
 	if (!path) return base || '';
 	if (!path.startsWith('/')) return path;
@@ -67,6 +71,10 @@ function buildSubtitle(value: GeneratedGameRecord): string {
 	return asString(value.console_label).toUpperCase();
 }
 
+function buildReleasesUrl(repoUrl: string): string {
+	return `${repoUrl.replace(/\/+$/, '')}/releases`;
+}
+
 function parseGame(game: unknown): GameStatus {
 	const value = (game && typeof game === 'object' ? game : {}) as Record<string, unknown>;
 	const categories = Array.isArray(value.categories) ? value.categories : [];
@@ -104,6 +112,9 @@ function parseGame(game: unknown): GameStatus {
 			};
 		}),
 		links: {
+			patch: asBoolean(value.patch_available)
+				? buildReleasesUrl(asString(value.repo_url, REPO_URL))
+				: undefined,
 			repo: asString(value.repo_url) || undefined,
 			notes: asString(value.notes_path) ? withBase(asString(value.notes_path)) : undefined,
 			issues: asString(value.issues_url)

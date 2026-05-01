@@ -61,6 +61,11 @@
 			<p class="font-mono text-[0.72rem] tracking-[0.15em] text-console-muted">{game.subtitle}</p>
 			<p class="max-w-3xl text-sm leading-8 text-console-muted">{game.description}</p>
 			<div class="flex flex-wrap gap-3">
+				{#if game.links.patch}
+					<ExternalLink className="console-button console-button-primary" href={game.links.patch}>
+						Íoslódáil paiste
+					</ExternalLink>
+				{/if}
 				{#if game.links.issues}
 					<ExternalLink className="console-button console-button-ghost" href={game.links.issues}>
 						Eisiúintí GitHub
@@ -166,9 +171,29 @@
 		</div>
 
 		<aside class="space-y-6">
+			{#if game.links.patch}
+				<div class="panel border-l-4 border-l-console-green p-6">
+					<p class="mono-label text-console-green">// Íoslódáil</p>
+					<h2 class="mt-4 font-mono text-sm tracking-[0.12em] text-white">
+						{game.game}_gaeilge_v{game.version ?? '0.1'}.bps
+					</h2>
+					<p class="mt-3 text-sm leading-7 text-console-muted">
+						Téigh chuig leathanach na n-eisiúintí chun an paiste don chluiche seo a aimsiú agus a íoslódáil.
+					</p>
+					<ExternalLink className="console-button console-button-primary mt-5 w-full" href={game.links.patch}>
+						Féach ar eisiúintí
+					</ExternalLink>
+				</div>
+			{/if}
+
 			<div class="panel p-6">
 				<p class="mono-label text-console-green">// Nascanna</p>
 				<div class="mt-4 grid gap-3">
+					{#if game.links.patch}
+						<ExternalLink className="console-button console-button-ghost w-full" href={game.links.patch}>
+							Íoslódálacha
+						</ExternalLink>
+					{/if}
 					{#if game.links.notes}
 						<a class="console-button console-button-ghost w-full" href={game.links.notes}>Nótaí</a>
 					{/if}
