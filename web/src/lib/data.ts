@@ -103,13 +103,6 @@ function parseGame(game: unknown): GameStatus {
 				progress: clampProgress(category.percent)
 			};
 		}),
-		nightly: value.patch_available === true
-			? {
-					label: `${asString(value.id)}_gaeilge_v${asString(value.version, '0.1')}.bps`,
-					description: 'Paiste BPS ar fáil don chluiche seo sa stóras nuair a fhoilsítear é.',
-					href: '#'
-				}
-			: undefined,
 		links: {
 			repo: asString(value.repo_url) || undefined,
 			notes: asString(value.notes_path) ? withBase(asString(value.notes_path)) : undefined,

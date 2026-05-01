@@ -38,7 +38,7 @@
 					GITHUB
 				</ExternalLink>
 			</nav>
-			<span class="status-chip border-console-green/30 bg-console-green-glow text-console-green">v0.1-nightly</span>
+			<span class="status-chip border-console-green/30 bg-console-green-glow text-console-green">v0.1</span>
 		</div>
 	</header>
 

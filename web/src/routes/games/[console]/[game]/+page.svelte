@@ -34,7 +34,7 @@
 					src={coverArtPath}
 				/>
 				<div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-console-bg via-console-bg/70 to-transparent p-4">
-					<p class="mono-label text-console-green">cover art</p>
+					<p class="mono-label text-console-green">ealaín chlúdaigh</p>
 					<p class="mt-2 font-display text-2xl font-black leading-none text-white">{game.title}</p>
 					<p class="mt-1 font-mono text-[0.68rem] uppercase tracking-[0.12em] text-console-muted">
 						{consoleLabel}
@@ -61,9 +61,6 @@
 			<p class="font-mono text-[0.72rem] tracking-[0.15em] text-console-muted">{game.subtitle}</p>
 			<p class="max-w-3xl text-sm leading-8 text-console-muted">{game.description}</p>
 			<div class="flex flex-wrap gap-3">
-				{#if game.nightly}
-					<a class="console-button console-button-primary" href={game.nightly.href}>Íoslódáil paiste</a>
-				{/if}
 				{#if game.links.issues}
 					<ExternalLink className="console-button console-button-ghost" href={game.links.issues}>
 						Eisiúintí GitHub
@@ -169,17 +166,6 @@
 		</div>
 
 		<aside class="space-y-6">
-			{#if game.nightly}
-				<div class="panel border-l-4 border-l-console-green p-6">
-					<p class="mono-label text-console-green">// Paiste</p>
-					<h2 class="mt-4 font-mono text-sm tracking-[0.12em] text-white">↓ {game.nightly.label}</h2>
-					<p class="mt-3 text-sm leading-7 text-console-muted">{game.nightly.description}</p>
-					<a class="console-button console-button-primary mt-5 w-full" href={game.nightly.href}>
-						Íoslódáil paiste
-					</a>
-				</div>
-			{/if}
-
 			<div class="panel p-6">
 				<p class="mono-label text-console-green">// Nascanna</p>
 				<div class="mt-4 grid gap-3">
