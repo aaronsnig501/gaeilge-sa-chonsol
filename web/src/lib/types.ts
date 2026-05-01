@@ -71,11 +71,6 @@ export interface GameStatus {
 	accent: string;
 	helpWanted: boolean;
 	categories: CategoryStatus[];
-	nightly?: {
-		label: string;
-		description: string;
-		href: string;
-	};
 	links: GameLinks;
 }
 
