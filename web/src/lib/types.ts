@@ -1,11 +1,24 @@
 export type GameState = 'complete' | 'progress' | 'wanted';
 export type GeneratedGameStatus = 'complete' | 'in-progress' | 'planned';
+export type StringStatus = 'verified' | 'draft' | 'compromised' | 'untranslated';
+
+export interface GeneratedStringRecord {
+	offset: string;
+	budget: number;
+	used: number;
+	english: string;
+	irish: string;
+	status: StringStatus;
+	note?: string;
+}
 
 export interface CategoryStatus {
 	name: string;
 	translated: number;
 	total: number;
 	progress: number;
+	verifiedCount: number;
+	strings: StringRecord[];
 }
 
 export interface GeneratedProgress {
@@ -19,6 +32,8 @@ export interface GeneratedCategoryStatus {
 	total: number;
 	translated: number;
 	percent: number;
+	verified?: number;
+	strings?: GeneratedStringRecord[];
 }
 
 export interface GeneratedGameRecord {
@@ -52,6 +67,17 @@ export interface GameLinks {
 	repo?: string;
 	notes?: string;
 	issues?: string;
+	strings?: string;
+}
+
+export interface StringRecord {
+	offset: string;
+	budget: number;
+	used: number;
+	english: string;
+	irish: string;
+	status: StringStatus;
+	note?: string;
 }
 
 export interface GameStatus {

@@ -18,7 +18,7 @@
 
 <div class={compact ? 'space-y-1' : 'space-y-2'}>
 	<div class="flex items-center justify-between gap-3">
-		<span class="mono-label text-console-muted">{label}</span>
+		<span class="mono-label text-console-tertiary">{label}</span>
 		<div class="flex items-center gap-2">
 			{#if countText}
 				<span class="font-mono text-[0.65rem] tracking-[0.08em] text-console-muted">{countText}</span>

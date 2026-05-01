@@ -36,7 +36,7 @@
 				<div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-console-bg via-console-bg/70 to-transparent p-4">
 					<p class="mono-label text-console-green">ealaín chlúdaigh</p>
 					<p class="mt-2 font-display text-2xl font-black leading-none text-white">{game.title}</p>
-					<p class="mt-1 font-mono text-[0.68rem] uppercase tracking-[0.12em] text-console-muted">
+					<p class="mt-1 font-mono text-[0.68rem] uppercase tracking-[0.12em] text-console-tertiary">
 						{consoleLabel}
 					</p>
 				</div>
@@ -45,7 +45,7 @@
 
 		<div class="space-y-5">
 			<div class="flex flex-wrap items-center gap-3">
-				<span class="status-chip border-white/8 bg-white/4 text-console-muted">
+				<span class="status-chip border-console-border-moderate bg-console-border-subtle text-console-muted">
 					{consoleLabel} · {game.region}
 				</span>
 				<StatusBadge state={game.state} />
@@ -58,9 +58,12 @@
 			<h1 class="font-display text-[clamp(2.8rem,6vw,5.4rem)] font-black leading-[0.92] text-white">
 				{game.title}
 			</h1>
-			<p class="font-mono text-[0.72rem] tracking-[0.15em] text-console-muted">{game.subtitle}</p>
+			<p class="font-mono text-[0.72rem] tracking-[0.15em] text-console-tertiary">{game.subtitle}</p>
 			<p class="max-w-3xl text-sm leading-8 text-console-muted">{game.description}</p>
 			<div class="flex flex-wrap gap-3">
+				{#if game.links.strings}
+					<a class="console-button console-button-ghost" href={game.links.strings}>Téacsanna</a>
+				{/if}
 				{#if game.links.patch}
 					<ExternalLink className="console-button console-button-primary" href={game.links.patch}>
 						Íoslódáil paiste
@@ -89,15 +92,15 @@
 				</div>
 				<div class="mt-5 grid gap-4 sm:grid-cols-3">
 					<div class="rounded-sm border border-console-border bg-console-bg/60 p-4">
-						<p class="mono-label text-console-muted">stádas</p>
+						<p class="mono-label text-console-tertiary">stádas</p>
 						<p class="mt-2 font-display text-2xl font-bold text-white">{game.statusLabel}</p>
 					</div>
 					<div class="rounded-sm border border-console-border bg-console-bg/60 p-4">
-						<p class="mono-label text-console-muted">aistrithe</p>
+						<p class="mono-label text-console-tertiary">aistrithe</p>
 						<p class="mt-2 font-display text-2xl font-bold text-white">{totalTranslated}</p>
 					</div>
 					<div class="rounded-sm border border-console-border bg-console-bg/60 p-4">
-						<p class="mono-label text-console-muted">sprioc</p>
+						<p class="mono-label text-console-tertiary">sprioc</p>
 						<p class="mt-2 font-display text-2xl font-bold text-white">{totalStrings}</p>
 					</div>
 				</div>
@@ -109,9 +112,9 @@
 					<table class="w-full border-collapse">
 						<thead class="bg-console-bg/70">
 							<tr class="text-left">
-								<th class="px-4 py-3 font-mono text-[0.62rem] uppercase tracking-[0.14em] text-console-muted">Catagóir</th>
-								<th class="px-4 py-3 font-mono text-[0.62rem] uppercase tracking-[0.14em] text-console-muted">Aistrithe</th>
-								<th class="px-4 py-3 font-mono text-[0.62rem] uppercase tracking-[0.14em] text-console-muted">Dul chun cinn</th>
+								<th class="px-4 py-3 font-mono text-[0.62rem] uppercase tracking-[0.14em] text-console-tertiary">Catagóir</th>
+								<th class="px-4 py-3 font-mono text-[0.62rem] uppercase tracking-[0.14em] text-console-tertiary">Aistrithe</th>
+								<th class="px-4 py-3 font-mono text-[0.62rem] uppercase tracking-[0.14em] text-console-tertiary">Dul chun cinn</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -120,7 +123,7 @@
 									<td class="px-4 py-4">
 										<p class="text-sm text-console-text">{category.name}</p>
 									</td>
-									<td class="px-4 py-4 font-mono text-[0.72rem] uppercase tracking-[0.1em] text-console-muted">
+									<td class="px-4 py-4 font-mono text-[0.72rem] uppercase tracking-[0.1em] text-console-tertiary">
 										{category.translated}/{category.total}
 									</td>
 									<td class="px-4 py-4">
@@ -131,7 +134,7 @@
 													style={`width:${category.progress}%;background:${game.accent};box-shadow:0 0 18px ${game.accent}33`}
 												></div>
 											</div>
-											<span class="font-mono text-[0.72rem] uppercase tracking-[0.1em] text-console-muted">
+											<span class="font-mono text-[0.72rem] uppercase tracking-[0.1em] text-console-tertiary">
 												{category.progress}%
 											</span>
 										</div>
@@ -189,6 +192,9 @@
 			<div class="panel p-6">
 				<p class="mono-label text-console-green">// Nascanna</p>
 				<div class="mt-4 grid gap-3">
+					{#if game.links.strings}
+						<a class="console-button console-button-ghost w-full" href={game.links.strings}>Tábla téacsanna</a>
+					{/if}
 					{#if game.links.patch}
 						<ExternalLink className="console-button console-button-ghost w-full" href={game.links.patch}>
 							Íoslódálacha

@@ -1,5 +1,5 @@
 {
-  "generated": "2026-04-30T19:07:45Z",
+  "generated": "2026-05-01T07:40:06Z",
   "games": [
     {
       "id": "spyro1",
@@ -12,34 +12,1128 @@
       "patch_available": true,
       "help_wanted": true,
       "progress": {
-        "total": 134,
+        "total": 133,
         "translated": 22,
-        "percent": 16
+        "percent": 17
       },
       "categories": [
         {
           "name": "UI Strings",
           "total": 72,
           "translated": 1,
-          "percent": 1
+          "verified": 0,
+          "percent": 1,
+          "strings": [
+            {
+              "offset": "0x834",
+              "budget": 11,
+              "used": 0,
+              "english": "COMPLETED",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x880",
+              "budget": 11,
+              "used": 0,
+              "english": "TIME IS UP",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x904",
+              "budget": 11,
+              "used": 0,
+              "english": "ALL IN ONE",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x968",
+              "budget": 14,
+              "used": 0,
+              "english": "PRESS   BUTTON",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x9a8",
+              "budget": 11,
+              "used": 0,
+              "english": "TRY AGAIN?",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x9fc",
+              "budget": 11,
+              "used": 0,
+              "english": "TIME ATTACK",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0xa44",
+              "budget": 11,
+              "used": 0,
+              "english": "BEST TIME",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0xa84",
+              "budget": 11,
+              "used": 0,
+              "english": "YOUR TIME",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0xad0",
+              "budget": 11,
+              "used": 0,
+              "english": "NEW RECORD",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0xb88",
+              "budget": 11,
+              "used": 0,
+              "english": "PRESS START",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0xc00",
+              "budget": 27,
+              "used": 0,
+              "english": "IN THE WORLD OF DRAGONS...",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0xc80",
+              "budget": 23,
+              "used": 0,
+              "english": "THE ADVENTURE BEGINS...",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0xd04",
+              "budget": 27,
+              "used": 0,
+              "english": "THE ADVENTURE CONTINUES...",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0xd8c",
+              "budget": 23,
+              "used": 0,
+              "english": "ENTERING DEMO MODE...",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0xdc8",
+              "budget": 11,
+              "used": 0,
+              "english": "DEMO MODE",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0xe18",
+              "budget": 19,
+              "used": 0,
+              "english": "RETURNING HOME...",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0xe58",
+              "budget": 11,
+              "used": 0,
+              "english": "CONFRONTING",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0xea0",
+              "budget": 11,
+              "used": 0,
+              "english": "ENTERING",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x1020",
+              "budget": 15,
+              "used": 0,
+              "english": "TREASURE FOUND",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x1070",
+              "budget": 15,
+              "used": 0,
+              "english": "TOTAL TREASURE",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x10b0",
+              "budget": 11,
+              "used": 0,
+              "english": "CONTINUE",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x10ec",
+              "budget": 11,
+              "used": 0,
+              "english": "INVENTORY",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x1140",
+              "budget": 11,
+              "used": 0,
+              "english": "EXIT LEVEL",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x118c",
+              "budget": 11,
+              "used": 0,
+              "english": "QUIT GAME",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x11d8",
+              "budget": 15,
+              "used": 0,
+              "english": "SOUND EFFECTS",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x1218",
+              "budget": 15,
+              "used": 0,
+              "english": "MUSIC VOLUME",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x1234",
+              "budget": 15,
+              "used": 0,
+              "english": "SPEAKER SETUP",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x125c",
+              "budget": 11,
+              "used": 0,
+              "english": "VIBRATION",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x12cc",
+              "budget": 15,
+              "used": 0,
+              "english": "SCREEN ADJUST",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x130c",
+              "budget": 11,
+              "used": 0,
+              "english": "VERTICAL",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x13ac",
+              "budget": 11,
+              "used": 7,
+              "english": "SAVE GAME",
+              "irish": "SABHAIL",
+              "status": "draft"
+            },
+            {
+              "offset": "0x1404",
+              "budget": 15,
+              "used": 0,
+              "english": "REPLAY DRAGON",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x1470",
+              "budget": 15,
+              "used": 0,
+              "english": "NO SAVE FILE",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x14d8",
+              "budget": 19,
+              "used": 0,
+              "english": "PLEASE RESTART WITH",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x1548",
+              "budget": 19,
+              "used": 0,
+              "english": "A MEMORY CARD TO",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x15b4",
+              "budget": 19,
+              "used": 0,
+              "english": "ENABLE SAVE GAMES",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x1614",
+              "budget": 11,
+              "used": 0,
+              "english": "SAVING...",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x1680",
+              "budget": 15,
+              "used": 0,
+              "english": "NO MEMORY CARD",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x16cc",
+              "budget": 15,
+              "used": 0,
+              "english": "PLEASE REPLACE",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x1750",
+              "budget": 15,
+              "used": 0,
+              "english": "MEMORY CARD.",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x17b4",
+              "budget": 11,
+              "used": 0,
+              "english": "SAVE ERROR",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x1808",
+              "budget": 19,
+              "used": 0,
+              "english": "PLEASE CHECK THAT",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x1868",
+              "budget": 15,
+              "used": 0,
+              "english": "THE MEMORY CARD",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x18c4",
+              "budget": 19,
+              "used": 0,
+              "english": "IS STILL IN PLACE",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x1934",
+              "budget": 11,
+              "used": 0,
+              "english": "SAVE FAILED",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x19b8",
+              "budget": 15,
+              "used": 0,
+              "english": "SAVE SUCCESSFUL",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x19f4",
+              "budget": 15,
+              "used": 0,
+              "english": "MEMORY CARD 1",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x1a30",
+              "budget": 15,
+              "used": 0,
+              "english": "MEMORY CARD 2",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x22a8",
+              "budget": 11,
+              "used": 0,
+              "english": "RETURN HOME",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x6bfa0",
+              "budget": 4,
+              "used": 0,
+              "english": "QUIT",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x6bfa8",
+              "budget": 7,
+              "used": 0,
+              "english": "CRASHED",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x6bfc0",
+              "budget": 5,
+              "used": 0,
+              "english": "TOTAL",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x6bfe0",
+              "budget": 3,
+              "used": 0,
+              "english": "YES",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x6bff0",
+              "budget": 2,
+              "used": 0,
+              "english": "NO",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x6bff4",
+              "budget": 7,
+              "used": 0,
+              "english": "COPTERS",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x6c01c",
+              "budget": 5,
+              "used": 0,
+              "english": "BOATS",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x6c05c",
+              "budget": 6,
+              "used": 0,
+              "english": "LIGHTS",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x6c064",
+              "budget": 5,
+              "used": 0,
+              "english": "RINGS",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x6c0cc",
+              "budget": 6,
+              "used": 0,
+              "english": "CHESTS",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x6c0d4",
+              "budget": 6,
+              "used": 0,
+              "english": "PLANES",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x6c0dc",
+              "budget": 6,
+              "used": 0,
+              "english": "ARCHES",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x6c0e4",
+              "budget": 7,
+              "used": 0,
+              "english": "BARRELS",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x6c17c",
+              "budget": 5,
+              "used": 0,
+              "english": "WORLD",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x6c1a4",
+              "budget": 6,
+              "used": 0,
+              "english": "PAUSED",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x6c1cc",
+              "budget": 7,
+              "used": 0,
+              "english": "OPTIONS",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x6c264",
+              "budget": 6,
+              "used": 0,
+              "english": "CAMERA",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x6c2a4",
+              "budget": 4,
+              "used": 0,
+              "english": "DONE",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x6c2ec",
+              "budget": 6,
+              "used": 0,
+              "english": "ACTIVE",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x6c30c",
+              "budget": 7,
+              "used": 0,
+              "english": "PASSIVE",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x6c38c",
+              "budget": 5,
+              "used": 0,
+              "english": "RETRY",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x6c3e4",
+              "budget": 5,
+              "used": 0,
+              "english": "GO TO",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x6c3f4",
+              "budget": 7,
+              "used": 0,
+              "english": "RESCUED",
+              "irish": "",
+              "status": "untranslated"
+            }
+          ]
         },
         {
-          "name": "Homeworlds",
-          "total": 13,
+          "name": "Homeworld Transition Screens",
+          "total": 5,
           "translated": 0,
-          "percent": 0
+          "verified": 0,
+          "percent": 0,
+          "strings": [
+            {
+              "offset": "0xed0",
+              "budget": 31,
+              "used": 0,
+              "english": "MONDE DES TISSEURS DE REcVES",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0xef0",
+              "budget": 31,
+              "used": 0,
+              "english": "MONDE DES CREaATEURS D'ANIMAUX",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0xf10",
+              "budget": 27,
+              "used": 0,
+              "english": "MONDE DES OUVRIERS MAGIQUES",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0xf2c",
+              "budget": 23,
+              "used": 0,
+              "english": "MONDE DES PACIFIQUES",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0xf44",
+              "budget": 19,
+              "used": 0,
+              "english": "MONDE DES ARTISANS",
+              "irish": "",
+              "status": "untranslated"
+            }
+          ]
         },
         {
           "name": "Balloonist",
           "total": 21,
           "translated": 21,
-          "percent": 100
+          "verified": 0,
+          "percent": 100,
+          "strings": [
+            {
+              "offset": "0x1a80",
+              "budget": 15,
+              "used": 13,
+              "english": "THE BALLOONIST",
+              "irish": "AN BALLÓNAÍ",
+              "status": "draft"
+            },
+            {
+              "offset": "0x1adc",
+              "budget": 19,
+              "used": 19,
+              "english": "WHERE TO, SPYRO?",
+              "irish": "CÁ DTRIALL, SPYRO?",
+              "status": "draft"
+            },
+            {
+              "offset": "0x1b3c",
+              "budget": 15,
+              "used": 12,
+              "english": "NEED A LIFT?",
+              "irish": "ARDAIGH TÉ?",
+              "status": "draft"
+            },
+            {
+              "offset": "0x1b9c",
+              "budget": 23,
+              "used": 21,
+              "english": "ARE YOU READY TO GO?",
+              "irish": "AN BHFUIL TÚ ULLAMH?",
+              "status": "draft"
+            },
+            {
+              "offset": "0x1c00",
+              "budget": 23,
+              "used": 23,
+              "english": "WOULD YOU LIKE TO GO?",
+              "irish": "AR MHAITH LEAT IMEACHT?",
+              "status": "draft"
+            },
+            {
+              "offset": "0x1c4c",
+              "budget": 11,
+              "used": 9,
+              "english": "STAY HERE",
+              "irish": "FAN ANSEO",
+              "status": "draft"
+            },
+            {
+              "offset": "0x4a70",
+              "budget": 19,
+              "used": 16,
+              "english": "WORLD IF YOU LIKE.",
+              "irish": "MÁ SÁILL LEAT.",
+              "status": "draft"
+            },
+            {
+              "offset": "0x4a84",
+              "budget": 19,
+              "used": 15,
+              "english": "THE PEACE KEEPERS",
+              "irish": "NA CAOMHNÓIRÍ",
+              "status": "draft"
+            },
+            {
+              "offset": "0x4a98",
+              "budget": 19,
+              "used": 19,
+              "english": "YOU MAY TRAVEL TO",
+              "irish": "IS FÉIDIR LEAT DUL",
+              "status": "draft"
+            },
+            {
+              "offset": "0x4bac",
+              "budget": 15,
+              "used": 13,
+              "english": "COULD DO IT.",
+              "irish": "DÉANFAÍ É.",
+              "status": "draft"
+            },
+            {
+              "offset": "0x4bbc",
+              "budget": 19,
+              "used": 17,
+              "english": "I DIDN'T THINK YOU",
+              "irish": "NÍOR CHEAP ME GO",
+              "status": "draft"
+            },
+            {
+              "offset": "0x4bd0",
+              "budget": 19,
+              "used": 18,
+              "english": "WELL DONE SPYRO!",
+              "irish": "MAITH THÚ, SPYRO!",
+              "status": "draft"
+            },
+            {
+              "offset": "0x4e24",
+              "budget": 19,
+              "used": 19,
+              "english": "RESCUED 10 DRAGONS.",
+              "irish": "10 NDRAGAN SAORTHA.",
+              "status": "draft"
+            },
+            {
+              "offset": "0x4e38",
+              "budget": 15,
+              "used": 13,
+              "english": "AFTER YOU HAVE",
+              "irish": "TAR ÉIS DUIT",
+              "status": "draft"
+            },
+            {
+              "offset": "0x4e48",
+              "budget": 19,
+              "used": 17,
+              "english": "COME BACK TO SEE ME",
+              "irish": "TAR AR AIS CHUGAM",
+              "status": "draft"
+            },
+            {
+              "offset": "0x4f64",
+              "budget": 15,
+              "used": 14,
+              "english": "TO A NEW WORLD.",
+              "irish": "GO DOMHAN NUA.",
+              "status": "draft"
+            },
+            {
+              "offset": "0x4f74",
+              "budget": 19,
+              "used": 13,
+              "english": "THIS BALLOON TO FLY",
+              "irish": "AN BALLON SEO",
+              "status": "draft"
+            },
+            {
+              "offset": "0x4f88",
+              "budget": 19,
+              "used": 15,
+              "english": "THEN YOU MAY USE",
+              "irish": "IS FÉIDIR LEAT",
+              "status": "draft"
+            },
+            {
+              "offset": "0x5080",
+              "budget": 15,
+              "used": 13,
+              "english": "10 DRAGONS...",
+              "irish": "10 NDRAGAN...",
+              "status": "draft"
+            },
+            {
+              "offset": "0x5090",
+              "budget": 19,
+              "used": 17,
+              "english": "WORTH BY RESCUING",
+              "irish": "DO FHIÚNTAS AGUS",
+              "status": "draft"
+            },
+            {
+              "offset": "0x50a4",
+              "budget": 17,
+              "used": 15,
+              "english": "IF YOU PROVE YOUR",
+              "irish": "MÁ CRUTHAÍONN",
+              "status": "draft"
+            }
+          ]
+        },
+        {
+          "name": "Homeworld Labels",
+          "total": 6,
+          "translated": 0,
+          "verified": 0,
+          "percent": 0,
+          "strings": [
+            {
+              "offset": "0x1da0",
+              "budget": 15,
+              "used": 0,
+              "english": "GNASTY'S WORLD",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x1db0",
+              "budget": 15,
+              "used": 0,
+              "english": "DREAM WEAVERS",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x1dc0",
+              "budget": 15,
+              "used": 0,
+              "english": "BEAST MAKERS",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x1dd0",
+              "budget": 15,
+              "used": 0,
+              "english": "MAGIC CRAFTERS",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x1de0",
+              "budget": 15,
+              "used": 0,
+              "english": "PEACE KEEPERS",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x1df0",
+              "budget": 11,
+              "used": 0,
+              "english": "ARTISANS",
+              "irish": "",
+              "status": "untranslated"
+            }
+          ]
         },
         {
           "name": "Level Names",
           "total": 28,
           "translated": 0,
-          "percent": 0
+          "verified": 0,
+          "percent": 0,
+          "strings": [
+            {
+              "offset": "0x22b4",
+              "budget": 15,
+              "used": 0,
+              "english": "GNASTY'S LOOT",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x22c4",
+              "budget": 15,
+              "used": 0,
+              "english": "GNASTY GNORC",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x22d4",
+              "budget": 19,
+              "used": 0,
+              "english": "TWILIGHT HARBOUR",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x22e8",
+              "budget": 11,
+              "used": 0,
+              "english": "GNORC COVE",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x22f4",
+              "budget": 15,
+              "used": 0,
+              "english": "GNORC GNEXUS",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x2304",
+              "budget": 11,
+              "used": 0,
+              "english": "ICY FLIGHT",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x2310",
+              "budget": 15,
+              "used": 0,
+              "english": "HAUNTED TOWERS",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x2320",
+              "budget": 15,
+              "used": 0,
+              "english": "LOFTY CASTLE",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x2330",
+              "budget": 15,
+              "used": 0,
+              "english": "DARK PASSAGE",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x2340",
+              "budget": 11,
+              "used": 0,
+              "english": "WILD FLIGHT",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x234c",
+              "budget": 11,
+              "used": 0,
+              "english": "METALHEAD",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x2358",
+              "budget": 11,
+              "used": 0,
+              "english": "TREE TOPS",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x2364",
+              "budget": 11,
+              "used": 0,
+              "english": "MISTY BOG",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x2370",
+              "budget": 15,
+              "used": 0,
+              "english": "TERRACE VILLAGE",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x2380",
+              "budget": 15,
+              "used": 0,
+              "english": "CRYSTAL FLIGHT",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x2390",
+              "budget": 11,
+              "used": 0,
+              "english": "BLOWHARD",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x239c",
+              "budget": 11,
+              "used": 0,
+              "english": "WIZARD PEAK",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x23a8",
+              "budget": 11,
+              "used": 0,
+              "english": "HIGH CAVES",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x23b4",
+              "budget": 15,
+              "used": 0,
+              "english": "ALPINE RIDGE",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x23c4",
+              "budget": 15,
+              "used": 0,
+              "english": "NIGHT FLIGHT",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x23d4",
+              "budget": 15,
+              "used": 0,
+              "english": "DOCTOR SHEMP",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x23e4",
+              "budget": 11,
+              "used": 0,
+              "english": "ICE CAVERN",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x23f0",
+              "budget": 11,
+              "used": 0,
+              "english": "CLIFF TOWN",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x23fc",
+              "budget": 11,
+              "used": 0,
+              "english": "DRY CANYON",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x2408",
+              "budget": 15,
+              "used": 0,
+              "english": "SUNNY FLIGHT",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x2418",
+              "budget": 11,
+              "used": 0,
+              "english": "TOWN SQUARE",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x2424",
+              "budget": 11,
+              "used": 0,
+              "english": "DARK HOLLOW",
+              "irish": "",
+              "status": "untranslated"
+            },
+            {
+              "offset": "0x2430",
+              "budget": 11,
+              "used": 0,
+              "english": "STONE HILL",
+              "irish": "",
+              "status": "untranslated"
+            }
+          ]
+        },
+        {
+          "name": "Dragon Names / Home",
+          "total": 1,
+          "translated": 0,
+          "verified": 0,
+          "percent": 0,
+          "strings": [
+            {
+              "offset": "0x6c6a8",
+              "budget": 7,
+              "used": 0,
+              "english": "HOME",
+              "irish": "",
+              "status": "untranslated"
+            }
+          ]
         }
       ],
       "region": "PAL",

@@ -49,7 +49,7 @@
 	<footer class="border-t border-console-border bg-console-bg-2/95 py-8">
 		<div class="section-wrap text-center">
 			<p class="font-mono text-xs tracking-[0.24em] text-console-green">GAEILGE SA CHONSOL</p>
-			<p class="mt-2 font-mono text-[0.68rem] tracking-[0.12em] text-console-muted">
+			<p class="mt-2 font-mono text-[0.68rem] tracking-[0.12em] text-console-tertiary">
 				Foinse oscailte ·
 				<ExternalLink
 					className="text-console-green hover:text-white"

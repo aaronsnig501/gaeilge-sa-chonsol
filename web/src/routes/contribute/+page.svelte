@@ -57,7 +57,7 @@
 				Cabhair ag teastáil anois
 			</h2>
 		</div>
-		<span class="font-mono text-[0.72rem] tracking-[0.12em] text-console-muted">
+		<span class="font-mono text-[0.72rem] tracking-[0.12em] text-console-tertiary">
 			// {activeGames.length} gníomhach
 		</span>
 	</div>
@@ -68,7 +68,7 @@
 				<div class="flex flex-col gap-5 md:flex-row md:items-start md:justify-between">
 					<div class="min-w-0">
 						<div class="flex flex-wrap items-center gap-3">
-							<span class="status-chip border-white/8 bg-white/4 text-console-muted">
+							<span class="status-chip border-console-border-moderate bg-console-border-subtle text-console-muted">
 								{game.consoleLabel} · {game.region}
 							</span>
 							<span class="status-chip border-console-red/35 bg-console-red/12 text-console-red">
