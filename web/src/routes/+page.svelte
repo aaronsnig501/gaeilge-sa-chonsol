@@ -77,19 +77,19 @@
 	<div class="section-wrap grid grid-cols-2 gap-6 md:grid-cols-4">
 		<div class="text-center">
 			<span class="block font-display text-4xl font-black text-console-green">{status.summary.completedGames}</span>
-			<span class="mono-label mt-1 block text-console-muted">cluiche críochnaithe</span>
+			<span class="mono-label mt-1 block text-console-tertiary">cluiche críochnaithe</span>
 		</div>
 		<div class="text-center">
 			<span class="block font-display text-4xl font-black text-console-green">{status.summary.activeGames}</span>
-			<span class="mono-label mt-1 block text-console-muted">i mbun oibre</span>
+			<span class="mono-label mt-1 block text-console-tertiary">i mbun oibre</span>
 		</div>
 		<div class="text-center">
 			<span class="block font-display text-4xl font-black text-console-green">{status.summary.translatedStrings}</span>
-			<span class="mono-label mt-1 block text-console-muted">téacsanna aistrithe</span>
+			<span class="mono-label mt-1 block text-console-tertiary">téacsanna aistrithe</span>
 		</div>
 		<div class="text-center">
 			<span class="block font-display text-4xl font-black text-console-green">{status.summary.featuredProgress}%</span>
-			<span class="mono-label mt-1 block text-console-muted">príomh-dul chun cinn</span>
+			<span class="mono-label mt-1 block text-console-tertiary">príomh-dul chun cinn</span>
 		</div>
 	</div>
 </section>
@@ -128,7 +128,7 @@
 				Cláraithe sa chóras
 			</h2>
 		</div>
-		<span class="font-mono text-[0.72rem] tracking-[0.12em] text-console-muted">
+		<span class="font-mono text-[0.72rem] tracking-[0.12em] text-console-tertiary">
 			// {filteredGames.length}/{status.games.length} le feiceáil
 		</span>
 	</div>
@@ -139,7 +139,7 @@
 			<div class="flex flex-wrap gap-2">
 				{#each consoleOptions as option}
 					<button
-						class={`status-chip cursor-pointer ${selectedConsole === option ? 'border-console-green bg-console-green-glow text-console-green' : 'border-console-border text-console-muted hover:border-console-green hover:text-console-green'}`}
+						class={`status-chip cursor-pointer ${selectedConsole === option ? 'border-console-green bg-console-green-glow text-console-green' : 'border-console-border-moderate bg-console-border-subtle text-console-muted hover:border-console-green hover:bg-console-green-glow hover:text-console-green'}`}
 						onclick={() => (selectedConsole = option)}
 						type="button"
 					>
@@ -155,7 +155,7 @@
 					['complete', 'críochnaithe']
 				] as [value, label]}
 					<button
-						class={`status-chip cursor-pointer ${selectedStatus === value ? 'border-console-green bg-console-green-glow text-console-green' : 'border-console-border text-console-muted hover:border-console-green hover:text-console-green'}`}
+						class={`status-chip cursor-pointer ${selectedStatus === value ? 'border-console-green bg-console-green-glow text-console-green' : 'border-console-border-moderate bg-console-border-subtle text-console-muted hover:border-console-green hover:bg-console-green-glow hover:text-console-green'}`}
 						onclick={() => (selectedStatus = value as StatusFilter)}
 						type="button"
 					>
@@ -186,7 +186,7 @@
 	</div>
 
 	{#if filteredGames.length === 0}
-		<div class="border border-console-border border-t-0 bg-console-bg-2/75 px-6 py-8 text-center font-mono text-[0.72rem] uppercase tracking-[0.12em] text-console-muted">
+		<div class="border border-console-border border-t-0 bg-console-bg-2/75 px-6 py-8 text-center font-mono text-[0.72rem] uppercase tracking-[0.12em] text-console-tertiary">
 			Níl cluichí ar bith ag meaitseáil na scagairí seo.
 		</div>
 	{/if}

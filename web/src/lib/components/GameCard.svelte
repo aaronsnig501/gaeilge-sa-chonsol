@@ -22,7 +22,7 @@
 	<div class="absolute inset-y-0 left-0 w-[3px] origin-bottom scale-y-0 bg-[var(--card-accent)] transition-transform duration-200 group-hover:scale-y-100"></div>
 
 	<div class="flex items-start justify-between gap-4">
-		<span class="status-chip border-white/8 bg-white/4 text-console-muted">
+		<span class="status-chip border-console-border-moderate bg-console-border-subtle text-console-muted">
 			{consoleLabel} · {game.region}
 		</span>
 		<StatusBadge state={game.state} />
@@ -32,7 +32,7 @@
 		<h3 class="font-display text-[1.5rem] font-bold leading-none tracking-[0.03em] text-white">
 			<a class="hover:text-[var(--card-accent)]" href={href}>{game.title}</a>
 		</h3>
-		<p class="font-mono text-[0.68rem] tracking-[0.14em] text-console-muted">
+		<p class="font-mono text-[0.68rem] tracking-[0.14em] text-console-tertiary">
 			{game.subtitle}
 		</p>
 	</div>
@@ -55,7 +55,7 @@
 				<div class="h-[3px] bg-white/5">
 					<div class="h-full" style={`width:${category.progress}%;background:${game.accent};opacity:.6`}></div>
 				</div>
-				<span class="text-right font-mono text-[0.62rem] tracking-[0.08em] text-console-muted">
+				<span class="text-right font-mono text-[0.62rem] tracking-[0.08em] text-console-tertiary">
 					{category.progress}%
 				</span>
 			</div>
@@ -71,8 +71,16 @@
 				Íoslódáil
 			</ExternalLink>
 		{/if}
+		{#if game.links.strings}
+			<a
+				class="flex-1 rounded-sm border border-console-border-moderate bg-console-border-subtle px-3 py-2 text-center font-mono text-[0.65rem] uppercase tracking-[0.12em] text-console-muted group-hover:border-console-green group-hover:bg-console-green-glow group-hover:text-console-green"
+				href={game.links.strings}
+			>
+				Téacsanna
+			</a>
+		{/if}
 		<a
-			class="flex-1 rounded-sm border border-console-border px-3 py-2 text-center font-mono text-[0.65rem] uppercase tracking-[0.12em] text-console-muted group-hover:border-console-green group-hover:text-console-green"
+			class="flex-1 rounded-sm border border-console-border-moderate bg-console-border-subtle px-3 py-2 text-center font-mono text-[0.65rem] uppercase tracking-[0.12em] text-console-muted group-hover:border-console-green group-hover:bg-console-green-glow group-hover:text-console-green"
 			href={href}
 		>
 			Mionsonraí

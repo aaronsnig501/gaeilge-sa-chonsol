@@ -1,14 +1,18 @@
 import { base } from '$app/paths';
 import type {
 	CategoryStatus,
+	GeneratedCategoryStatus,
 	GeneratedGameRecord,
 	GeneratedGameStatus,
 	GameState,
 	GameStatus,
-	SiteStatus
+	SiteStatus,
+	StringRecord,
+	StringStatus
 } from '$lib/types';
 
 const GENERATED_GAME_STATES: GeneratedGameStatus[] = ['complete', 'in-progress', 'planned'];
+const GENERATED_STRING_STATES: StringStatus[] = ['verified', 'draft', 'compromised', 'untranslated'];
 const REPO_URL = 'https://github.com/aaronsnig501/gaeilge-sa-chonsol';
 const ISSUES_URL = `${REPO_URL}/issues`;
 
@@ -39,6 +43,13 @@ function parseGeneratedState(value: unknown): GeneratedGameStatus {
 	return GENERATED_GAME_STATES.includes(value as GeneratedGameStatus)
 		? (value as GeneratedGameStatus)
 		: 'planned';
+}
+
+function parseStringStatus(value: unknown, irish: string): StringStatus {
+	if (GENERATED_STRING_STATES.includes(value as StringStatus)) {
+		return value as StringStatus;
+	}
+	return irish.trim() ? 'draft' : 'untranslated';
 }
 
 function toUiState(status: GeneratedGameStatus): GameState {
@@ -75,6 +86,20 @@ function buildReleasesUrl(repoUrl: string): string {
 	return `${repoUrl.replace(/\/+$/, '')}/releases`;
 }
 
+function parseStringRecord(entry: unknown): StringRecord {
+	const value = (entry && typeof entry === 'object' ? entry : {}) as Record<string, unknown>;
+	const irish = asString(value.irish);
+	return {
+		offset: asString(value.offset).toLowerCase(),
+		budget: asNumber(value.budget),
+		used: asNumber(value.used),
+		english: asString(value.english),
+		irish,
+		status: parseStringStatus(value.status, irish),
+		note: asString(value.note) || undefined,
+	};
+}
+
 function parseGame(game: unknown): GameStatus {
 	const value = (game && typeof game === 'object' ? game : {}) as Record<string, unknown>;
 	const categories = Array.isArray(value.categories) ? value.categories : [];
@@ -103,12 +128,19 @@ function parseGame(game: unknown): GameStatus {
 		accent: asString(value.accent, '#2ecc71'),
 		helpWanted: value.help_wanted === true || progress < 50,
 		categories: categories.map((entry) => {
-			const category = (entry && typeof entry === 'object' ? entry : {}) as Record<string, unknown>;
+			const category = (entry && typeof entry === 'object'
+				? entry
+				: {}) as GeneratedCategoryStatus & Record<string, unknown>;
+			const strings = Array.isArray(category.strings)
+				? category.strings.map(parseStringRecord)
+				: [];
 			return {
 				name: asString(category.name),
 				translated: asNumber(category.translated),
 				total: asNumber(category.total),
-				progress: clampProgress(category.percent)
+				progress: clampProgress(category.percent),
+				verifiedCount: asNumber(category.verified),
+				strings,
 			};
 		}),
 		links: {
@@ -117,6 +149,7 @@ function parseGame(game: unknown): GameStatus {
 				: undefined,
 			repo: asString(value.repo_url) || undefined,
 			notes: asString(value.notes_path) ? withBase(asString(value.notes_path)) : undefined,
+			strings: withBase(`/games/${asString(value.console)}/${asString(value.id)}/strings`),
 			issues: asString(value.issues_url)
 				? `${asString(value.issues_url)}?q=${encodeURIComponent(`is:issue ${asString(value.id)}`)}`
 				: undefined

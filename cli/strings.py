@@ -14,6 +14,7 @@ from cli.games.registry import StringTableDefinition
 from cli.text import encode_rom_text
 
 SYNC_PATTERN = re.compile(b"\x00\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\x00")
+VALID_TRANSLATION_STATUSES = {"verified", "draft", "compromised", "untranslated"}
 
 
 @dataclass(frozen=True, slots=True)
@@ -34,6 +35,8 @@ class CsvTranslationRow:
     english: str
     irish: str
     category: str = "Uncategorized"
+    status: str = ""
+    note: str = ""
 
 
 @dataclass(frozen=True, slots=True)
@@ -94,15 +97,38 @@ def load_string_categories(source_path: Path, category_groups: dict[str, str]) -
     return categories
 
 
-def load_existing_irish(csv_path: Path) -> dict[str, str]:
-    """Load any existing Irish translations keyed by offset string."""
+def normalize_translation_status(status: str, irish: str) -> str:
+    """Normalize translation status, falling back to CSV content."""
+    normalized = status.strip().lower()
+    if normalized in VALID_TRANSLATION_STATUSES:
+        return normalized
+    return "draft" if irish.strip() else "untranslated"
+
+
+def encoded_irish_length(irish: str) -> int:
+    """Return the encoded ROM byte length of an Irish translation."""
+    if not irish.strip():
+        return 0
+    encoded = encode_rom_text(irish.strip())
+    try:
+        return len(encoded.encode("ascii"))
+    except UnicodeEncodeError as error:
+        raise ValueError("translation contains unsupported characters") from error
+
+
+def load_existing_translation_fields(csv_path: Path) -> dict[str, dict[str, str]]:
+    """Load any existing translation metadata keyed by offset string."""
     if not csv_path.exists():
         return {}
 
     with csv_path.open("r", encoding="utf-8", newline="") as handle:
         reader = csv.DictReader(handle)
         return {
-            row["offset"].lower(): row.get("irish", "")
+            row["offset"].lower(): {
+                "irish": row.get("irish", ""),
+                "status": row.get("status", ""),
+                "note": row.get("note", ""),
+            }
             for row in reader
             if row.get("offset")
         }
@@ -168,11 +194,11 @@ def extract_strings(rom_path: Path, table: StringTableDefinition) -> list[dict[s
 
 def write_translation_csv(rows: list[dict[str, str | int]], output_path: Path) -> None:
     """Write extracted strings to CSV, preserving any existing Irish values."""
-    existing_irish = load_existing_irish(output_path)
+    existing_fields = load_existing_translation_fields(output_path)
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     with output_path.open("w", encoding="utf-8", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=["offset", "budget", "english", "irish"])
+        writer = csv.DictWriter(handle, fieldnames=["offset", "budget", "english", "irish", "status", "note"])
         writer.writeheader()
         for row in rows:
             offset_key = str(row["offset"]).lower()
@@ -181,7 +207,9 @@ def write_translation_csv(rows: list[dict[str, str | int]], output_path: Path) -
                     "offset": row["offset"],
                     "budget": row["budget"],
                     "english": row["english"],
-                    "irish": existing_irish.get(offset_key, ""),
+                    "irish": existing_fields.get(offset_key, {}).get("irish", ""),
+                    "status": existing_fields.get(offset_key, {}).get("status", ""),
+                    "note": existing_fields.get(offset_key, {}).get("note", ""),
                 }
             )
 
@@ -207,6 +235,8 @@ def read_translation_csv(
                 english=row["english"],
                 irish=row.get("irish", ""),
                 category=categories.get(row["offset"].lower(), "Uncategorized"),
+                status=row.get("status", ""),
+                note=row.get("note", ""),
             )
             for row in reader
         ]
@@ -220,10 +250,9 @@ def validate_translation_rows(rows: list[CsvTranslationRow]) -> TranslationValid
     for row in translated_rows:
         encoded = encode_rom_text(row.irish.strip())
         try:
-            encoded_bytes = encoded.encode("ascii")
-        except UnicodeEncodeError as error:
-            raise ValueError(f"{row.offset}: translation contains unsupported characters") from error
-        encoded_length = len(encoded_bytes)
+            encoded_length = encoded_irish_length(row.irish.strip())
+        except ValueError as error:
+            raise ValueError(f"{row.offset}: {error}") from error
         if encoded_length > row.budget:
             over_budget.append(
                 BudgetViolation(

@@ -8,13 +8,21 @@
 
 	--color-console-green: #2ecc71;
 	--color-console-green-dim: #1a7a43;
-	--color-console-green-glow: rgba(46, 204, 113, 0.16);
+	--color-console-green-glow: rgba(46, 204, 113, 0.15);
 	--color-console-bg: #0a0a12;
 	--color-console-bg-2: #0f0f1e;
 	--color-console-bg-3: #1a1a2e;
-	--color-console-border: rgba(46, 204, 113, 0.2);
-	--color-console-text: #e0e0e0;
-	--color-console-muted: #8e99a7;
+	--color-console-bg-4: #22223a;
+	--color-console-border: rgba(46, 204, 113, 0.3);
+	--color-console-border-strong: rgba(46, 204, 113, 0.5);
+	--color-console-border-subtle: rgba(255, 255, 255, 0.1);
+	--color-console-border-moderate: rgba(255, 255, 255, 0.16);
+	--color-console-text: #f0f0f8;
+	--color-console-muted: #b0b0c8;
+	--color-console-tertiary: #7878a0;
+	--color-console-disabled: #3a3a5a;
+	--color-console-address: #4a9eff;
+	--color-console-irish: #4eda8a;
 	--color-console-red: #e74c3c;
 	--color-console-amber: #f39c12;
 	--color-console-blue: #3498db;

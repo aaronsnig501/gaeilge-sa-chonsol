@@ -15,7 +15,7 @@ if str(REPO_ROOT) not in sys.path:
 
 from cli.games import ps1  # noqa: F401
 from cli.games.registry import GAME_REGISTRY, GameDefinition
-from cli.strings import read_translation_csv
+from cli.strings import encoded_irish_length, normalize_translation_status, read_translation_csv
 
 
 DEFAULT_OUTPUT = REPO_ROOT / "web" / "static" / "status.json"
@@ -38,7 +38,7 @@ def percent(translated: int, total: int) -> int:
     return round((translated / total) * 100)
 
 
-def build_categories(game: GameDefinition) -> list[dict[str, int | str]]:
+def build_categories(game: GameDefinition) -> list[dict[str, object]]:
     """Group translation rows by category for a game."""
     assert game.string_table is not None
     rows = read_translation_csv(
@@ -46,20 +46,41 @@ def build_categories(game: GameDefinition) -> list[dict[str, int | str]]:
         source_path=game.string_table.source_path,
         category_groups=game.string_table.category_groups,
     )
-    grouped: OrderedDict[str, dict[str, int]] = OrderedDict()
+    grouped: OrderedDict[str, dict[str, object]] = OrderedDict()
 
     for row in rows:
-        category = grouped.setdefault(row.category, {"total": 0, "translated": 0})
+        category = grouped.setdefault(
+            row.category,
+            {"total": 0, "translated": 0, "verified": 0, "strings": []},
+        )
+        status = normalize_translation_status(row.status, row.irish)
+        used = encoded_irish_length(row.irish)
+        string_payload: dict[str, object] = {
+            "offset": row.offset,
+            "budget": row.budget,
+            "used": used,
+            "english": row.english,
+            "irish": row.irish,
+            "status": status,
+        }
+        if row.note.strip():
+            string_payload["note"] = row.note.strip()
+
         category["total"] += 1
         if row.irish.strip():
             category["translated"] += 1
+        if status == "verified":
+            category["verified"] += 1
+        category["strings"].append(string_payload)
 
     return [
         {
             "name": name,
             "total": values["total"],
             "translated": values["translated"],
+            "verified": values["verified"],
             "percent": percent(values["translated"], values["total"]),
+            "strings": values["strings"],
         }
         for name, values in grouped.items()
     ]
