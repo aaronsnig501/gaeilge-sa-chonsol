@@ -9,7 +9,7 @@ from rich.rule import Rule
 
 from cli.config import REPO_ROOT, read_config
 from cli.games.registry import find_game_by_short_name, get_game_by_parts
-from cli.strings import normalize_translation_status, read_translation_csv, validate_translation_rows
+from cli.strings import read_translation_csv, validate_translation_rows
 
 BAR_WIDTH = 20
 console = Console()
@@ -32,13 +32,21 @@ def _status_breakdown(rows: list) -> dict[str, int]:
         "untranslated": 0,
     }
     for row in rows:
-        counts[normalize_translation_status(row.status, row.irish)] += 1
+        if not row.irish.strip():
+            counts["untranslated"] += 1
+            continue
+        if row.verified:
+            counts["verified"] += 1
+        if row.compromised:
+            counts["compromised"] += 1
+        if not row.verified and not row.compromised:
+            counts["draft"] += 1
     return counts
 
 
 def _status_breakdown_text(counts: dict[str, int]) -> str:
     return (
-        f"fíoraithe: {counts['verified']} · "
+        f"fíoraithe sa chluiche: {counts['verified']} · "
         f"dréacht: {counts['draft']} · "
         f"comhréiteach: {counts['compromised']} · "
         f"gan aistriú: {counts['untranslated']}"

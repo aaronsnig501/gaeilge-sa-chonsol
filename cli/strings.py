@@ -14,8 +14,6 @@ from cli.games.registry import StringTableDefinition
 from cli.text import encode_rom_text
 
 SYNC_PATTERN = re.compile(b"\x00\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\x00")
-VALID_TRANSLATION_STATUSES = {"verified", "draft", "compromised", "untranslated"}
-
 
 @dataclass(frozen=True, slots=True)
 class StringEntry:
@@ -35,7 +33,8 @@ class CsvTranslationRow:
     english: str
     irish: str
     category: str = "Uncategorized"
-    status: str = ""
+    verified: bool = False
+    compromised: bool = False
     note: str = ""
 
 
@@ -57,6 +56,8 @@ class TranslationValidation:
     translated_rows: list[CsvTranslationRow]
     untranslated_count: int
     status_counts: dict[str, int]
+    verified_count: int
+    compromised_count: int
     over_budget: list[BudgetViolation]
 
 
@@ -98,12 +99,23 @@ def load_string_categories(source_path: Path, category_groups: dict[str, str]) -
     return categories
 
 
-def normalize_translation_status(status: str, irish: str) -> str:
-    """Normalize translation status, falling back to CSV content."""
-    normalized = status.strip().lower()
-    if normalized in VALID_TRANSLATION_STATUSES:
-        return normalized
-    return "draft" if irish.strip() else "untranslated"
+def parse_bool_flag(value: str | bool | None) -> bool:
+    """Parse a CSV flag value into a boolean."""
+    if isinstance(value, bool):
+        return value
+    normalized = (value or "").strip().lower()
+    return normalized in {"1", "true", "yes", "y"}
+
+
+def derive_translation_status(*, irish: str, verified: bool, compromised: bool) -> str:
+    """Derive the UI status for a row from its translation flags."""
+    if not irish.strip():
+        return "untranslated"
+    if compromised:
+        return "compromised"
+    if verified:
+        return "verified"
+    return "draft"
 
 
 def encoded_irish_length(irish: str) -> int:
@@ -127,7 +139,8 @@ def load_existing_translation_fields(csv_path: Path) -> dict[str, dict[str, str]
         return {
             row["offset"].lower(): {
                 "irish": row.get("irish", ""),
-                "status": row.get("status", ""),
+                "verified": row.get("verified", ""),
+                "compromised": row.get("compromised", ""),
                 "note": row.get("note", ""),
             }
             for row in reader
@@ -199,7 +212,7 @@ def write_translation_csv(rows: list[dict[str, str | int]], output_path: Path) -
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     with output_path.open("w", encoding="utf-8", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=["offset", "budget", "english", "irish", "status", "note"])
+        writer = csv.DictWriter(handle, fieldnames=["offset", "budget", "english", "irish", "verified", "compromised", "note"])
         writer.writeheader()
         for row in rows:
             offset_key = str(row["offset"]).lower()
@@ -209,7 +222,8 @@ def write_translation_csv(rows: list[dict[str, str | int]], output_path: Path) -
                     "budget": row["budget"],
                     "english": row["english"],
                     "irish": existing_fields.get(offset_key, {}).get("irish", ""),
-                    "status": existing_fields.get(offset_key, {}).get("status", ""),
+                    "verified": existing_fields.get(offset_key, {}).get("verified", ""),
+                    "compromised": existing_fields.get(offset_key, {}).get("compromised", ""),
                     "note": existing_fields.get(offset_key, {}).get("note", ""),
                 }
             )
@@ -236,7 +250,8 @@ def read_translation_csv(
                 english=row["english"],
                 irish=row.get("irish", ""),
                 category=categories.get(row["offset"].lower(), "Uncategorized"),
-                status=row.get("status", ""),
+                verified=parse_bool_flag(row.get("verified", "")),
+                compromised=parse_bool_flag(row.get("compromised", "")),
                 note=row.get("note", ""),
             )
             for row in reader
@@ -247,11 +262,21 @@ def validate_translation_rows(rows: list[CsvTranslationRow]) -> TranslationValid
     """Validate translation rows against byte budgets."""
     translated_rows = [row for row in rows if row.irish.strip()]
     over_budget: list[BudgetViolation] = []
-    status_counts = {status: 0 for status in VALID_TRANSLATION_STATUSES}
+    status_counts = {status: 0 for status in {"verified", "draft", "compromised", "untranslated"}}
+    verified_count = 0
+    compromised_count = 0
 
     for row in rows:
-        normalized_status = normalize_translation_status(row.status, row.irish)
+        normalized_status = derive_translation_status(
+            irish=row.irish,
+            verified=row.verified,
+            compromised=row.compromised,
+        )
         status_counts[normalized_status] += 1
+        if row.verified and row.irish.strip():
+            verified_count += 1
+        if row.compromised and row.irish.strip():
+            compromised_count += 1
 
     for row in translated_rows:
         encoded = encode_rom_text(row.irish.strip())
@@ -274,6 +299,8 @@ def validate_translation_rows(rows: list[CsvTranslationRow]) -> TranslationValid
         translated_rows=translated_rows,
         untranslated_count=len(rows) - len(translated_rows),
         status_counts=status_counts,
+        verified_count=verified_count,
+        compromised_count=compromised_count,
         over_budget=over_budget,
     )
 

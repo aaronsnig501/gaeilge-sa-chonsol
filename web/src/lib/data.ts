@@ -107,6 +107,8 @@ function parseStringRecord(entry: unknown): StringRecord {
 		english: asString(value.english),
 		irish,
 		status: parseStringStatus(value.status, irish),
+		verified: asBoolean(value.verified),
+		compromised: asBoolean(value.compromised),
 		note: asString(value.note) || undefined,
 	};
 }

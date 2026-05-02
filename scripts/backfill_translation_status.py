@@ -13,10 +13,10 @@ if str(REPO_ROOT) not in sys.path:
 
 from cli.games import ps1  # noqa: F401
 from cli.games.registry import GAME_REGISTRY
-from cli.strings import normalize_translation_status
+from cli.strings import derive_translation_status
 
 
-FIELDNAMES = ["offset", "budget", "english", "irish", "status", "note"]
+FIELDNAMES = ["offset", "budget", "english", "irish", "verified", "compromised", "note"]
 
 
 def backfill_csv(csv_path: Path) -> None:
@@ -28,14 +28,33 @@ def backfill_csv(csv_path: Path) -> None:
     normalized_rows = []
     for row in rows:
         irish = (row.get("irish") or "").strip()
-        status = normalize_translation_status(row.get("status", ""), irish)
+        verified = (row.get("verified") or "").strip().lower() in {"1", "true", "yes", "y"}
+        compromised = (row.get("compromised") or "").strip().lower() in {"1", "true", "yes", "y"}
+        legacy_status = (row.get("status") or "").strip().lower()
+        if legacy_status == "verified":
+            verified = True
+        elif legacy_status == "compromised":
+            compromised = True
+        elif legacy_status == "untranslated" and not irish:
+            verified = False
+            compromised = False
+        elif legacy_status == "draft":
+            verified = False
+            compromised = False
+
+        # Force empty rows back to a clean untranslated state.
+        if derive_translation_status(irish=irish, verified=verified, compromised=compromised) == "untranslated":
+            verified = False
+            compromised = False
+
         normalized_rows.append(
             {
                 "offset": row["offset"],
                 "budget": row["budget"],
                 "english": row["english"],
                 "irish": irish,
-                "status": status,
+                "verified": "true" if verified else "",
+                "compromised": "true" if compromised else "",
                 "note": (row.get("note") or "").strip(),
             }
         )

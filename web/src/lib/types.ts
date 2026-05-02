@@ -11,6 +11,8 @@ export interface GeneratedStringRecord {
 	english: string;
 	irish: string;
 	status: StringStatus;
+	verified?: boolean;
+	compromised?: boolean;
 	note?: string;
 }
 
@@ -36,6 +38,8 @@ export interface GeneratedCategoryStatus {
 	total: number;
 	translated: number;
 	percent: number;
+	status_breakdown?: Partial<StatusBreakdown>;
+	flags?: Partial<Record<'verified' | 'compromised', number>>;
 	verified?: number;
 	strings?: GeneratedStringRecord[];
 }
@@ -52,6 +56,7 @@ export interface GeneratedGameRecord {
 	help_wanted: boolean;
 	progress: GeneratedProgress;
 	status_breakdown?: Partial<StatusBreakdown>;
+	flags?: Partial<Record<'verified' | 'compromised', number>>;
 	categories: GeneratedCategoryStatus[];
 	region?: string;
 	serial?: string;
@@ -82,6 +87,8 @@ export interface StringRecord {
 	english: string;
 	irish: string;
 	status: StringStatus;
+	verified: boolean;
+	compromised: boolean;
 	note?: string;
 }
 
