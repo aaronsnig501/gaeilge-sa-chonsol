@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-01T07:59:31Z",
+  "generated": "2026-05-02T08:31:03Z",
   "games": [
     {
       "id": "spyro1",
@@ -9,12 +9,18 @@
       "status": "in-progress",
       "version": "0.1",
       "repo_path": "ps1/spyro/1",
-      "patch_available": false,
+      "patch_available": true,
       "help_wanted": true,
       "progress": {
         "total": 133,
         "translated": 22,
         "percent": 17
+      },
+      "status_breakdown": {
+        "verified": 0,
+        "draft": 22,
+        "compromised": 0,
+        "untranslated": 111
       },
       "categories": [
         {
@@ -23,6 +29,12 @@
           "translated": 1,
           "verified": 0,
           "percent": 1,
+          "status_breakdown": {
+            "verified": 0,
+            "draft": 1,
+            "compromised": 0,
+            "untranslated": 71
+          },
           "strings": [
             {
               "offset": "0x834",
@@ -608,6 +620,12 @@
           "translated": 0,
           "verified": 0,
           "percent": 0,
+          "status_breakdown": {
+            "verified": 0,
+            "draft": 0,
+            "compromised": 0,
+            "untranslated": 5
+          },
           "strings": [
             {
               "offset": "0xed0",
@@ -657,6 +675,12 @@
           "translated": 21,
           "verified": 0,
           "percent": 100,
+          "status_breakdown": {
+            "verified": 0,
+            "draft": 21,
+            "compromised": 0,
+            "untranslated": 0
+          },
           "strings": [
             {
               "offset": "0x1a80",
@@ -834,6 +858,12 @@
           "translated": 0,
           "verified": 0,
           "percent": 0,
+          "status_breakdown": {
+            "verified": 0,
+            "draft": 0,
+            "compromised": 0,
+            "untranslated": 6
+          },
           "strings": [
             {
               "offset": "0x1da0",
@@ -891,6 +921,12 @@
           "translated": 0,
           "verified": 0,
           "percent": 0,
+          "status_breakdown": {
+            "verified": 0,
+            "draft": 0,
+            "compromised": 0,
+            "untranslated": 28
+          },
           "strings": [
             {
               "offset": "0x22b4",
@@ -1124,6 +1160,12 @@
           "translated": 0,
           "verified": 0,
           "percent": 0,
+          "status_breakdown": {
+            "verified": 0,
+            "draft": 0,
+            "compromised": 0,
+            "untranslated": 1
+          },
           "strings": [
             {
               "offset": "0x6c6a8",
