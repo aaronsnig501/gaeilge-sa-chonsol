@@ -1,0 +1,57 @@
+name: Sync Supabase Strings
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types:
+      - supabase-sync
+
+permissions:
+  contents: write
+
+jobs:
+  sync-strings:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Python dependencies
+        run: |
+          python3 -m pip install -e .
+          python3 -m pip install supabase
+
+      - name: Sync CSVs from Supabase
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+        run: python3 scripts/sync_from_supabase.py
+
+      - name: Regenerate status.json
+        run: python3 scripts/generate_status.py
+
+      - name: Check for synced changes
+        id: synced_changes
+        run: |
+          if git diff --quiet -- . ':(exclude)web/node_modules'; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Commit synced CSVs and status.json
+        if: steps.synced_changes.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "chore(ci): sync translations from Supabase"
+          git push

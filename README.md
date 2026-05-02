@@ -154,3 +154,15 @@ Still manual outside the repo:
 - create the Supabase project
 - apply the migration in your project
 - add `SUPABASE_URL`, `SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_KEY` to GitHub Actions secrets when CI/server-side Supabase access is needed
+
+To sync verified or updated Supabase string data back into the repo CSVs, use:
+
+```bash
+python3 -m pip install supabase
+SUPABASE_URL=... SUPABASE_SERVICE_KEY=... python3 scripts/sync_from_supabase.py
+python3 scripts/generate_status.py
+```
+
+The repository also includes a GitHub Actions workflow at
+[`sync-supabase-strings.yml`](/home/aaronsinnott/Documents/projects/romhacks/gaeilge-sa-chonsol/.github/workflows/sync-supabase-strings.yml:1)
+for manual or API-triggered syncs.
