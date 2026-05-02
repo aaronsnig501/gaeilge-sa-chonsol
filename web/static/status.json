@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-02T08:49:04Z",
+  "generated": "2026-05-02T08:53:12Z",
   "games": [
     {
       "id": "spyro1",
@@ -9,7 +9,7 @@
       "status": "in-progress",
       "version": "0.1",
       "repo_path": "ps1/spyro/1",
-      "patch_available": true,
+      "patch_available": false,
       "help_wanted": true,
       "progress": {
         "total": 133,
