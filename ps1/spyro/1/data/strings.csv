@@ -53,8 +53,8 @@ offset,budget,english,irish,verified,compromised,note
 0x19f4,15,MEMORY CARD 1,,,,
 0x1a30,15,MEMORY CARD 2,,,,
 0x1a80,15,THE BALLOONIST,AN BALLÓNAÍ,,,
-0x1adc,19,"WHERE TO, SPYRO?","CÁ DTRIALL, SPYRO?",,,
-0x1b3c,15,NEED A LIFT?,ARDAIGH TÉ?,,,
+0x1adc,19,"WHERE TO, SPYRO?","CÁ DTRIALL, SPYRO?",,true,"Tá ""CÁ DTRIALL"" beagán aisteach anseo. Oibríonn sé go garbh, ach b'fhearr liom leagan níos nádúrtha dá mbeadh ceann gairid ann."
+0x1b3c,15,NEED A LIFT?,ARDAIGH TÉ?,,true,"Is leagan an-lag é seo. Tá an focal Béarla ag tagairt do thuras sa bhalún, ach ní bhíonn an chiall sin soiléir in ""ARDAIGH TÉ?"". Moltaí níos nádúrtha fáilte."
 0x1b9c,23,ARE YOU READY TO GO?,AN BHFUIL TÚ ULLAMH?,,,
 0x1c00,23,WOULD YOU LIKE TO GO?,AR MHAITH LEAT IMEACHT?,,,
 0x1c4c,11,STAY HERE,FAN ANSEO,,,
