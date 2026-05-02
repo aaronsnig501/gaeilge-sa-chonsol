@@ -9,7 +9,7 @@ from rich.rule import Rule
 
 from cli.config import REPO_ROOT, read_config
 from cli.games.registry import find_game_by_short_name, get_game_by_parts
-from cli.strings import read_translation_csv, validate_translation_rows
+from cli.strings import normalize_translation_status, read_translation_csv, validate_translation_rows
 
 BAR_WIDTH = 20
 console = Console()
@@ -22,6 +22,27 @@ def _render_bar(progress: float) -> str:
 
 def _styled(text: str, style: str) -> str:
     return f"[{style}]{text}[/{style}]"
+
+
+def _status_breakdown(rows: list) -> dict[str, int]:
+    counts = {
+        "verified": 0,
+        "draft": 0,
+        "compromised": 0,
+        "untranslated": 0,
+    }
+    for row in rows:
+        counts[normalize_translation_status(row.status, row.irish)] += 1
+    return counts
+
+
+def _status_breakdown_text(counts: dict[str, int]) -> str:
+    return (
+        f"fíoraithe: {counts['verified']} · "
+        f"dréacht: {counts['draft']} · "
+        f"comhréiteach: {counts['compromised']} · "
+        f"gan aistriú: {counts['untranslated']}"
+    )
 
 
 def _load_game(game: str | None):
@@ -88,11 +109,15 @@ def register(app: typer.Typer) -> None:
             total = len(category_group)
             progress = translated / total if total else 0.0
             over_budget = sum(1 for row in category_group if row.offset in over_budget_offsets)
+            statuses = _status_breakdown(category_group)
+            status_text = _status_breakdown_text(statuses)
+            status_suffix = f" {_styled(status_text, theme.accent_style)}"
             suffix = f" {_styled(f'! {over_budget} over budget', 'red')}" if over_budget else ""
             print(
                 f"{_styled(f'{category:<{label_width}}', theme.accent_style)} "
                 f"{_styled(_render_bar(progress), theme.header_style)} "
-                f"{_styled(f'{progress * 100:>3.0f}% ({translated}/{total})', theme.success_style)}{suffix}"
+                f"{_styled(f'{progress * 100:>3.0f}% ({translated}/{total})', theme.success_style)}"
+                f"{status_suffix}{suffix}"
             )
 
         overall_total = len(validation.rows)
@@ -104,6 +129,13 @@ def register(app: typer.Typer) -> None:
             f"{_styled(overall_label, theme.accent_style)} "
             f"{_styled(_render_bar(overall_progress), theme.header_style)} "
             f"{_styled(f'{overall_progress * 100:>3.0f}% ({overall_translated}/{overall_total})', theme.success_style)}"
+        )
+        statuses = validation.status_counts
+        print(
+            _styled(
+                f"Status breakdown: {_status_breakdown_text(statuses)}",
+                theme.accent_style,
+            )
         )
 
         if validation.over_budget:

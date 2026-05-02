@@ -20,6 +20,16 @@ def _styled(text: str, style: str) -> str:
     return f"[{style}]{text}[/{style}]"
 
 
+def _status_summary(validation) -> list[str]:
+    counts = validation.status_counts
+    return [
+        f"✓ {counts['verified']} fíoraithe",
+        f"↺ {counts['draft']} dréacht",
+        f"⚠ {counts['compromised']} comhréiteach",
+        f"○ {counts['untranslated']} gan aistriú",
+    ]
+
+
 @app.callback()
 def validate_translations(
     ctx: typer.Context,
@@ -71,7 +81,8 @@ def validate_translations(
             )
     else:
         print(_styled("\u2713 No strings exceed budget", theme.success_style))
-    print(_styled(f"\u25cb {validation.untranslated_count} strings untranslated", theme.accent_style))
+    for summary in _status_summary(validation):
+        print(_styled(summary, theme.accent_style))
     print(_styled(f"Progress: {progress:.1f}% ({len(validation.translated_rows)}/{total})", theme.header_style))
 
     if validation.over_budget:

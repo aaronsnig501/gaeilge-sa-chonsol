@@ -8,7 +8,8 @@ import type {
 	GameStatus,
 	SiteStatus,
 	StringRecord,
-	StringStatus
+	StringStatus,
+	StatusBreakdown
 } from '$lib/types';
 
 const GENERATED_GAME_STATES: GeneratedGameStatus[] = ['complete', 'in-progress', 'planned'];
@@ -31,6 +32,16 @@ function asNumber(value: unknown, fallback = 0): number {
 
 function asBoolean(value: unknown): boolean {
 	return value === true;
+}
+
+function parseStatusBreakdown(value: unknown): StatusBreakdown {
+	const data = (value && typeof value === 'object' ? value : {}) as Record<string, unknown>;
+	return {
+		verified: asNumber(data.verified),
+		draft: asNumber(data.draft),
+		compromised: asNumber(data.compromised),
+		untranslated: asNumber(data.untranslated)
+	};
 }
 
 function withBase(path: string): string {
@@ -127,6 +138,7 @@ function parseGame(game: unknown): GameStatus {
 			`${translated}/${total} téacs aistrithe sa tionscadal seo faoi láthair.`,
 		accent: asString(value.accent, '#2ecc71'),
 		helpWanted: value.help_wanted === true || progress < 50,
+		statusBreakdown: parseStatusBreakdown(value.status_breakdown),
 		categories: categories.map((entry) => {
 			const category = (entry && typeof entry === 'object'
 				? entry
@@ -140,6 +152,7 @@ function parseGame(game: unknown): GameStatus {
 				total: asNumber(category.total),
 				progress: clampProgress(category.percent),
 				verifiedCount: asNumber(category.verified),
+				statusBreakdown: parseStatusBreakdown(category.status_breakdown),
 				strings,
 			};
 		}),

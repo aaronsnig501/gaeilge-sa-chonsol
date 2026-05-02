@@ -38,6 +38,16 @@ def percent(translated: int, total: int) -> int:
     return round((translated / total) * 100)
 
 
+def empty_status_breakdown() -> dict[str, int]:
+    """Return an empty per-status counter."""
+    return {
+        "verified": 0,
+        "draft": 0,
+        "compromised": 0,
+        "untranslated": 0,
+    }
+
+
 def build_categories(game: GameDefinition) -> list[dict[str, object]]:
     """Group translation rows by category for a game."""
     assert game.string_table is not None
@@ -51,7 +61,7 @@ def build_categories(game: GameDefinition) -> list[dict[str, object]]:
     for row in rows:
         category = grouped.setdefault(
             row.category,
-            {"total": 0, "translated": 0, "verified": 0, "strings": []},
+            {"total": 0, "translated": 0, "verified": 0, "status_breakdown": empty_status_breakdown(), "strings": []},
         )
         status = normalize_translation_status(row.status, row.irish)
         used = encoded_irish_length(row.irish)
@@ -71,6 +81,7 @@ def build_categories(game: GameDefinition) -> list[dict[str, object]]:
             category["translated"] += 1
         if status == "verified":
             category["verified"] += 1
+        category["status_breakdown"][status] += 1
         category["strings"].append(string_payload)
 
     return [
@@ -80,6 +91,7 @@ def build_categories(game: GameDefinition) -> list[dict[str, object]]:
             "translated": values["translated"],
             "verified": values["verified"],
             "percent": percent(values["translated"], values["total"]),
+            "status_breakdown": values["status_breakdown"],
             "strings": values["strings"],
         }
         for name, values in grouped.items()
@@ -122,6 +134,9 @@ def build_game_status(game: GameDefinition) -> dict[str, object]:
     total = len(rows)
     progress_percent = percent(translated, total)
     short_name = game.key.split(".", 1)[1]
+    status_breakdown = empty_status_breakdown()
+    for row in rows:
+        status_breakdown[normalize_translation_status(row.status, row.irish)] += 1
 
     payload: dict[str, object] = {
         "id": short_name,
@@ -138,6 +153,7 @@ def build_game_status(game: GameDefinition) -> dict[str, object]:
             "translated": translated,
             "percent": progress_percent,
         },
+        "status_breakdown": status_breakdown,
         "categories": build_categories(game),
         "region": game.region,
         "serial": game.serial,

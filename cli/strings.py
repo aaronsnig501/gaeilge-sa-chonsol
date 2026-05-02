@@ -56,6 +56,7 @@ class TranslationValidation:
     rows: list[CsvTranslationRow]
     translated_rows: list[CsvTranslationRow]
     untranslated_count: int
+    status_counts: dict[str, int]
     over_budget: list[BudgetViolation]
 
 
@@ -246,6 +247,11 @@ def validate_translation_rows(rows: list[CsvTranslationRow]) -> TranslationValid
     """Validate translation rows against byte budgets."""
     translated_rows = [row for row in rows if row.irish.strip()]
     over_budget: list[BudgetViolation] = []
+    status_counts = {status: 0 for status in VALID_TRANSLATION_STATUSES}
+
+    for row in rows:
+        normalized_status = normalize_translation_status(row.status, row.irish)
+        status_counts[normalized_status] += 1
 
     for row in translated_rows:
         encoded = encode_rom_text(row.irish.strip())
@@ -267,6 +273,7 @@ def validate_translation_rows(rows: list[CsvTranslationRow]) -> TranslationValid
         rows=rows,
         translated_rows=translated_rows,
         untranslated_count=len(rows) - len(translated_rows),
+        status_counts=status_counts,
         over_budget=over_budget,
     )
 

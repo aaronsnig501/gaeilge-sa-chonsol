@@ -2,6 +2,8 @@ export type GameState = 'complete' | 'progress' | 'wanted';
 export type GeneratedGameStatus = 'complete' | 'in-progress' | 'planned';
 export type StringStatus = 'verified' | 'draft' | 'compromised' | 'untranslated';
 
+export type StatusBreakdown = Record<StringStatus, number>;
+
 export interface GeneratedStringRecord {
 	offset: string;
 	budget: number;
@@ -18,6 +20,7 @@ export interface CategoryStatus {
 	total: number;
 	progress: number;
 	verifiedCount: number;
+	statusBreakdown: StatusBreakdown;
 	strings: StringRecord[];
 }
 
@@ -25,6 +28,7 @@ export interface GeneratedProgress {
 	total: number;
 	translated: number;
 	percent: number;
+	status_breakdown?: Partial<StatusBreakdown>;
 }
 
 export interface GeneratedCategoryStatus {
@@ -47,6 +51,7 @@ export interface GeneratedGameRecord {
 	patch_available: boolean;
 	help_wanted: boolean;
 	progress: GeneratedProgress;
+	status_breakdown?: Partial<StatusBreakdown>;
 	categories: GeneratedCategoryStatus[];
 	region?: string;
 	serial?: string;
@@ -96,6 +101,7 @@ export interface GameStatus {
 	description: string;
 	accent: string;
 	helpWanted: boolean;
+	statusBreakdown: StatusBreakdown;
 	categories: CategoryStatus[];
 	links: GameLinks;
 }
