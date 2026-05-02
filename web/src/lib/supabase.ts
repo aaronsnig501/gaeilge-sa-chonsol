@@ -3,7 +3,7 @@ import { createBrowserClient, createServerClient } from '@supabase/ssr';
 import type { Cookies, RequestEvent } from '@sveltejs/kit';
 import type { Session, SupabaseClient } from '@supabase/supabase-js';
 import { env } from '$env/dynamic/public';
-import type { CategoryStatus, GameStatus, StatusBreakdown, StringRecord, StringStatus } from '$lib/types';
+import type { CategoryStatus, GameStatus, StatusBreakdown, StringRecord, StringStatus, SuggestionRecord } from '$lib/types';
 
 const FADA_REPLACEMENTS: Record<string, string> = {
 	Á: 'Aa',
@@ -35,6 +35,23 @@ export interface SupabaseVerificationRow {
 	offset: string;
 	github_username: string | null;
 	created_at: string;
+}
+
+export interface SupabaseSuggestionRow {
+	id: string;
+	game_id: string;
+	offset: string;
+	suggested: string;
+	note: string | null;
+	github_username: string | null;
+	upvotes: number;
+	status: 'open' | 'accepted' | 'rejected';
+	created_at: string;
+}
+
+export interface SupabaseSuggestionVoteRow {
+	suggestion_id: string;
+	user_id: string;
 }
 
 let browserClient: SupabaseClient | null = null;
@@ -92,18 +109,24 @@ function rebuildCategory(
 	category: CategoryStatus,
 	overlay: Map<string, SupabaseStringRow>,
 	verifications: Map<string, SupabaseVerificationRow>,
+	suggestions: Map<string, SuggestionRecord[]>,
 ): CategoryStatus {
 	const strings: StringRecord[] = category.strings.map((entry) => {
 		const row = overlay.get(entry.offset.toLowerCase());
 		const verification = verifications.get(entry.offset.toLowerCase());
+		const suggestionList = suggestions.get(entry.offset.toLowerCase()) ?? [];
 		if (!row) {
 			return verification
 				? {
 						...entry,
 						verifiedBy: verification.github_username ?? undefined,
 						verifiedAt: verification.created_at,
+						suggestions: suggestionList,
 					}
-				: entry;
+				: {
+						...entry,
+						suggestions: suggestionList,
+					};
 		}
 
 		const irish = (row.irish ?? '').trim();
@@ -119,6 +142,7 @@ function rebuildCategory(
 			note: (row.note ?? '').trim() || undefined,
 			verifiedBy: verification?.github_username ?? undefined,
 			verifiedAt: verification?.created_at,
+			suggestions: suggestionList,
 		};
 	});
 
@@ -146,12 +170,27 @@ export function mergeSupabaseRows(
 	game: GameStatus,
 	rows: SupabaseStringRow[],
 	verificationRows: SupabaseVerificationRow[] = [],
+	suggestionRows: SuggestionRecord[] = [],
 ): GameStatus {
 	const overlay = new Map(rows.map((row) => [row.offset.toLowerCase(), row]));
 	const verifications = new Map(
 		verificationRows.map((row) => [row.offset.toLowerCase(), row]),
 	);
-	const categories = game.categories.map((category) => rebuildCategory(category, overlay, verifications));
+	const suggestions = suggestionRows.reduce((acc, row) => {
+		const key = row.offset.toLowerCase();
+		const existing = acc.get(key) ?? [];
+		existing.push(row);
+		acc.set(key, existing);
+		return acc;
+	}, new Map<string, SuggestionRecord[]>());
+	for (const values of suggestions.values()) {
+		values.sort((a, b) => {
+			if (b.upvotes !== a.upvotes) return b.upvotes - a.upvotes;
+			return Date.parse(b.createdAt) - Date.parse(a.createdAt);
+		});
+	}
+
+	const categories = game.categories.map((category) => rebuildCategory(category, overlay, verifications, suggestions));
 	const total = categories.reduce((sum, category) => sum + category.total, 0);
 	const translated = categories.reduce((sum, category) => sum + category.translated, 0);
 	const statusBreakdown = categories.reduce(
@@ -211,4 +250,23 @@ export async function signInWithGitHub(redirectTo: string): Promise<void> {
 			redirectTo,
 		},
 	});
+}
+
+export function mapSuggestionRows(
+	rows: SupabaseSuggestionRow[],
+	votes: SupabaseSuggestionVoteRow[] = [],
+): SuggestionRecord[] {
+	const voteSet = new Set(votes.map((vote) => vote.suggestion_id));
+	return rows.map((row) => ({
+		id: row.id,
+		gameId: row.game_id,
+		offset: row.offset,
+		suggested: row.suggested,
+		note: (row.note ?? '').trim() || undefined,
+		githubUsername: row.github_username ?? undefined,
+		upvotes: row.upvotes,
+		status: row.status,
+		createdAt: row.created_at,
+		userHasUpvoted: voteSet.has(row.id),
+	}));
 }

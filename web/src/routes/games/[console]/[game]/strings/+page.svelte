@@ -2,20 +2,23 @@
 	import { onMount } from 'svelte';
 	import { base } from '$app/paths';
 	import type { PageProps } from './$types';
-	import type { StringRecord, StringStatus } from '$lib/types';
+	import type { StringRecord, StringStatus, SuggestionRecord } from '$lib/types';
 	import {
 		createSupabaseBrowserClient,
 		isSupabaseBrowserReady,
+		mapSuggestionRows,
 		mergeSupabaseRows,
 		signInWithGitHub,
+		type SupabaseSuggestionRow,
+		type SupabaseSuggestionVoteRow,
 		type SupabaseStringRow,
 		type SupabaseVerificationRow,
 	} from '$lib/supabase';
 	import { get } from 'svelte/store';
 	import { supabaseSession } from '$lib/session';
 
-	const DEFAULT_REPO_URL = 'https://github.com/aaronsnig501/gaeilge-sa-chonsol';
 	const PENDING_VERIFY_KEY = 'gsc:pending-verify';
+	const PENDING_SUGGEST_KEY = 'gsc:pending-suggest';
 	const STATUS_OPTIONS: Array<{ value: 'all' | StringStatus; label: string; dotClass: string }> = [
 		{ value: 'all', label: 'Gach ceann', dotClass: 'bg-console-green' },
 		{ value: 'verified', label: 'Fíoraithe', dotClass: 'bg-console-green shadow-[0_0_8px_rgba(46,204,113,0.45)]' },
@@ -52,7 +55,11 @@
 	let suggestedIrish = $state('');
 	let suggestionNote = $state('');
 	let verifyMessage = $state<string | null>(null);
+	let suggestionMessage = $state<string | null>(null);
 	let verificationBusyOffsets = $state<Record<string, boolean>>({});
+	let suggestionBusy = $state(false);
+	let suggestionBusyOffsets = $state<Record<string, boolean>>({});
+	let contributor = $state(false);
 
 	function setVerifyBusy(offset: string, busy: boolean): void {
 		verificationBusyOffsets = {
@@ -65,21 +72,42 @@
 		return verificationBusyOffsets[offset] === true;
 	}
 
+	function setSuggestionBusy(offset: string, busy: boolean): void {
+		suggestionBusyOffsets = {
+			...suggestionBusyOffsets,
+			[offset]: busy,
+		};
+	}
+
+	function isSuggestionBusy(offset: string): boolean {
+		return suggestionBusyOffsets[offset] === true;
+	}
+
 	onMount(async () => {
 		if (!isSupabaseBrowserReady()) return;
 
 		const client = createSupabaseBrowserClient();
 		if (!client) return;
 
+		await refreshContributorState();
 		await refreshFromSupabase();
 		await processPendingVerify();
+		await processPendingSuggestion();
 	});
 
 	async function refreshFromSupabase(): Promise<void> {
 		const client = createSupabaseBrowserClient();
 		if (!client) return;
 
-		const [{ data: rows, error }, { data: verificationRows }] = await Promise.all([
+		const session = get(supabaseSession);
+		const suggestionVotesQuery = session
+			? client
+					.from('suggestion_votes')
+					.select('suggestion_id, user_id')
+					.eq('user_id', session.user.id)
+			: Promise.resolve({ data: [] as SupabaseSuggestionVoteRow[] | null, error: null });
+
+		const [{ data: rows, error }, { data: verificationRows }, { data: suggestionRows }, voteResult] = await Promise.all([
 			client
 				.from('strings')
 				.select('game_id, offset, english, irish, budget, verified, compromised, note, updated_at')
@@ -90,6 +118,12 @@
 				.select('game_id, offset, github_username, created_at')
 				.eq('game_id', game.game)
 				.order('created_at', { ascending: false }),
+			client
+				.from('suggestions')
+				.select('id, game_id, offset, suggested, note, github_username, upvotes, status, created_at')
+				.eq('game_id', game.game)
+				.order('created_at', { ascending: false }),
+			suggestionVotesQuery,
 		]);
 
 		if (error || !rows) return;
@@ -101,11 +135,34 @@
 			}
 		}
 
+		const mappedSuggestions = mapSuggestionRows(
+			(suggestionRows ?? []) as SupabaseSuggestionRow[],
+			(voteResult.data ?? []) as SupabaseSuggestionVoteRow[],
+		);
+
 		remoteGame = mergeSupabaseRows(
 			data.game,
 			rows as SupabaseStringRow[],
 			Array.from(latestVerificationByOffset.values()),
+			mappedSuggestions,
 		);
+	}
+
+	async function refreshContributorState(): Promise<void> {
+		const client = createSupabaseBrowserClient();
+		const session = get(supabaseSession);
+		if (!client || !session) {
+			contributor = false;
+			return;
+		}
+
+		const { data } = await client
+			.from('contributors')
+			.select('user_id')
+			.eq('user_id', session.user.id)
+			.maybeSingle();
+
+		contributor = Boolean(data);
 	}
 
 	function pendingVerifyPayload(entry: StringRecord): string {
@@ -141,6 +198,37 @@
 			await completeVerify(pending.offset);
 		} catch {
 			sessionStorage.removeItem(PENDING_VERIFY_KEY);
+		}
+	}
+
+	function pendingSuggestionPayload(entry: StringRecord): string {
+		return JSON.stringify({
+			gameId: game.game,
+			offset: entry.offset,
+			suggested: suggestedIrish,
+			note: suggestionNote,
+		});
+	}
+
+	async function processPendingSuggestion(): Promise<void> {
+		const session = get(supabaseSession);
+		if (!session) return;
+
+		const raw = sessionStorage.getItem(PENDING_SUGGEST_KEY);
+		if (!raw) return;
+
+		try {
+			const pending = JSON.parse(raw) as {
+				gameId?: string;
+				offset?: string;
+				suggested?: string;
+				note?: string;
+			};
+			if (pending.gameId !== game.game || !pending.offset || !pending.suggested) return;
+			sessionStorage.removeItem(PENDING_SUGGEST_KEY);
+			await submitSuggestion(pending.offset, pending.suggested, pending.note ?? '');
+		} catch {
+			sessionStorage.removeItem(PENDING_SUGGEST_KEY);
 		}
 	}
 
@@ -243,7 +331,154 @@
 
 		await refreshFromSupabase();
 		verifyMessage = 'Fíoraíodh an téacs seo sa chluiche.';
+		await refreshContributorState();
 		setVerifyBusy(offset, false);
+	}
+
+	async function submitSuggestion(offset: string, suggested: string, note: string): Promise<void> {
+		const client = createSupabaseBrowserClient();
+		const session = get(supabaseSession);
+		if (!client || !session) return;
+		suggestionBusy = true;
+		suggestionMessage = null;
+
+		const sessionUsername =
+			(session.user.user_metadata?.user_name as string | undefined) ??
+			(session.user.user_metadata?.preferred_username as string | undefined) ??
+			(session.user.email ?? undefined);
+
+		const { error } = await client.from('suggestions').insert({
+			game_id: game.game,
+			offset,
+			suggested,
+			note: note || null,
+			user_id: session.user.id,
+			github_username: sessionUsername ?? null,
+		});
+
+		if (error) {
+			suggestionBusy = false;
+			suggestionMessage = 'Theip ar sheoladh an mholta. Bain triail eile as.';
+			return;
+		}
+
+		await refreshFromSupabase();
+		suggestionBusy = false;
+		suggestionMessage = 'Seoladh an moladh nua.';
+		closeSuggest();
+	}
+
+	async function submitSuggestionFromPanel(): Promise<void> {
+		if (!selectedEntry) return;
+		suggestionMessage = null;
+		const session = get(supabaseSession);
+		if (!session) {
+			sessionStorage.setItem(PENDING_SUGGEST_KEY, pendingSuggestionPayload(selectedEntry));
+			await signInWithGitHub(window.location.href);
+			return;
+		}
+
+		await submitSuggestion(selectedEntry.offset, suggestedIrish, suggestionNote);
+	}
+
+	async function upvoteSuggestion(suggestion: SuggestionRecord): Promise<void> {
+		if (suggestion.userHasUpvoted) return;
+		const client = createSupabaseBrowserClient();
+		const session = get(supabaseSession);
+		if (!client) return;
+		if (!session) {
+			await signInWithGitHub(window.location.href);
+			return;
+		}
+
+		setSuggestionBusy(suggestion.id, true);
+		suggestionMessage = null;
+		const { error } = await client.from('suggestion_votes').insert({
+			suggestion_id: suggestion.id,
+			user_id: session.user.id,
+		});
+
+		if (error) {
+			suggestionMessage = 'Níor éirigh leis an vóta. B’fhéidir go ndearna tú vóta cheana féin.';
+			setSuggestionBusy(suggestion.id, false);
+			return;
+		}
+
+		await refreshFromSupabase();
+		setSuggestionBusy(suggestion.id, false);
+	}
+
+	async function acceptSuggestion(entry: StringRecord, suggestion: SuggestionRecord): Promise<void> {
+		const client = createSupabaseBrowserClient();
+		const session = get(supabaseSession);
+		if (!client || !session) return;
+		if (!contributor) {
+			suggestionMessage = 'Ní ranníocóir thú go fóill.';
+			return;
+		}
+
+		setSuggestionBusy(suggestion.id, true);
+		suggestionMessage = null;
+
+		const previousGame = remoteGame ?? data.game;
+		remoteGame = {
+			...game,
+			categories: game.categories.map((category) => ({
+				...category,
+				strings: category.strings.map((current) =>
+					current.offset === entry.offset
+						? {
+								...current,
+								irish: suggestion.suggested,
+								used: encodeLength(suggestion.suggested),
+								note: suggestion.note,
+								verified: false,
+								verifiedBy: undefined,
+								verifiedAt: undefined,
+								status: current.compromised ? 'compromised' : 'draft',
+								suggestions: (current.suggestions ?? []).map((item) => ({
+									...item,
+									status: item.id === suggestion.id ? 'accepted' : item.status,
+								})),
+							}
+						: current,
+				),
+			})),
+		};
+
+		const { error: updateStringError } = await client
+			.from('strings')
+			.update({
+				irish: suggestion.suggested,
+				note: suggestion.note ?? null,
+				verified: false,
+				updated_at: new Date().toISOString(),
+			})
+			.eq('game_id', game.game)
+			.eq('offset', entry.offset);
+
+		if (updateStringError) {
+			remoteGame = previousGame;
+			suggestionMessage = 'Níorbh fhéidir an moladh a ghlacadh.';
+			setSuggestionBusy(suggestion.id, false);
+			return;
+		}
+
+		const { error: updateSuggestionError } = await client
+			.from('suggestions')
+			.update({ status: 'accepted' })
+			.eq('id', suggestion.id);
+
+		if (updateSuggestionError) {
+			remoteGame = previousGame;
+			suggestionMessage = 'Theip ar nuashonrú stádais an mholta.';
+			setSuggestionBusy(suggestion.id, false);
+			return;
+		}
+
+		await refreshFromSupabase();
+		suggestionMessage = 'Glacadh leis an moladh.';
+		setSuggestionBusy(suggestion.id, false);
 	}
 
 	const filteredCategories = $derived.by(() =>
@@ -362,36 +597,6 @@
 		suggestionNote = '';
 	}
 
-	function issueNewUrl(): string {
-		return `${(game.links.repo ?? DEFAULT_REPO_URL).replace(/\/+$/, '')}/issues/new`;
-	}
-
-	function openSuggestionIssue(): void {
-		if (!selectedEntry) return;
-		const title = `[String Suggestion] ${selectedEntry.offset} · ${selectedEntry.english}`;
-		const body = [
-			'## Moladh Aistriúcháin',
-			'',
-			`**Cluiche:** ${game.title}`,
-			`**Offset:** ${selectedEntry.offset}`,
-			`**Béarla:** ${selectedEntry.english}`,
-			`**Buiséad:** ${selectedEntry.budget} giotán`,
-			`**Aistriúchán reatha:** ${selectedEntry.irish || 'Gan aistriú'}`,
-			`**Moladh nua:** ${suggestedIrish || 'Gan líonadh'}`,
-			`**Fad ionchódaithe:** ${suggestionUsed}/${selectedEntry.budget}`,
-			'',
-			suggestionNote ? `**Nótaí:**\n${suggestionNote}` : '',
-		]
-			.filter(Boolean)
-			.join('\n');
-		const url = new URL(issueNewUrl());
-		url.searchParams.set('title', title);
-		url.searchParams.set('body', body);
-		url.searchParams.set('labels', 'string-suggestion,needs-native-review');
-		window.open(url.toString(), '_blank', 'noopener,noreferrer');
-		closeSuggest();
-	}
-
 	function verificationTooltip(entry: StringRecord): string {
 		if (!entry.verified) return 'Gan fíorú sa chluiche fós';
 		const who = entry.verifiedBy ? ` ag ${entry.verifiedBy}` : '';
@@ -458,6 +663,12 @@
 	{#if verifyMessage}
 		<div class="mb-6 rounded-sm border border-console-green/30 bg-console-green-glow px-4 py-3 text-sm text-console-text">
 			{verifyMessage}
+		</div>
+	{/if}
+
+	{#if suggestionMessage}
+		<div class="mb-6 rounded-sm border border-console-amber/30 bg-console-amber/10 px-4 py-3 text-sm text-console-text">
+			{suggestionMessage}
 		</div>
 	{/if}
 
@@ -569,6 +780,54 @@
 											</td>
 										</tr>
 									{/if}
+									{#if entry.suggestions && entry.suggestions.length > 0}
+										<tr>
+											<td colspan="6" class="px-2 pb-4 pl-28">
+												<div class="space-y-3">
+													{#each entry.suggestions as suggestion (suggestion.id)}
+														<div class="rounded-sm border border-console-border bg-console-bg-3/70 px-4 py-3">
+															<div class="flex flex-wrap items-start gap-3">
+																<div class="flex-1">
+																	<div class="flex flex-wrap items-center gap-2">
+																		<span class="font-mono text-[0.72rem] text-console-irish">{suggestion.suggested}</span>
+																		<span class={`rounded-sm border px-2 py-0.5 font-mono text-[0.52rem] uppercase tracking-[0.08em] ${suggestion.status === 'accepted' ? 'border-console-green/30 bg-console-green/10 text-console-green' : suggestion.status === 'rejected' ? 'border-console-red/30 bg-console-red/10 text-console-red' : 'border-console-border-moderate bg-console-border-subtle text-console-muted'}`}>
+																			{suggestion.status}
+																		</span>
+																	</div>
+																	<p class="mt-2 font-mono text-[0.58rem] uppercase tracking-[0.08em] text-console-tertiary">
+																		{suggestion.githubUsername ?? 'gan ainm'} · {new Date(suggestion.createdAt).toLocaleString()}
+																	</p>
+																	{#if suggestion.note}
+																		<p class="mt-2 text-sm leading-6 text-console-muted">{suggestion.note}</p>
+																	{/if}
+																</div>
+																<div class="flex items-center gap-2">
+																	<button
+																		class="rounded-sm border border-console-border-moderate bg-console-border-subtle px-2 py-1 font-mono text-[0.56rem] uppercase tracking-[0.06em] text-console-muted hover:border-console-green hover:bg-console-green-glow hover:text-console-green disabled:cursor-not-allowed disabled:opacity-60"
+																		disabled={suggestion.userHasUpvoted || isSuggestionBusy(suggestion.id)}
+																		onclick={() => upvoteSuggestion(suggestion)}
+																		type="button"
+																	>
+																		{suggestion.userHasUpvoted ? '✓ Vótáilte' : isSuggestionBusy(suggestion.id) ? '…' : `▲ ${suggestion.upvotes}`}
+																	</button>
+																	{#if contributor && suggestion.status === 'open'}
+																		<button
+																			class="rounded-sm border border-console-green/30 px-2 py-1 font-mono text-[0.56rem] uppercase tracking-[0.06em] text-console-green hover:border-console-green hover:bg-console-green-glow disabled:cursor-not-allowed disabled:opacity-60"
+																			disabled={isSuggestionBusy(suggestion.id)}
+																			onclick={() => acceptSuggestion(entry, suggestion)}
+																			type="button"
+																		>
+																			{isSuggestionBusy(suggestion.id) ? '…' : 'Glac leis'}
+																		</button>
+																	{/if}
+																</div>
+															</div>
+														</div>
+													{/each}
+												</div>
+											</td>
+										</tr>
+									{/if}
 								{/each}
 							</tbody>
 						</table>
@@ -632,8 +891,13 @@
 					</p>
 				</div>
 				<div class="flex items-end">
-					<button class="console-button console-button-primary" onclick={openSuggestionIssue} type="button">
-						Oscail eisiúint
+					<button
+						class="console-button console-button-primary disabled:cursor-not-allowed disabled:opacity-60"
+						disabled={suggestionBusy || !suggestedIrish.trim()}
+						onclick={submitSuggestionFromPanel}
+						type="button"
+					>
+						{suggestionBusy ? 'Ag seoladh…' : 'Seol moladh'}
 					</button>
 					</div>
 					<div class="lg:col-span-3 space-y-2">
@@ -645,7 +909,7 @@
 							placeholder="m.sh. teorainn giotán, rogha eile, nó ceist d'athbhreithneoir dúchais..."
 						></textarea>
 					<p class="font-mono text-[0.58rem] uppercase tracking-[0.08em] text-console-tertiary">
-						Osclófar eisiúint GitHub réamhlíonta le lipéid `string-suggestion` agus `needs-native-review`.
+						Stórálfar an moladh seo i Supabase. Má tá logáil isteach de dhíth, fillfidh tú ar ais anseo i ndiaidh GitHub OAuth.
 					</p>
 				</div>
 			</div>

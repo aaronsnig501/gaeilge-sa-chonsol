@@ -92,6 +92,20 @@ export interface StringRecord {
 	note?: string;
 	verifiedBy?: string;
 	verifiedAt?: string;
+	suggestions?: SuggestionRecord[];
+}
+
+export interface SuggestionRecord {
+	id: string;
+	gameId: string;
+	offset: string;
+	suggested: string;
+	note?: string;
+	githubUsername?: string;
+	upvotes: number;
+	status: 'open' | 'accepted' | 'rejected';
+	createdAt: string;
+	userHasUpvoted?: boolean;
 }
 
 export interface GameStatus {
