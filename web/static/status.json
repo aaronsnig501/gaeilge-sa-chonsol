@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-02T08:53:50Z",
+  "generated": "2026-05-02T08:58:50Z",
   "games": [
     {
       "id": "spyro1",
@@ -9,7 +9,7 @@
       "status": "in-progress",
       "version": "0.1",
       "repo_path": "ps1/spyro/1",
-      "patch_available": false,
+      "patch_available": true,
       "help_wanted": true,
       "progress": {
         "total": 133,
@@ -18,13 +18,13 @@
       },
       "status_breakdown": {
         "verified": 0,
-        "draft": 22,
-        "compromised": 0,
+        "draft": 20,
+        "compromised": 2,
         "untranslated": 111
       },
       "flags": {
         "verified": 0,
-        "compromised": 0
+        "compromised": 2
       },
       "categories": [
         {
@@ -843,13 +843,13 @@
           "percent": 100,
           "status_breakdown": {
             "verified": 0,
-            "draft": 21,
-            "compromised": 0,
+            "draft": 19,
+            "compromised": 2,
             "untranslated": 0
           },
           "flags": {
             "verified": 0,
-            "compromised": 0
+            "compromised": 2
           },
           "strings": [
             {
@@ -868,9 +868,10 @@
               "used": 19,
               "english": "WHERE TO, SPYRO?",
               "irish": "CÁ DTRIALL, SPYRO?",
-              "status": "draft",
+              "status": "compromised",
               "verified": false,
-              "compromised": false
+              "compromised": true,
+              "note": "Tá \"CÁ DTRIALL\" beagán aisteach anseo. Oibríonn sé go garbh, ach b'fhearr liom leagan níos nádúrtha dá mbeadh ceann gairid ann."
             },
             {
               "offset": "0x1b3c",
@@ -878,9 +879,10 @@
               "used": 12,
               "english": "NEED A LIFT?",
               "irish": "ARDAIGH TÉ?",
-              "status": "draft",
+              "status": "compromised",
               "verified": false,
-              "compromised": false
+              "compromised": true,
+              "note": "Is leagan an-lag é seo. Tá an focal Béarla ag tagairt do thuras sa bhalún, ach ní bhíonn an chiall sin soiléir in \"ARDAIGH TÉ?\". Moltaí níos nádúrtha fáilte."
             },
             {
               "offset": "0x1b9c",

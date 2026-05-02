@@ -300,7 +300,7 @@
 						<table class="mt-2 w-full min-w-[900px] border-collapse">
 							<tbody>
 								{#each category.strings as entry (entry.offset)}
-									<tr class={`group border-b border-white/4 transition-colors hover:bg-white/[0.02] ${entry.note ? 'border-l-2 border-l-console-amber' : ''}`}>
+									<tr class={`group border-b border-white/4 transition-colors hover:bg-white/[0.02] ${entry.compromised && entry.note ? 'border-l-2 border-l-console-amber' : ''}`}>
 										<td class="w-20 px-2 py-3 align-top font-mono text-[0.62rem] text-console-address">
 											{entry.offset}
 										</td>
@@ -346,7 +346,7 @@
 											</div>
 										</td>
 									</tr>
-									{#if entry.note}
+									{#if entry.compromised && entry.note}
 										<tr>
 											<td colspan="6" class="px-2 pb-4 pl-28">
 												<div class="flex gap-3 rounded-sm border border-console-amber/20 bg-console-amber/6 px-4 py-3 text-sm leading-6 text-console-muted">
@@ -354,7 +354,7 @@
 													<div>
 														<p>{entry.note}</p>
 														<p class="mt-1 font-mono text-[0.58rem] uppercase tracking-[0.12em] text-console-tertiary">
-															Nót ón aistritheoir · moltaí fáilte
+															Comhréiteach de bharr teorainn bhuiséid · moltaí eile fáilte
 														</p>
 													</div>
 												</div>
