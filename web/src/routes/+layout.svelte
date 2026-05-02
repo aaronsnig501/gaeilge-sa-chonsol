@@ -1,9 +1,35 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import { base } from '$app/paths';
 	import '../app.css';
 	import ExternalLink from '$lib/components/ExternalLink.svelte';
+	import { createSupabaseBrowserClient, isSupabaseConfigured } from '$lib/supabase';
+	import { supabaseEnabled, supabaseSession } from '$lib/session';
 
 	let { children } = $props();
+
+	onMount(() => {
+		const client = createSupabaseBrowserClient();
+		supabaseEnabled.set(isSupabaseConfigured());
+		if (!client) {
+			supabaseSession.set(null);
+			return;
+		}
+
+		client.auth.getSession().then(({ data }) => {
+			supabaseSession.set(data.session);
+		});
+
+		const {
+			data: { subscription }
+		} = client.auth.onAuthStateChange((_event, session) => {
+			supabaseSession.set(session);
+		});
+
+		return () => {
+			subscription.unsubscribe();
+		};
+	});
 </script>
 
 <svelte:head>

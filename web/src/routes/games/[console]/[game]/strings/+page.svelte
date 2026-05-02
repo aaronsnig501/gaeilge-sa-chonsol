@@ -1,7 +1,14 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import { base } from '$app/paths';
 	import type { PageProps } from './$types';
 	import type { StringRecord, StringStatus } from '$lib/types';
+	import {
+		createSupabaseBrowserClient,
+		isSupabaseBrowserReady,
+		mergeSupabaseRows,
+		type SupabaseStringRow,
+	} from '$lib/supabase';
 
 	const DEFAULT_REPO_URL = 'https://github.com/aaronsnig501/gaeilge-sa-chonsol';
 	const STATUS_OPTIONS: Array<{ value: 'all' | StringStatus; label: string; dotClass: string }> = [
@@ -26,7 +33,8 @@
 	};
 
 	let { data }: PageProps = $props();
-	const game = $derived(data.game);
+	let remoteGame = $state<typeof data.game | null>(null);
+	const game = $derived(remoteGame ?? data.game);
 	const detailHref = $derived(`${base}/games/${game.console}/${game.game}`);
 	const summaryText = $derived(
 		`${game.categories.reduce((sum, category) => sum + category.translated, 0)} / ${game.categories.reduce((sum, category) => sum + category.total, 0)} aistrithe · ${game.progress}%`,
@@ -38,6 +46,22 @@
 	let selectedEntry = $state<StringRecord | null>(null);
 	let suggestedIrish = $state('');
 	let suggestionNote = $state('');
+
+	onMount(async () => {
+		if (!isSupabaseBrowserReady()) return;
+
+		const client = createSupabaseBrowserClient();
+		if (!client) return;
+
+		const { data: rows, error } = await client
+			.from('strings')
+			.select('game_id, offset, english, irish, budget, verified, compromised, note, updated_at')
+			.eq('game_id', game.game)
+			.order('offset', { ascending: true });
+
+		if (error || !rows) return;
+		remoteGame = mergeSupabaseRows(data.game, rows as SupabaseStringRow[]);
+	});
 
 	const filteredCategories = $derived.by(() =>
 		game.categories
