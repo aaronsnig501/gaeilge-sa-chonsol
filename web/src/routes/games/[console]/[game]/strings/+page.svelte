@@ -7,10 +7,15 @@
 		createSupabaseBrowserClient,
 		isSupabaseBrowserReady,
 		mergeSupabaseRows,
+		signInWithGitHub,
 		type SupabaseStringRow,
+		type SupabaseVerificationRow,
 	} from '$lib/supabase';
+	import { get } from 'svelte/store';
+	import { supabaseSession } from '$lib/session';
 
 	const DEFAULT_REPO_URL = 'https://github.com/aaronsnig501/gaeilge-sa-chonsol';
+	const PENDING_VERIFY_KEY = 'gsc:pending-verify';
 	const STATUS_OPTIONS: Array<{ value: 'all' | StringStatus; label: string; dotClass: string }> = [
 		{ value: 'all', label: 'Gach ceann', dotClass: 'bg-console-green' },
 		{ value: 'verified', label: 'Fíoraithe', dotClass: 'bg-console-green shadow-[0_0_8px_rgba(46,204,113,0.45)]' },
@@ -46,6 +51,19 @@
 	let selectedEntry = $state<StringRecord | null>(null);
 	let suggestedIrish = $state('');
 	let suggestionNote = $state('');
+	let verifyMessage = $state<string | null>(null);
+	let verificationBusyOffsets = $state<Record<string, boolean>>({});
+
+	function setVerifyBusy(offset: string, busy: boolean): void {
+		verificationBusyOffsets = {
+			...verificationBusyOffsets,
+			[offset]: busy,
+		};
+	}
+
+	function isVerifyBusy(offset: string): boolean {
+		return verificationBusyOffsets[offset] === true;
+	}
 
 	onMount(async () => {
 		if (!isSupabaseBrowserReady()) return;
@@ -53,15 +71,180 @@
 		const client = createSupabaseBrowserClient();
 		if (!client) return;
 
-		const { data: rows, error } = await client
-			.from('strings')
-			.select('game_id, offset, english, irish, budget, verified, compromised, note, updated_at')
-			.eq('game_id', game.game)
-			.order('offset', { ascending: true });
+		await refreshFromSupabase();
+		await processPendingVerify();
+	});
+
+	async function refreshFromSupabase(): Promise<void> {
+		const client = createSupabaseBrowserClient();
+		if (!client) return;
+
+		const [{ data: rows, error }, { data: verificationRows }] = await Promise.all([
+			client
+				.from('strings')
+				.select('game_id, offset, english, irish, budget, verified, compromised, note, updated_at')
+				.eq('game_id', game.game)
+				.order('offset', { ascending: true }),
+			client
+				.from('verifications')
+				.select('game_id, offset, github_username, created_at')
+				.eq('game_id', game.game)
+				.order('created_at', { ascending: false }),
+		]);
 
 		if (error || !rows) return;
-		remoteGame = mergeSupabaseRows(data.game, rows as SupabaseStringRow[]);
-	});
+		const latestVerificationByOffset = new Map<string, SupabaseVerificationRow>();
+		for (const row of (verificationRows ?? []) as SupabaseVerificationRow[]) {
+			const key = row.offset.toLowerCase();
+			if (!latestVerificationByOffset.has(key)) {
+				latestVerificationByOffset.set(key, row);
+			}
+		}
+
+		remoteGame = mergeSupabaseRows(
+			data.game,
+			rows as SupabaseStringRow[],
+			Array.from(latestVerificationByOffset.values()),
+		);
+	}
+
+	function pendingVerifyPayload(entry: StringRecord): string {
+		return JSON.stringify({
+			gameId: game.game,
+			offset: entry.offset,
+		});
+	}
+
+	async function startVerify(entry: StringRecord): Promise<void> {
+		verifyMessage = null;
+		const session = get(supabaseSession);
+		if (!session) {
+			sessionStorage.setItem(PENDING_VERIFY_KEY, pendingVerifyPayload(entry));
+			await signInWithGitHub(window.location.href);
+			return;
+		}
+
+		await completeVerify(entry.offset);
+	}
+
+	async function processPendingVerify(): Promise<void> {
+		const session = get(supabaseSession);
+		if (!session) return;
+
+		const raw = sessionStorage.getItem(PENDING_VERIFY_KEY);
+		if (!raw) return;
+
+		try {
+			const pending = JSON.parse(raw) as { gameId?: string; offset?: string };
+			if (pending.gameId !== game.game || !pending.offset) return;
+			sessionStorage.removeItem(PENDING_VERIFY_KEY);
+			await completeVerify(pending.offset);
+		} catch {
+			sessionStorage.removeItem(PENDING_VERIFY_KEY);
+		}
+	}
+
+	function applyOptimisticVerify(offset: string, sessionUsername?: string): typeof data.game {
+		return {
+			...game,
+			categories: game.categories.map((category) => ({
+				...category,
+				verifiedCount: category.strings.some((entry) => entry.offset === offset && entry.irish && !entry.verified)
+					? category.verifiedCount + 1
+					: category.verifiedCount,
+				statusBreakdown: {
+					...category.statusBreakdown,
+					verified:
+						category.statusBreakdown.verified +
+						(category.strings.some((entry) => entry.offset === offset && entry.irish && !entry.verified) ? 1 : 0),
+					draft:
+						category.statusBreakdown.draft -
+						(category.strings.some((entry) => entry.offset === offset && entry.irish && !entry.verified && !entry.compromised) ? 1 : 0),
+				},
+				strings: category.strings.map((entry) =>
+					entry.offset === offset
+						? {
+								...entry,
+								verified: true,
+								status: entry.compromised ? 'compromised' : 'verified',
+								verifiedBy: sessionUsername ?? entry.verifiedBy,
+								verifiedAt: new Date().toISOString(),
+							}
+						: entry,
+				),
+			})),
+			statusBreakdown: {
+				...game.statusBreakdown,
+				verified: game.statusBreakdown.verified + 1,
+				draft:
+					game.statusBreakdown.draft -
+					(game.categories.some((category) =>
+						category.strings.some((entry) => entry.offset === offset && entry.irish && !entry.verified && !entry.compromised),
+					)
+						? 1
+						: 0),
+			},
+		};
+	}
+
+	async function completeVerify(offset: string): Promise<void> {
+		const client = createSupabaseBrowserClient();
+		const session = get(supabaseSession);
+		if (!client || !session) return;
+		setVerifyBusy(offset, true);
+		verifyMessage = null;
+
+		const previousGame = remoteGame ?? data.game;
+		const sessionUsername =
+			(session.user.user_metadata?.user_name as string | undefined) ??
+			(session.user.user_metadata?.preferred_username as string | undefined) ??
+			(session.user.email ?? undefined);
+
+		const { data: contributor } = await client
+			.from('contributors')
+			.select('user_id')
+			.eq('user_id', session.user.id)
+			.maybeSingle();
+
+		if (!contributor) {
+			verifyMessage = 'Ní ranníocóir thú go fóill.';
+			setVerifyBusy(offset, false);
+			return;
+		}
+
+		remoteGame = applyOptimisticVerify(offset, sessionUsername);
+
+		const { error: updateError } = await client
+			.from('strings')
+			.update({ verified: true, updated_at: new Date().toISOString() })
+			.eq('game_id', game.game)
+			.eq('offset', offset);
+
+		if (updateError) {
+			remoteGame = previousGame;
+			verifyMessage = 'Theip ar an bhfíorú. Bain triail eile as.';
+			setVerifyBusy(offset, false);
+			return;
+		}
+
+		const { error: insertError } = await client.from('verifications').insert({
+			game_id: game.game,
+			offset,
+			user_id: session.user.id,
+			github_username: sessionUsername ?? null,
+		});
+
+		if (insertError) {
+			remoteGame = previousGame;
+			verifyMessage = 'Níorbh fhéidir logáil an fhíoraithe a dhéanamh.';
+			setVerifyBusy(offset, false);
+			return;
+		}
+
+		await refreshFromSupabase();
+		verifyMessage = 'Fíoraíodh an téacs seo sa chluiche.';
+		setVerifyBusy(offset, false);
+	}
 
 	const filteredCategories = $derived.by(() =>
 		game.categories
@@ -209,24 +392,11 @@
 		closeSuggest();
 	}
 
-	function openVerifyIssue(entry: StringRecord): void {
-		const title = `[Native Review] ${entry.offset} · ${entry.english}`;
-		const body = [
-			'## Athbhreithniú Dúchasach',
-			'',
-			`**Cluiche:** ${game.title}`,
-			`**Offset:** ${entry.offset}`,
-			`**Béarla:** ${entry.english}`,
-			`**Aistriúchán reatha:** ${entry.irish || 'Gan aistriú'}`,
-			`**Fad ionchódaithe:** ${entry.used}/${entry.budget}`,
-			'',
-			'Cuir in iúl anseo an bhfuil an leagan Gaeilge nádúrtha agus inghlactha.',
-		].join('\n');
-		const url = new URL(issueNewUrl());
-		url.searchParams.set('title', title);
-		url.searchParams.set('body', body);
-		url.searchParams.set('labels', 'needs-native-review');
-		window.open(url.toString(), '_blank', 'noopener,noreferrer');
+	function verificationTooltip(entry: StringRecord): string {
+		if (!entry.verified) return 'Gan fíorú sa chluiche fós';
+		const who = entry.verifiedBy ? ` ag ${entry.verifiedBy}` : '';
+		const when = entry.verifiedAt ? ` · ${new Date(entry.verifiedAt).toLocaleString()}` : '';
+		return `Fíoraithe sa chluiche${who}${when}`;
 	}
 </script>
 
@@ -285,6 +455,12 @@
 		/>
 	</div>
 
+	{#if verifyMessage}
+		<div class="mb-6 rounded-sm border border-console-green/30 bg-console-green-glow px-4 py-3 text-sm text-console-text">
+			{verifyMessage}
+		</div>
+	{/if}
+
 	<div class="mb-8 flex flex-wrap gap-4 font-mono text-[0.58rem] uppercase tracking-[0.1em] text-console-tertiary">
 		<span class="inline-flex items-center gap-2">
 			<span class="h-2 w-2 rounded-full bg-console-green shadow-[0_0_8px_rgba(46,204,113,0.45)]"></span>
@@ -329,10 +505,17 @@
 											{entry.offset}
 										</td>
 										<td class="w-8 px-2 py-3 align-top">
-											<span
-												class={`mt-1 inline-block h-2 w-2 rounded-full ${statusDotClass(entry.status)}`}
-												title={statusLabel(entry.status)}
-											></span>
+											<div class="relative inline-flex">
+												<span
+													class={`mt-1 inline-block h-2 w-2 rounded-full ${statusDotClass(entry.status)}`}
+													title={statusLabel(entry.status)}
+												></span>
+												{#if entry.verified}
+													<div class="pointer-events-none absolute left-4 top-0 z-10 hidden min-w-52 rounded-sm border border-console-green/30 bg-console-bg-3 px-3 py-2 text-[0.62rem] leading-5 text-console-text shadow-lg group-hover:block">
+														{verificationTooltip(entry)}
+													</div>
+												{/if}
+											</div>
 										</td>
 										<td class="w-[28%] px-2 py-3 align-top font-mono text-[0.72rem] text-console-muted">
 											{entry.english}
@@ -353,11 +536,12 @@
 											<div class="flex justify-end gap-2 opacity-0 transition-opacity group-hover:opacity-100">
 												{#if entry.irish && !entry.verified}
 													<button
-														class="rounded-sm border border-console-green/30 px-2 py-1 font-mono text-[0.56rem] uppercase tracking-[0.06em] text-console-green hover:border-console-green hover:bg-console-green-glow"
-														onclick={() => openVerifyIssue(entry)}
+														class="rounded-sm border border-console-green/30 px-2 py-1 font-mono text-[0.56rem] uppercase tracking-[0.06em] text-console-green hover:border-console-green hover:bg-console-green-glow disabled:cursor-not-allowed disabled:opacity-60"
+														disabled={isVerifyBusy(entry.offset)}
+														onclick={() => startVerify(entry)}
 														type="button"
 													>
-														✓ Fíoraigh
+														{isVerifyBusy(entry.offset) ? '…' : '✓ Fíoraigh'}
 													</button>
 												{/if}
 												<button

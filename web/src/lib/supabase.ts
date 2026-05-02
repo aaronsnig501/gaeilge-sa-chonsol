@@ -30,6 +30,13 @@ export interface SupabaseStringRow {
 	updated_at: string;
 }
 
+export interface SupabaseVerificationRow {
+	game_id: string;
+	offset: string;
+	github_username: string | null;
+	created_at: string;
+}
+
 let browserClient: SupabaseClient | null = null;
 
 function publicSupabaseUrl(): string {
@@ -81,10 +88,23 @@ function emptyStatusBreakdown(): StatusBreakdown {
 	};
 }
 
-function rebuildCategory(category: CategoryStatus, overlay: Map<string, SupabaseStringRow>): CategoryStatus {
+function rebuildCategory(
+	category: CategoryStatus,
+	overlay: Map<string, SupabaseStringRow>,
+	verifications: Map<string, SupabaseVerificationRow>,
+): CategoryStatus {
 	const strings: StringRecord[] = category.strings.map((entry) => {
 		const row = overlay.get(entry.offset.toLowerCase());
-		if (!row) return entry;
+		const verification = verifications.get(entry.offset.toLowerCase());
+		if (!row) {
+			return verification
+				? {
+						...entry,
+						verifiedBy: verification.github_username ?? undefined,
+						verifiedAt: verification.created_at,
+					}
+				: entry;
+		}
 
 		const irish = (row.irish ?? '').trim();
 		return {
@@ -96,7 +116,9 @@ function rebuildCategory(category: CategoryStatus, overlay: Map<string, Supabase
 			verified: row.verified,
 			compromised: row.compromised,
 			status: deriveStringStatus(row),
-			note: (row.note ?? '').trim() || undefined
+			note: (row.note ?? '').trim() || undefined,
+			verifiedBy: verification?.github_username ?? undefined,
+			verifiedAt: verification?.created_at,
 		};
 	});
 
@@ -120,9 +142,16 @@ function rebuildCategory(category: CategoryStatus, overlay: Map<string, Supabase
 	};
 }
 
-export function mergeSupabaseRows(game: GameStatus, rows: SupabaseStringRow[]): GameStatus {
+export function mergeSupabaseRows(
+	game: GameStatus,
+	rows: SupabaseStringRow[],
+	verificationRows: SupabaseVerificationRow[] = [],
+): GameStatus {
 	const overlay = new Map(rows.map((row) => [row.offset.toLowerCase(), row]));
-	const categories = game.categories.map((category) => rebuildCategory(category, overlay));
+	const verifications = new Map(
+		verificationRows.map((row) => [row.offset.toLowerCase(), row]),
+	);
+	const categories = game.categories.map((category) => rebuildCategory(category, overlay, verifications));
 	const total = categories.reduce((sum, category) => sum + category.total, 0);
 	const translated = categories.reduce((sum, category) => sum + category.translated, 0);
 	const statusBreakdown = categories.reduce(
@@ -170,4 +199,16 @@ export async function getInitialSession(cookies: Cookies): Promise<Session | nul
 
 export function isSupabaseBrowserReady(): boolean {
 	return browser && isSupabaseConfigured();
+}
+
+export async function signInWithGitHub(redirectTo: string): Promise<void> {
+	const client = createSupabaseBrowserClient();
+	if (!client) return;
+
+	await client.auth.signInWithOAuth({
+		provider: 'github',
+		options: {
+			redirectTo,
+		},
+	});
 }
