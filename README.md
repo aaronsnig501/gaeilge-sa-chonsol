@@ -166,3 +166,14 @@ python3 scripts/generate_status.py
 The repository also includes a GitHub Actions workflow at
 [`sync-supabase-strings.yml`](/home/aaronsinnott/Documents/projects/romhacks/gaeilge-sa-chonsol/.github/workflows/sync-supabase-strings.yml:1)
 for manual or API-triggered syncs.
+
+To seed or refresh the Supabase `strings` table from the repo CSVs, use:
+
+```bash
+python3 -m pip install supabase
+SUPABASE_URL=... SUPABASE_SERVICE_KEY=... python3 scripts/seed_supabase_from_csv.py
+```
+
+There is also a manual GitHub Actions workflow at
+[`seed-supabase-strings.yml`](/home/aaronsinnott/Documents/projects/romhacks/gaeilge-sa-chonsol/.github/workflows/seed-supabase-strings.yml:1)
+for the initial import.
