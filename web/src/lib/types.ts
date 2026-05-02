@@ -90,6 +90,8 @@ export interface StringRecord {
 	verified: boolean;
 	compromised: boolean;
 	note?: string;
+	verifiedBy?: string;
+	verifiedAt?: string;
 }
 
 export interface GameStatus {
