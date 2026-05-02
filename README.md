@@ -109,3 +109,48 @@ Current command groups are scaffolded for:
 - `release`
 
 The first registered game is `ps1.spyro1`, defined in [`cli/games/ps1/spyro1.py`](/home/aaronsinnott/Documents/projects/romhacks/gaeilge-sa-chonsol/cli/games/ps1/spyro1.py).
+
+## Supabase
+
+The repository now includes an initial Supabase migration at
+[`supabase/migrations/20260502113000_initial_schema.sql`](/home/aaronsinnott/Documents/projects/romhacks/gaeilge-sa-chonsol/supabase/migrations/20260502113000_initial_schema.sql:1)
+covering:
+
+- `strings`
+- `suggestions`
+- `verifications`
+- `contributors`
+
+The `strings` table uses the current repo model:
+- `verified` boolean for in-game confirmation
+- `compromised` boolean for constrained-but-best-available translations
+- `note` for translator context
+
+Environment variable placeholders live in
+[.env.example](/home/aaronsinnott/Documents/projects/romhacks/gaeilge-sa-chonsol/.env.example:1).
+
+Because the current site is deployed as a static SvelteKit build on GitHub Pages,
+the deployed frontend should only use public client-side Supabase values:
+
+- `PUBLIC_SUPABASE_URL`
+- `PUBLIC_SUPABASE_PUBLISHABLE_KEY`
+
+The non-public variables are only for future CI or backend work:
+
+- `SUPABASE_URL`
+- `SUPABASE_ANON_KEY`
+- `SUPABASE_SERVICE_KEY`
+
+Recommended Supabase dashboard security settings:
+- Data API: enabled
+- Automatically expose new tables and functions: disabled
+- Automatic RLS on new public tables: enabled
+
+Repo-side setup covered here:
+- schema migration
+- environment variable placeholders
+
+Still manual outside the repo:
+- create the Supabase project
+- apply the migration in your project
+- add `SUPABASE_URL`, `SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_KEY` to GitHub Actions secrets when CI/server-side Supabase access is needed
