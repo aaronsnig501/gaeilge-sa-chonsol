@@ -15,7 +15,7 @@ if str(REPO_ROOT) not in sys.path:
 
 from cli.games import ps1  # noqa: F401
 from cli.games.registry import GAME_REGISTRY, GameDefinition
-from cli.strings import encoded_irish_length, normalize_translation_status, read_translation_csv
+from cli.strings import derive_translation_status, encoded_irish_length, read_translation_csv
 
 
 DEFAULT_OUTPUT = REPO_ROOT / "web" / "static" / "status.json"
@@ -48,6 +48,14 @@ def empty_status_breakdown() -> dict[str, int]:
     }
 
 
+def empty_flag_counts() -> dict[str, int]:
+    """Return empty per-flag counters."""
+    return {
+        "verified": 0,
+        "compromised": 0,
+    }
+
+
 def build_categories(game: GameDefinition) -> list[dict[str, object]]:
     """Group translation rows by category for a game."""
     assert game.string_table is not None
@@ -61,9 +69,20 @@ def build_categories(game: GameDefinition) -> list[dict[str, object]]:
     for row in rows:
         category = grouped.setdefault(
             row.category,
-            {"total": 0, "translated": 0, "verified": 0, "status_breakdown": empty_status_breakdown(), "strings": []},
+            {
+                "total": 0,
+                "translated": 0,
+                "verified": 0,
+                "status_breakdown": empty_status_breakdown(),
+                "flags": empty_flag_counts(),
+                "strings": [],
+            },
         )
-        status = normalize_translation_status(row.status, row.irish)
+        status = derive_translation_status(
+            irish=row.irish,
+            verified=row.verified,
+            compromised=row.compromised,
+        )
         used = encoded_irish_length(row.irish)
         string_payload: dict[str, object] = {
             "offset": row.offset,
@@ -72,6 +91,8 @@ def build_categories(game: GameDefinition) -> list[dict[str, object]]:
             "english": row.english,
             "irish": row.irish,
             "status": status,
+            "verified": row.verified,
+            "compromised": row.compromised,
         }
         if row.note.strip():
             string_payload["note"] = row.note.strip()
@@ -79,8 +100,11 @@ def build_categories(game: GameDefinition) -> list[dict[str, object]]:
         category["total"] += 1
         if row.irish.strip():
             category["translated"] += 1
-        if status == "verified":
+        if row.verified and row.irish.strip():
             category["verified"] += 1
+            category["flags"]["verified"] += 1
+        if row.compromised and row.irish.strip():
+            category["flags"]["compromised"] += 1
         category["status_breakdown"][status] += 1
         category["strings"].append(string_payload)
 
@@ -92,6 +116,7 @@ def build_categories(game: GameDefinition) -> list[dict[str, object]]:
             "verified": values["verified"],
             "percent": percent(values["translated"], values["total"]),
             "status_breakdown": values["status_breakdown"],
+            "flags": values["flags"],
             "strings": values["strings"],
         }
         for name, values in grouped.items()
@@ -135,8 +160,19 @@ def build_game_status(game: GameDefinition) -> dict[str, object]:
     progress_percent = percent(translated, total)
     short_name = game.key.split(".", 1)[1]
     status_breakdown = empty_status_breakdown()
+    flags = empty_flag_counts()
     for row in rows:
-        status_breakdown[normalize_translation_status(row.status, row.irish)] += 1
+        status_breakdown[
+            derive_translation_status(
+                irish=row.irish,
+                verified=row.verified,
+                compromised=row.compromised,
+            )
+        ] += 1
+        if row.verified and row.irish.strip():
+            flags["verified"] += 1
+        if row.compromised and row.irish.strip():
+            flags["compromised"] += 1
 
     payload: dict[str, object] = {
         "id": short_name,
@@ -154,6 +190,7 @@ def build_game_status(game: GameDefinition) -> dict[str, object]:
             "percent": progress_percent,
         },
         "status_breakdown": status_breakdown,
+        "flags": flags,
         "categories": build_categories(game),
         "region": game.region,
         "serial": game.serial,

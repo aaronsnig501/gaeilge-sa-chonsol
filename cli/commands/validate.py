@@ -23,9 +23,9 @@ def _styled(text: str, style: str) -> str:
 def _status_summary(validation) -> list[str]:
     counts = validation.status_counts
     return [
-        f"✓ {counts['verified']} fíoraithe",
+        f"✓ {validation.verified_count} fíoraithe sa chluiche",
         f"↺ {counts['draft']} dréacht",
-        f"⚠ {counts['compromised']} comhréiteach",
+        f"⚠ {validation.compromised_count} comhréiteach",
         f"○ {counts['untranslated']} gan aistriú",
     ]
 

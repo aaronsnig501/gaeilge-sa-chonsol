@@ -59,7 +59,10 @@
 	);
 
 	function matchesFilters(entry: StringRecord, status: 'all' | StringStatus, query: string): boolean {
-		if (status !== 'all' && entry.status !== status) return false;
+		if (status === 'verified' && !entry.verified) return false;
+		if (status === 'compromised' && !entry.compromised) return false;
+		if (status === 'draft' && (!entry.irish || entry.verified || entry.compromised)) return false;
+		if (status === 'untranslated' && entry.irish) return false;
 		if (!query.trim()) return true;
 		const normalized = query.trim().toLowerCase();
 		return [entry.offset, entry.english, entry.irish, entry.note ?? ''].some((value) =>
@@ -324,7 +327,7 @@
 										</td>
 										<td class="w-32 px-2 py-3 align-top">
 											<div class="flex justify-end gap-2 opacity-0 transition-opacity group-hover:opacity-100">
-												{#if entry.irish && entry.status !== 'verified'}
+												{#if entry.irish && !entry.verified}
 													<button
 														class="rounded-sm border border-console-green/30 px-2 py-1 font-mono text-[0.56rem] uppercase tracking-[0.06em] text-console-green hover:border-console-green hover:bg-console-green-glow"
 														onclick={() => openVerifyIssue(entry)}
