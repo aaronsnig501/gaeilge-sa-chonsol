@@ -81,6 +81,7 @@ export interface GameLinks {
 }
 
 export interface StringRecord {
+	rowId?: string;
 	offset: string;
 	budget: number;
 	used: number;

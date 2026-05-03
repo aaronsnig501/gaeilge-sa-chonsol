@@ -112,7 +112,7 @@
 		const [{ data: rows, error }, { data: verificationRows }, { data: suggestionRows }, voteResult] = await Promise.all([
 			client
 				.from('strings')
-				.select('game_id, offset, english, irish, budget, verified, compromised, note, updated_at')
+				.select('id, game_id, offset, english, irish, budget, verified, compromised, note, updated_at')
 				.eq('game_id', game.game)
 				.order('offset', { ascending: true }),
 			client
@@ -179,6 +179,14 @@
 			gameId: game.game,
 			offset: entry.offset,
 		});
+	}
+
+	function findEntryByOffset(offset: string): StringRecord | undefined {
+		for (const category of game.categories) {
+			const entry = category.strings.find((current) => current.offset === offset);
+			if (entry) return entry;
+		}
+		return undefined;
 	}
 
 	async function startVerify(entry: StringRecord): Promise<void> {
@@ -295,6 +303,13 @@
 		if (!client || !session) return;
 		setVerifyBusy(offset, true);
 		verifyMessage = null;
+		const targetEntry = findEntryByOffset(offset);
+		if (!targetEntry?.rowId) {
+			verifyMessageTone = 'error';
+			verifyMessage = 'Níor aimsíodh an ró Supabase don téacs seo.';
+			setVerifyBusy(offset, false);
+			return;
+		}
 
 		const previousGame = remoteGame ?? data.game;
 		const sessionUsername =
@@ -327,8 +342,7 @@
 		const { error: updateError } = await client
 			.from('strings')
 			.update({ verified: true, updated_at: new Date().toISOString() })
-			.eq('game_id', game.game)
-			.eq('offset', offset);
+			.eq('id', targetEntry.rowId);
 
 		if (updateError) {
 			remoteGame = previousGame;
@@ -837,14 +851,14 @@
 										</td>
 										<td class="w-32 px-2 py-3 align-top">
 											<div class="flex justify-end gap-2 opacity-0 transition-opacity group-hover:opacity-100">
-												{#if entry.irish && !entry.verified}
+												{#if entry.irish}
 													<button
 														class="rounded-sm border border-console-green/30 px-2 py-1 font-mono text-[0.56rem] uppercase tracking-[0.06em] text-console-green hover:border-console-green hover:bg-console-green-glow disabled:cursor-not-allowed disabled:opacity-60"
 														disabled={isVerifyBusy(entry.offset)}
 														onclick={() => startVerify(entry)}
 														type="button"
 													>
-														{isVerifyBusy(entry.offset) ? '…' : '✓ Fíoraigh'}
+														{isVerifyBusy(entry.offset) ? '…' : entry.verified ? '↺ Athfhíoraigh' : '✓ Fíoraigh'}
 													</button>
 												{/if}
 												<button
