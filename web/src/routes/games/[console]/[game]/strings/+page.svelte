@@ -591,6 +591,29 @@
 		}
 	}
 
+	function displayDotClass(entry: StringRecord): string {
+		if (entry.verified) {
+			return 'bg-console-green shadow-[0_0_8px_rgba(46,204,113,0.45)]';
+		}
+		if (entry.compromised) {
+			return 'bg-[#e67e22]';
+		}
+		return statusDotClass(entry.status);
+	}
+
+	function displayDotLabel(entry: StringRecord): string {
+		if (entry.verified && entry.compromised) {
+			return 'Fíoraithe sa chluiche · Comhréiteach';
+		}
+		if (entry.verified) {
+			return 'Fíoraithe sa chluiche';
+		}
+		if (entry.compromised) {
+			return 'Comhréiteach';
+		}
+		return statusLabel(entry.status);
+	}
+
 	function verificationBadgeClass(entry: StringRecord): string {
 		if (entry.verified) {
 			return 'border-console-green/30 bg-console-green-glow text-console-green';
@@ -774,8 +797,8 @@
 										<td class="w-8 px-2 py-3 align-top">
 											<div class="relative inline-flex">
 												<span
-													class={`mt-1 inline-block h-2 w-2 rounded-full ${statusDotClass(entry.status)}`}
-													title={statusLabel(entry.status)}
+													class={`mt-1 inline-block h-2 w-2 rounded-full ${displayDotClass(entry)}`}
+													title={displayDotLabel(entry)}
 												></span>
 												{#if entry.verified}
 													<div class="pointer-events-none absolute left-4 top-0 z-10 hidden min-w-52 rounded-sm border border-console-green/30 bg-console-bg-3 px-3 py-2 text-[0.62rem] leading-5 text-console-text shadow-lg group-hover:block">
