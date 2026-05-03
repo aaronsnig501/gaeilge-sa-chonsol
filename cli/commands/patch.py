@@ -70,6 +70,7 @@ def build_patch(
 
     translated = len(validation.translated_rows)
     applied = translated - len(validation.over_budget)
+    skipped = validation.over_budget
     output_path = output.expanduser().resolve()
     theme = game.theme
 
@@ -86,16 +87,10 @@ def build_patch(
         copy_rom(config.rom, output_path)
         applied, skipped = apply_translations_to_rom(output_path, game.string_table, rows)
         print(_styled(f"Patched {applied} strings into {output_path}", theme.success_style))
-        validation = validation.__class__(
-            rows=validation.rows,
-            translated_rows=validation.translated_rows,
-            untranslated_count=validation.untranslated_count,
-            over_budget=skipped,
-        )
 
-    if validation.over_budget:
-        print(_styled(f"Skipped {len(validation.over_budget)} strings that exceed budget:", "yellow"))
-        for violation in validation.over_budget:
+    if skipped:
+        print(_styled(f"Skipped {len(skipped)} strings that exceed budget:", "yellow"))
+        for violation in skipped:
             print(
                 f"   {_styled(violation.offset, theme.accent_style)}: {violation.encoded} "
                 f"{_styled(f'({violation.encoded_length} bytes, budget {violation.budget})', 'yellow')}"
