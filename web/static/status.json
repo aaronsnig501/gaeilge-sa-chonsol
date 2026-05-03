@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-02T10:57:19Z",
+  "generated": "2026-05-03T08:41:48Z",
   "games": [
     {
       "id": "spyro1",
@@ -9,27 +9,27 @@
       "status": "in-progress",
       "version": "0.1",
       "repo_path": "ps1/spyro/1",
-      "patch_available": false,
+      "patch_available": true,
       "help_wanted": true,
       "progress": {
-        "total": 133,
-        "translated": 22,
-        "percent": 17
+        "total": 222,
+        "translated": 109,
+        "percent": 49
       },
       "status_breakdown": {
         "verified": 0,
-        "draft": 20,
-        "compromised": 2,
-        "untranslated": 111
+        "draft": 58,
+        "compromised": 51,
+        "untranslated": 113
       },
       "flags": {
         "verified": 0,
-        "compromised": 2
+        "compromised": 51
       },
       "categories": [
         {
           "name": "UI Strings",
-          "total": 72,
+          "total": 74,
           "translated": 1,
           "verified": 0,
           "percent": 1,
@@ -37,7 +37,7 @@
             "verified": 0,
             "draft": 1,
             "compromised": 0,
-            "untranslated": 71
+            "untranslated": 73
           },
           "flags": {
             "verified": 0,
@@ -335,10 +335,30 @@
               "compromised": false
             },
             {
+              "offset": "0x12e8",
+              "budget": 12,
+              "used": 0,
+              "english": "HORIZONTAL",
+              "irish": "",
+              "status": "untranslated",
+              "verified": false,
+              "compromised": false
+            },
+            {
               "offset": "0x130c",
               "budget": 11,
               "used": 0,
               "english": "VERTICAL",
+              "irish": "",
+              "status": "untranslated",
+              "verified": false,
+              "compromised": false
+            },
+            {
+              "offset": "0x1358",
+              "budget": 12,
+              "used": 0,
+              "english": "HI SPYRO,",
               "irish": "",
               "status": "untranslated",
               "verified": false,
@@ -837,19 +857,19 @@
         },
         {
           "name": "Balloonist",
-          "total": 21,
-          "translated": 21,
+          "total": 108,
+          "translated": 108,
           "verified": 0,
           "percent": 100,
           "status_breakdown": {
             "verified": 0,
-            "draft": 19,
-            "compromised": 2,
+            "draft": 57,
+            "compromised": 51,
             "untranslated": 0
           },
           "flags": {
             "verified": 0,
-            "compromised": 2
+            "compromised": 51
           },
           "strings": [
             {
@@ -915,6 +935,891 @@
               "compromised": false
             },
             {
+              "offset": "0x2554",
+              "budget": 12,
+              "used": 12,
+              "english": "BEHIND YOU",
+              "irish": "I DO DHIAIDH",
+              "status": "draft",
+              "verified": false,
+              "compromised": false
+            },
+            {
+              "offset": "0x2560",
+              "budget": 20,
+              "used": 12,
+              "english": "IS JUST UP THE HILL",
+              "irish": "SUAS AN CNOC",
+              "status": "draft",
+              "verified": false,
+              "compromised": false
+            },
+            {
+              "offset": "0x2574",
+              "budget": 20,
+              "used": 19,
+              "english": "THE ENTRANCE PORTAL",
+              "irish": "AN TAIRSEACH ISTIGH",
+              "status": "draft",
+              "verified": false,
+              "compromised": false
+            },
+            {
+              "offset": "0x26a4",
+              "budget": 16,
+              "used": 16,
+              "english": "ON WIZARD PEAK.",
+              "irish": "AR BHUAIC DRAOI.",
+              "status": "draft",
+              "verified": false,
+              "compromised": false
+            },
+            {
+              "offset": "0x26b4",
+              "budget": 24,
+              "used": 16,
+              "english": "WELL TO HUNT FOR EGGS",
+              "irish": "AG FIAIGH UIBHE.",
+              "status": "compromised",
+              "verified": false,
+              "compromised": true,
+              "note": "Fragment comhrá; giorraíodh é de bharr an bhuiséid agus braitheann an chiall ar na boscaí eile."
+            },
+            {
+              "offset": "0x26cc",
+              "budget": 20,
+              "used": 19,
+              "english": "I BET YOU WOULD DO",
+              "irish": "GEALL GO nDÉANFAÍ",
+              "status": "compromised",
+              "verified": false,
+              "compromised": true,
+              "note": "Fragment comhrá; giorraíodh é de bharr an bhuiséid agus braitheann an chiall ar na boscaí eile."
+            },
+            {
+              "offset": "0x27c4",
+              "budget": 24,
+              "used": 16,
+              "english": "MAGIC CRAFTERS HOME.",
+              "irish": "I NDOMHAN DRAOI.",
+              "status": "compromised",
+              "verified": false,
+              "compromised": true,
+              "note": "Bh'fhearr liom tagairt níos cruinne do Magic Crafters, ach giorraíodh é chun luí isteach sa spás."
+            },
+            {
+              "offset": "0x27dc",
+              "budget": 24,
+              "used": 16,
+              "english": "THIEVES RIGHT HERE IN",
+              "irish": "GADAITHE ANSEO I",
+              "status": "compromised",
+              "verified": false,
+              "compromised": true,
+              "note": "Ilíne scartha; tá an leagan ag brath ar an gcéad bhosca eile chun an abairt a chríochnú."
+            },
+            {
+              "offset": "0x27f4",
+              "budget": 24,
+              "used": 10,
+              "english": "THERE ARE A o\"'X\u0015",
+              "irish": "TÁ CÚPLA",
+              "status": "compromised",
+              "verified": false,
+              "compromised": true,
+              "note": "Ilíne scartha; tá an leagan ag brath ar an gcéad bhosca eile chun an abairt a chríochnú."
+            },
+            {
+              "offset": "0x2918",
+              "budget": 16,
+              "used": 14,
+              "english": "IN CLIFF TOWN.",
+              "irish": "I mBAILE AILL.",
+              "status": "compromised",
+              "verified": false,
+              "compromised": true,
+              "note": "Ilíne scartha; tá an leagan ag brath ar na boscaí eile chun an chiall a chríochnú."
+            },
+            {
+              "offset": "0x2928",
+              "budget": 20,
+              "used": 17,
+              "english": "A THIEF HIDING OUT",
+              "irish": "GADAÍ I bhFOLACH",
+              "status": "draft",
+              "verified": false,
+              "compromised": false
+            },
+            {
+              "offset": "0x293c",
+              "budget": 24,
+              "used": 22,
+              "english": "I'VE HEARD A RUMOR OF",
+              "irish": "CHUALA MÉ RÁFLA FAOI",
+              "status": "draft",
+              "verified": false,
+              "compromised": false
+            },
+            {
+              "offset": "0x2a64",
+              "budget": 16,
+              "used": 11,
+              "english": "IN DRY CANYON.",
+              "irish": "I LOG TÍR.",
+              "status": "draft",
+              "verified": false,
+              "compromised": false
+            },
+            {
+              "offset": "0x2a74",
+              "budget": 20,
+              "used": 18,
+              "english": "ABOUT A PESKY THIEF",
+              "irish": "FAOI GHADAÍ DÁNA",
+              "status": "draft",
+              "verified": false,
+              "compromised": false
+            },
+            {
+              "offset": "0x2a88",
+              "budget": 20,
+              "used": 20,
+              "english": "MY FRIEND TOLD ME",
+              "irish": "DÚIRT MO CHARA LIOM",
+              "status": "draft",
+              "verified": false,
+              "compromised": false
+            },
+            {
+              "offset": "0x2bc0",
+              "budget": 12,
+              "used": 12,
+              "english": "STONE HILL.",
+              "irish": "CNOC CLOICH.",
+              "status": "draft",
+              "verified": false,
+              "compromised": false
+            },
+            {
+              "offset": "0x2bcc",
+              "budget": 20,
+              "used": 18,
+              "english": "RUNNING AROUND IN",
+              "irish": "AG RITH TIMPEALL I",
+              "status": "compromised",
+              "verified": false,
+              "compromised": true,
+              "note": "Ilíne scartha; tá an leagan giorraithe agus braitheann sé ar an líne roimhe agus ar an líne ina dhiaidh."
+            },
+            {
+              "offset": "0x2be0",
+              "budget": 24,
+              "used": 18,
+              "english": "I THINK I SAW A THIEF",
+              "irish": "CHONAIC MÉ GADAÍ",
+              "status": "compromised",
+              "verified": false,
+              "compromised": true,
+              "note": "Cailleann sé 'I think', ach bhí orm an líne a ghiorrú chun fanacht laistigh den bhuiséad."
+            },
+            {
+              "offset": "0x2cec",
+              "budget": 24,
+              "used": 17,
+              "english": "PLACE YOU WILL FIND.",
+              "irish": "A GHEOBHAIDH TÚ.",
+              "status": "compromised",
+              "verified": false,
+              "compromised": true,
+              "note": "Ilíne scartha; giorraíodh é de bharr buiséid agus tá cuid den chomhthéacs fágtha sna boscaí eile."
+            },
+            {
+              "offset": "0x2d04",
+              "budget": 20,
+              "used": 19,
+              "english": "THE MOST FRIENDLY",
+              "irish": "AN CEANN IS CÁIRD.",
+              "status": "compromised",
+              "verified": false,
+              "compromised": true,
+              "note": "Compromised: giorraíodh 'the most friendly place' chun luí sa bhuiséad."
+            },
+            {
+              "offset": "0x2d18",
+              "budget": 24,
+              "used": 24,
+              "english": "GNASTY'S WORLD IS NOT",
+              "irish": "NÍ hÉ DOMHAN GNASTY AN",
+              "status": "compromised",
+              "verified": false,
+              "compromised": true,
+              "note": "Ilíne scartha; tá an leagan ag brath ar an gcéad bhosca eile chun an abairt a chríochnú."
+            },
+            {
+              "offset": "0x2ddc",
+              "budget": 20,
+              "used": 12,
+              "english": "LIES AHEAD OF YOU.",
+              "irish": "ATÁ ROMHAT.",
+              "status": "compromised",
+              "verified": false,
+              "compromised": true,
+              "note": "Ilíne scartha; tá an leagan ag brath ar an líne roimhe seo."
+            },
+            {
+              "offset": "0x2df0",
+              "budget": 24,
+              "used": 20,
+              "english": "I HOPE YOU KNOW WHAT",
+              "irish": "TÁ A FHIOS AGAT CAD",
+              "status": "compromised",
+              "verified": false,
+              "compromised": true,
+              "note": "Giorraíodh 'I hope' amach chun an chiall a choinneáil laistigh den bhuiséad."
+            },
+            {
+              "offset": "0x2e08",
+              "budget": 20,
+              "used": 10,
+              "english": "WELL DONE, SPYRO!",
+              "irish": "MAITH THÚ",
+              "status": "draft",
+              "verified": false,
+              "compromised": false
+            },
+            {
+              "offset": "0x2f58",
+              "budget": 20,
+              "used": 11,
+              "english": "BUT BEWARE, SPYRO.",
+              "irish": "ACH SEACHAN",
+              "status": "draft",
+              "verified": false,
+              "compromised": false
+            },
+            {
+              "offset": "0x2f6c",
+              "budget": 24,
+              "used": 24,
+              "english": "NICE JOB COLLECTING SO",
+              "irish": "MAITH THÚ AG BAILIÚ AN",
+              "status": "compromised",
+              "verified": false,
+              "compromised": true,
+              "note": "Ilíne scartha; fanann an chiall iomlán sna boscaí in aice láimhe."
+            },
+            {
+              "offset": "0x30cc",
+              "budget": 24,
+              "used": 19,
+              "english": "6000 STOLEN TREASURES.",
+              "irish": "6000 TAISCE GOIDTE.",
+              "status": "draft",
+              "verified": false,
+              "compromised": false
+            },
+            {
+              "offset": "0x30e4",
+              "budget": 20,
+              "used": 18,
+              "english": "YOU HAVE RECOVERED",
+              "irish": "ATÁ AIMSITHE AGAT",
+              "status": "compromised",
+              "verified": false,
+              "compromised": true,
+              "note": "Compromised: giorraíodh an briathar chun fanacht sa bhuiséad."
+            },
+            {
+              "offset": "0x30f8",
+              "budget": 24,
+              "used": 15,
+              "english": "COME SEE ME AGAIN WHEN",
+              "irish": "TAR AR AIS NUAR",
+              "status": "draft",
+              "verified": false,
+              "compromised": false
+            },
+            {
+              "offset": "0x325c",
+              "budget": 24,
+              "used": 20,
+              "english": "GET ALL THE GOOD JOBS.",
+              "irish": "NA POIST DEASA UILE.",
+              "status": "compromised",
+              "verified": false,
+              "compromised": true,
+              "note": "Ilíne scartha; cailleann sé cuid den tógáil bhriathartha ach coinníonn sé an bhrí."
+            },
+            {
+              "offset": "0x3274",
+              "budget": 24,
+              "used": 18,
+              "english": "BALLOONS. THE FAIRIES",
+              "irish": "BALÚIN. NA SÍOGA",
+              "status": "compromised",
+              "verified": false,
+              "compromised": true,
+              "note": "Ilíne scartha; tá an chiall ag brath ar an líne roimhe seo."
+            },
+            {
+              "offset": "0x328c",
+              "budget": 24,
+              "used": 20,
+              "english": "I'M TIRED OF RENTING",
+              "irish": "TÁ TUIRSE ORM CÍOS",
+              "status": "compromised",
+              "verified": false,
+              "compromised": true,
+              "note": "Compromised: giorraíodh an líne agus cailleadh cuid den nádúrthacht mar gheall ar an spás."
+            },
+            {
+              "offset": "0x33a8",
+              "budget": 24,
+              "used": 24,
+              "english": "DREAM WEAVERS WORLD.",
+              "irish": "DOMHAN NA bhFÍTHEOIRÍ.",
+              "status": "draft",
+              "verified": false,
+              "compromised": false
+            },
+            {
+              "offset": "0x33c0",
+              "budget": 24,
+              "used": 20,
+              "english": "AND I'LL SHOW YOU THE",
+              "irish": "TAISPEÁNFADH MÉ AN",
+              "status": "compromised",
+              "verified": false,
+              "compromised": true,
+              "note": "Ilíne scartha; tá an chiall iomlán ag brath ar an gcéad bhosca eile."
+            },
+            {
+              "offset": "0x33d8",
+              "budget": 20,
+              "used": 16,
+              "english": "JUMP IN THE BALLOON",
+              "irish": "LÉIM SA BHALÚN",
+              "status": "compromised",
+              "verified": false,
+              "compromised": true,
+              "note": "Ilíne scartha; giorraíodh an líne chun fanacht sa bhuiséad."
+            },
+            {
+              "offset": "0x3524",
+              "budget": 20,
+              "used": 14,
+              "english": "TO PATCH THAT LEAK.",
+              "irish": "É A DHEISIÚ.",
+              "status": "compromised",
+              "verified": false,
+              "compromised": true,
+              "note": "Compromised: cailleadh 'that leak' go sonrach mar gheall ar an spás."
+            },
+            {
+              "offset": "0x3538",
+              "budget": 24,
+              "used": 22,
+              "english": "I BARELY HAD A CHANCE",
+              "irish": "IS AR ÉIGEAN A FUARAS",
+              "status": "draft",
+              "verified": false,
+              "compromised": false
+            },
+            {
+              "offset": "0x3550",
+              "budget": 24,
+              "used": 8,
+              "english": "WOW, THAT WAS QUICK!",
+              "irish": "A MHANNA",
+              "status": "draft",
+              "verified": false,
+              "compromised": false
+            },
+            {
+              "offset": "0x368c",
+              "budget": 20,
+              "used": 17,
+              "english": "HAVE BEEN RESCUED.",
+              "irish": "A SHÁBHÁILTEAR.",
+              "status": "draft",
+              "verified": false,
+              "compromised": false
+            },
+            {
+              "offset": "0x36a0",
+              "budget": 24,
+              "used": 22,
+              "english": "THAT SO MANY DRAGONS",
+              "irish": "GO BHFUIL AN LÍON SIN",
+              "status": "draft",
+              "verified": false,
+              "compromised": false
+            },
+            {
+              "offset": "0x36b8",
+              "budget": 24,
+              "used": 20,
+              "english": "I FEEL MUCH BETTER NOW",
+              "irish": "BRAITHIM FEARR ANOIS",
+              "status": "draft",
+              "verified": false,
+              "compromised": false
+            },
+            {
+              "offset": "0x37cc",
+              "budget": 20,
+              "used": 20,
+              "english": "BETTER AT NIGHT.",
+              "irish": "IS FEARR SAN OÍCHE.",
+              "status": "draft",
+              "verified": false,
+              "compromised": false
+            },
+            {
+              "offset": "0x37e0",
+              "budget": 24,
+              "used": 18,
+              "english": "I'LL BE ABLE TO SLEEP",
+              "irish": "BEIDH CODLADH AGAM",
+              "status": "draft",
+              "verified": false,
+              "compromised": false
+            },
+            {
+              "offset": "0x37f8",
+              "budget": 24,
+              "used": 20,
+              "english": "RESCUE 5\u0012*QI\u0011\u0003\\=\u0002",
+              "irish": "SÁBHÁIL 50 DHRAGAN",
+              "status": "compromised",
+              "verified": false,
+              "compromised": true,
+              "note": "Compromised: giorraíodh an líne agus braitheann an t-impireas ar na boscaí comharsanacha."
+            },
+            {
+              "offset": "0x3938",
+              "budget": 24,
+              "used": 20,
+              "english": "FEEL A LITTLE BETTER.",
+              "irish": "MOTHÓIDH MÉ FEARR.",
+              "status": "draft",
+              "verified": false,
+              "compromised": false
+            },
+            {
+              "offset": "0x3950",
+              "budget": 24,
+              "used": 21,
+              "english": "50 DRAGONS THEN I'LL",
+              "irish": "50 DRAGAN ANSIN BEIDH",
+              "status": "compromised",
+              "verified": false,
+              "compromised": true,
+              "note": "Ilíne scartha; níl an abairt iomlán ann sa bhosca seo amháin."
+            },
+            {
+              "offset": "0x3968",
+              "budget": 24,
+              "used": 19,
+              "english": "MAYBE ONCE YOU RESCUE",
+              "irish": "BÉIDIR TAR ÉIS 50",
+              "status": "compromised",
+              "verified": false,
+              "compromised": true,
+              "note": "Compromised: cailleadh an chuid deiridh den choinníoll de bharr an bhuiséid."
+            },
+            {
+              "offset": "0x3aa8",
+              "budget": 20,
+              "used": 12,
+              "english": "TRAPPED IN CRYSTAL.",
+              "irish": "I gCRIOSTAL.",
+              "status": "compromised",
+              "verified": false,
+              "compromised": true,
+              "note": "Ilíne scartha; fágadh an chuid eile den abairt sna boscaí eile."
+            },
+            {
+              "offset": "0x3abc",
+              "budget": 24,
+              "used": 18,
+              "english": "OF THE DRAGONS STILL",
+              "irish": "DE NA DRAGAIN FÓS",
+              "status": "draft",
+              "verified": false,
+              "compromised": false
+            },
+            {
+              "offset": "0x3ad4",
+              "budget": 24,
+              "used": 20,
+              "english": "I FEEL SORRY FOR ALL",
+              "irish": "TRUA LIOM NA DRAGAIN",
+              "status": "draft",
+              "verified": false,
+              "compromised": false
+            },
+            {
+              "offset": "0x3b70",
+              "budget": 20,
+              "used": 17,
+              "english": "BEAST MAKERS WORLD",
+              "irish": "DOMHAN FIADHAITHE",
+              "status": "draft",
+              "verified": false,
+              "compromised": false
+            },
+            {
+              "offset": "0x3c74",
+              "budget": 16,
+              "used": 16,
+              "english": "THAN YOU LOOK.",
+              "irish": "NÁ A SHÍLFEÁ.",
+              "status": "draft",
+              "verified": false,
+              "compromised": false
+            },
+            {
+              "offset": "0x3c84",
+              "budget": 20,
+              "used": 13,
+              "english": "YOU MUST BE FASTER",
+              "irish": "IS TAPAÍ TÚ",
+              "status": "draft",
+              "verified": false,
+              "compromised": false
+            },
+            {
+              "offset": "0x3c98",
+              "budget": 20,
+              "used": 11,
+              "english": "GREAT WORK SPYRO!",
+              "irish": "OBAIR MHÓR",
+              "status": "draft",
+              "verified": false,
+              "compromised": false
+            },
+            {
+              "offset": "0x3d9c",
+              "budget": 20,
+              "used": 13,
+              "english": "OUR DRAGON EGGS.",
+              "irish": "ÁR nUACHAIS.",
+              "status": "compromised",
+              "verified": false,
+              "compromised": true,
+              "note": "Compromised: giorraíodh 'dragon eggs' go 'uachaís' chun luí sa bhuiséad."
+            },
+            {
+              "offset": "0x3db0",
+              "budget": 24,
+              "used": 19,
+              "english": "RECOVERING SO MANY OF",
+              "irish": "AG BAILIÚ AN CHUID",
+              "status": "compromised",
+              "verified": false,
+              "compromised": true,
+              "note": "Ilíne scartha; tá an chiall iomlán ag brath ar na boscaí eile."
+            },
+            {
+              "offset": "0x3dc8",
+              "budget": 24,
+              "used": 20,
+              "english": "THANK YOU, SPYRO, FOR",
+              "irish": "GO RAIBH MAITH AGAT,",
+              "status": "draft",
+              "verified": false,
+              "compromised": false
+            },
+            {
+              "offset": "0x3ef0",
+              "budget": 24,
+              "used": 18,
+              "english": "THOSE 5 DRAGON EGGS.",
+              "irish": "NA 5 HUACHAIS SIN.",
+              "status": "draft",
+              "verified": false,
+              "compromised": false
+            },
+            {
+              "offset": "0x3f08",
+              "budget": 24,
+              "used": 15,
+              "english": "CAN HELP YOU RECOVER",
+              "irish": "IS FÉIDIR LIOM",
+              "status": "compromised",
+              "verified": false,
+              "compromised": true,
+              "note": "Compromised: giorraíodh an líne agus fágadh an cuspóir don chéad bhosca eile."
+            },
+            {
+              "offset": "0x3f20",
+              "budget": 20,
+              "used": 19,
+              "english": "HEY SPYRO, MAYBE I",
+              "irish": "A SPYRO, BÉIDIR GO",
+              "status": "compromised",
+              "verified": false,
+              "compromised": true,
+              "note": "Ilíne scartha; ní sheasann sé leis féin ach oibríonn sé sa seicheamh."
+            },
+            {
+              "offset": "0x403c",
+              "budget": 24,
+              "used": 19,
+              "english": "FROM THEM, WOULD YOU?",
+              "irish": "UATHU, AN NDÉANFA?",
+              "status": "compromised",
+              "verified": false,
+              "compromised": true,
+              "note": "Ilíne scartha; tá an leagan giorraithe agus ag brath ar an gcomhthéacs roimhe."
+            },
+            {
+              "offset": "0x4054",
+              "budget": 24,
+              "used": 18,
+              "english": "RECOVER 5 DRAGON EGGS",
+              "irish": "BAILIGH 5 HUACHAIS",
+              "status": "draft",
+              "verified": false,
+              "compromised": false
+            },
+            {
+              "offset": "0x406c",
+              "budget": 20,
+              "used": 17,
+              "english": "DO ME A FAVOR AND",
+              "irish": "DÉAN FÁBHAR DOM",
+              "status": "compromised",
+              "verified": false,
+              "compromised": true,
+              "note": "Compromised: cailleadh an 'and' de bharr an bhuiséid."
+            },
+            {
+              "offset": "0x4168",
+              "budget": 16,
+              "used": 15,
+              "english": "OVER THE PLACE.",
+              "irish": "AR FUD AN ÁIT.",
+              "status": "draft",
+              "verified": false,
+              "compromised": false
+            },
+            {
+              "offset": "0x4178",
+              "budget": 20,
+              "used": 17,
+              "english": "ARE HIDING OUT ALL",
+              "irish": "I bhFOLACH AR FUD",
+              "status": "compromised",
+              "verified": false,
+              "compromised": true,
+              "note": "Ilíne scartha; níl an líne iomlán aici gan an bhosca eile."
+            },
+            {
+              "offset": "0x418c",
+              "budget": 24,
+              "used": 20,
+              "english": "THOSE SNEAKY THIEVES",
+              "irish": "NA GADAITHE SLEAMHNA",
+              "status": "draft",
+              "verified": false,
+              "compromised": false
+            },
+            {
+              "offset": "0x42a8",
+              "budget": 20,
+              "used": 19,
+              "english": "IF YOU ARE READY.",
+              "irish": "MÁ TÁ TÚ RÉIDH.",
+              "status": "draft",
+              "verified": false,
+              "compromised": false
+            },
+            {
+              "offset": "0x42bc",
+              "budget": 24,
+              "used": 23,
+              "english": "MAGIC CRAFTERS WORLD",
+              "irish": "DOMHAN NA CEARDAÍOCHTA",
+              "status": "compromised",
+              "verified": false,
+              "compromised": true,
+              "note": "Compromised: úsáidtear an leagan fada anseo ach tá an t-ord focail beagán neamhghnách i gcomhthéacs an bhailúin."
+            },
+            {
+              "offset": "0x42d4",
+              "budget": 20,
+              "used": 17,
+              "english": "HOP ABOARD FOR THE",
+              "irish": "LÉIM ISTEACH DON",
+              "status": "compromised",
+              "verified": false,
+              "compromised": true,
+              "note": "Ilíne scartha; fágann sé an ceann scríbe don chéad bhosca eile."
+            },
+            {
+              "offset": "0x43fc",
+              "budget": 24,
+              "used": 19,
+              "english": "BECOME A REAL DRAGON.",
+              "irish": "I DO DHRAGAN CEART.",
+              "status": "compromised",
+              "verified": false,
+              "compromised": true,
+              "note": "Compromised: cailleadh an briathar 'become' go soiléir de bharr an bhuiséid."
+            },
+            {
+              "offset": "0x4414",
+              "budget": 20,
+              "used": 19,
+              "english": "ONE DAY YOU MIGHT",
+              "irish": "LÁ EIGIN BEIDH TÚ",
+              "status": "compromised",
+              "verified": false,
+              "compromised": true,
+              "note": "Ilíne scartha; tá an líne spleách ar an gcéad bhosca eile."
+            },
+            {
+              "offset": "0x4428",
+              "budget": 16,
+              "used": 14,
+              "english": "NICE JOB SPYRO!",
+              "irish": "SPYRO IONTACH!",
+              "status": "compromised",
+              "verified": false,
+              "compromised": true,
+              "note": "Compromised: giorraíodh an frása chun luí sa bhuiséad 16."
+            },
+            {
+              "offset": "0x4560",
+              "budget": 24,
+              "used": 20,
+              "english": "MUCH STOLEN TREASURE.",
+              "irish": "AN MÉID SIN TAISCE.",
+              "status": "compromised",
+              "verified": false,
+              "compromised": true,
+              "note": "Compromised: cailleadh 'goidte' chun fanacht sa bhuiséad."
+            },
+            {
+              "offset": "0x4578",
+              "budget": 20,
+              "used": 14,
+              "english": "FAST YOU FOUND SO",
+              "irish": "CHOMH TAPA SIN",
+              "status": "compromised",
+              "verified": false,
+              "compromised": true,
+              "note": "Ilíne scartha; níl an tógáil iomlán ann gan an chéad bhosca eile."
+            },
+            {
+              "offset": "0x458c",
+              "budget": 20,
+              "used": 18,
+              "english": "I CAN'T BELIEVE HOW",
+              "irish": "NÍ CHREIDIM CHOMH",
+              "status": "compromised",
+              "verified": false,
+              "compromised": true,
+              "note": "Ilíne scartha; braitheann sé ar an gcéad bhosca eile chun an chiall a chomhlíonadh."
+            },
+            {
+              "offset": "0x46a8",
+              "budget": 24,
+              "used": 19,
+              "english": "1200 STOLEN TREASURES.",
+              "irish": "1200 TAISCE GOIDTE.",
+              "status": "draft",
+              "verified": false,
+              "compromised": false
+            },
+            {
+              "offset": "0x46c0",
+              "budget": 16,
+              "used": 13,
+              "english": "FOR YOU TO FIND",
+              "irish": "LEAT LE FÁIL",
+              "status": "draft",
+              "verified": false,
+              "compromised": false
+            },
+            {
+              "offset": "0x46d0",
+              "budget": 20,
+              "used": 15,
+              "english": "I'M STILL WAITING",
+              "irish": "FÓS AG FANACHT",
+              "status": "compromised",
+              "verified": false,
+              "compromised": true,
+              "note": "Compromised: cailleadh an chéad phearsa chun an líne a ghiorrú."
+            },
+            {
+              "offset": "0x47f0",
+              "budget": 24,
+              "used": 23,
+              "english": "I'LL SHOW IT TO @|_",
+              "irish": "TAISPEÁNFADH MÉ DHUIT",
+              "status": "compromised",
+              "verified": false,
+              "compromised": true,
+              "note": "Compromised: tá an bunlíne dumpáilte go dona sa fhoinse agus ní léir an réad go cinnte."
+            },
+            {
+              "offset": "0x4808",
+              "budget": 24,
+              "used": 18,
+              "english": "1200 STOLEN TREASURES",
+              "irish": "1200 TAISCE GOIDTE",
+              "status": "draft",
+              "verified": false,
+              "compromised": false
+            },
+            {
+              "offset": "0x4820",
+              "budget": 20,
+              "used": 17,
+              "english": "MAYBE IF YOU FIND",
+              "irish": "MÁ FHAIGHIDH TÚ",
+              "status": "compromised",
+              "verified": false,
+              "compromised": true,
+              "note": "Ilíne scartha; giorraíodh an tús chun an líne a choinneáil gearr."
+            },
+            {
+              "offset": "0x4940",
+              "budget": 20,
+              "used": 16,
+              "english": "AND VERY DANGEROUS.",
+              "irish": "AGUS AN-DHÁNTA.",
+              "status": "draft",
+              "verified": false,
+              "compromised": false
+            },
+            {
+              "offset": "0x4954",
+              "budget": 20,
+              "used": 14,
+              "english": "WORLD IS FAR AWAY",
+              "irish": "I bhFAD UAINN.",
+              "status": "compromised",
+              "verified": false,
+              "compromised": true,
+              "note": "Compromised: giorraíodh an abairt agus fágadh 'world' sa líne roimhe seo."
+            },
+            {
+              "offset": "0x4968",
+              "budget": 20,
+              "used": 20,
+              "english": "THE MAGIC CRAFTERS",
+              "irish": "DOMHAN CEARDAÍOCHTA",
+              "status": "compromised",
+              "verified": false,
+              "compromised": true,
+              "note": "Compromised: giorraíodh an t-ainm iomlán chun luí sa bhuiséad."
+            },
+            {
               "offset": "0x4a70",
               "budget": 19,
               "used": 16,
@@ -975,6 +1880,38 @@
               "compromised": false
             },
             {
+              "offset": "0x4d00",
+              "budget": 16,
+              "used": 15,
+              "english": "DRAGONS, SPYRO.",
+              "irish": "DRAGAIN, SPYRO.",
+              "status": "draft",
+              "verified": false,
+              "compromised": false
+            },
+            {
+              "offset": "0x4d10",
+              "budget": 20,
+              "used": 12,
+              "english": "BEEN BUSY RESCUING",
+              "irish": "AG SÁBHÁIL",
+              "status": "compromised",
+              "verified": false,
+              "compromised": true,
+              "note": "Ilíne scartha; fágadh an briathar gearr chun fanacht sa bhuiséad."
+            },
+            {
+              "offset": "0x4d24",
+              "budget": 24,
+              "used": 15,
+              "english": "WOW!  I SEE YOU HAVE",
+              "irish": "WOW! FEICIM GUR",
+              "status": "compromised",
+              "verified": false,
+              "compromised": true,
+              "note": "Ilíne scartha; tá an chuid eile den abairt sa bhosca ina dhiaidh."
+            },
+            {
               "offset": "0x4e24",
               "budget": 19,
               "used": 19,
@@ -1017,9 +1954,9 @@
             {
               "offset": "0x4f74",
               "budget": 19,
-              "used": 13,
+              "used": 14,
               "english": "THIS BALLOON TO FLY",
-              "irish": "AN BALLON SEO",
+              "irish": "AN BALLÚN SEO",
               "status": "draft",
               "verified": false,
               "compromised": false
@@ -1049,10 +1986,11 @@
               "budget": 19,
               "used": 17,
               "english": "WORTH BY RESCUING",
-              "irish": "DO FHIÚNTAS AGUS",
-              "status": "draft",
+              "irish": "DO FHIÚNTAS TRÍ",
+              "status": "compromised",
               "verified": false,
-              "compromised": false
+              "compromised": true,
+              "note": "Ba é an leagan iomlán a bhí uaim ná \"Má chruthaíonn tú do fhiúntas trí 10 ndragan a shábháil...\". Oibríonn an scoilt nua níos fearr ná \"DO FHIÚNTAS AGUS\", ach cailleann sí an t-ábhar \"tú\" de bharr an bhuiséid 17/19/15."
             },
             {
               "offset": "0x50a4",
@@ -1060,9 +1998,10 @@
               "used": 15,
               "english": "IF YOU PROVE YOUR",
               "irish": "MÁ CRUTHAÍONN",
-              "status": "draft",
+              "status": "compromised",
               "verified": false,
-              "compromised": false
+              "compromised": true,
+              "note": "Ba é an leagan iomlán a bhí uaim ná \"Má chruthaíonn tú do fhiúntas trí 10 ndragan a shábháil...\". Oibríonn an scoilt nua níos fearr ná \"DO FHIÚNTAS AGUS\", ach cailleann sí an t-ábhar \"tú\" de bharr an bhuiséid 17/19/15."
             }
           ]
         },
