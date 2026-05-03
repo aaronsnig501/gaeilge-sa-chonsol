@@ -54,6 +54,8 @@ jobs:
         working-directory: web
         env:
           BASE_PATH: /${{ github.event.repository.name }}
+          PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.PUBLIC_SUPABASE_PUBLISHABLE_KEY }}
         run: npm run build
 
       - name: Upload Pages artifact

@@ -55,7 +55,9 @@
 	let suggestedIrish = $state('');
 	let suggestionNote = $state('');
 	let verifyMessage = $state<string | null>(null);
+	let verifyMessageTone = $state<'success' | 'error'>('success');
 	let suggestionMessage = $state<string | null>(null);
+	let suggestionMessageTone = $state<'success' | 'error'>('success');
 	let verificationBusyOffsets = $state<Record<string, boolean>>({});
 	let suggestionBusy = $state(false);
 	let suggestionBusyOffsets = $state<Record<string, boolean>>({});
@@ -156,11 +158,18 @@
 			return;
 		}
 
-		const { data } = await client
+		const { data, error } = await client
 			.from('contributors')
 			.select('user_id')
 			.eq('user_id', session.user.id)
 			.maybeSingle();
+
+		if (error) {
+			contributor = false;
+			verifyMessageTone = 'error';
+			verifyMessage = `Theip ar sheiceáil ranníocóra: ${error.message}`;
+			return;
+		}
 
 		contributor = Boolean(data);
 	}
@@ -174,6 +183,11 @@
 
 	async function startVerify(entry: StringRecord): Promise<void> {
 		verifyMessage = null;
+		if (!isSupabaseBrowserReady()) {
+			verifyMessageTone = 'error';
+			verifyMessage = 'Níl an ghné seo ar fáil faoi láthair.';
+			return;
+		}
 		const session = get(supabaseSession);
 		if (!session) {
 			sessionStorage.setItem(PENDING_VERIFY_KEY, pendingVerifyPayload(entry));
@@ -288,13 +302,21 @@
 			(session.user.user_metadata?.preferred_username as string | undefined) ??
 			(session.user.email ?? undefined);
 
-		const { data: contributor } = await client
+		const { data: contributorRow, error: contributorError } = await client
 			.from('contributors')
 			.select('user_id')
 			.eq('user_id', session.user.id)
 			.maybeSingle();
 
-		if (!contributor) {
+		if (contributorError) {
+			verifyMessageTone = 'error';
+			verifyMessage = `Theip ar sheiceáil ranníocóra: ${contributorError.message}`;
+			setVerifyBusy(offset, false);
+			return;
+		}
+
+		if (!contributorRow) {
+			verifyMessageTone = 'error';
 			verifyMessage = 'Ní ranníocóir thú go fóill.';
 			setVerifyBusy(offset, false);
 			return;
@@ -310,6 +332,7 @@
 
 		if (updateError) {
 			remoteGame = previousGame;
+			verifyMessageTone = 'error';
 			verifyMessage = 'Theip ar an bhfíorú. Bain triail eile as.';
 			setVerifyBusy(offset, false);
 			return;
@@ -324,12 +347,14 @@
 
 		if (insertError) {
 			remoteGame = previousGame;
+			verifyMessageTone = 'error';
 			verifyMessage = 'Níorbh fhéidir logáil an fhíoraithe a dhéanamh.';
 			setVerifyBusy(offset, false);
 			return;
 		}
 
 		await refreshFromSupabase();
+		verifyMessageTone = 'success';
 		verifyMessage = 'Fíoraíodh an téacs seo sa chluiche.';
 		await refreshContributorState();
 		setVerifyBusy(offset, false);
@@ -371,6 +396,11 @@
 	async function submitSuggestionFromPanel(): Promise<void> {
 		if (!selectedEntry) return;
 		suggestionMessage = null;
+		if (!isSupabaseBrowserReady()) {
+			suggestionMessageTone = 'error';
+			suggestionMessage = 'Níl an ghné seo ar fáil faoi láthair.';
+			return;
+		}
 		const session = get(supabaseSession);
 		if (!session) {
 			sessionStorage.setItem(PENDING_SUGGEST_KEY, pendingSuggestionPayload(selectedEntry));
@@ -385,7 +415,11 @@
 		if (suggestion.userHasUpvoted) return;
 		const client = createSupabaseBrowserClient();
 		const session = get(supabaseSession);
-		if (!client) return;
+		if (!client) {
+			suggestionMessageTone = 'error';
+			suggestionMessage = 'Níl vótáil beo cumasaithe ar an suíomh seo fós.';
+			return;
+		}
 		if (!session) {
 			await signInWithGitHub(window.location.href);
 			return;
@@ -399,6 +433,7 @@
 		});
 
 		if (error) {
+			suggestionMessageTone = 'error';
 			suggestionMessage = 'Níor éirigh leis an vóta. B’fhéidir go ndearna tú vóta cheana féin.';
 			setSuggestionBusy(suggestion.id, false);
 			return;
@@ -411,7 +446,12 @@
 	async function acceptSuggestion(entry: StringRecord, suggestion: SuggestionRecord): Promise<void> {
 		const client = createSupabaseBrowserClient();
 		const session = get(supabaseSession);
-		if (!client || !session) return;
+		if (!client) {
+			suggestionMessageTone = 'error';
+			suggestionMessage = 'Níl glacadh le moltaí beo cumasaithe ar an suíomh seo fós.';
+			return;
+		}
+		if (!session) return;
 		if (!contributor) {
 			suggestionMessage = 'Ní ranníocóir thú go fóill.';
 			return;
@@ -661,13 +701,13 @@
 	</div>
 
 	{#if verifyMessage}
-		<div class="mb-6 rounded-sm border border-console-green/30 bg-console-green-glow px-4 py-3 text-sm text-console-text">
+		<div class={`mb-6 rounded-sm px-4 py-3 text-sm text-console-text ${verifyMessageTone === 'error' ? 'border border-console-red/30 bg-console-red/10' : 'border border-console-green/30 bg-console-green-glow'}`}>
 			{verifyMessage}
 		</div>
 	{/if}
 
 	{#if suggestionMessage}
-		<div class="mb-6 rounded-sm border border-console-amber/30 bg-console-amber/10 px-4 py-3 text-sm text-console-text">
+		<div class={`mb-6 rounded-sm px-4 py-3 text-sm text-console-text ${suggestionMessageTone === 'error' ? 'border border-console-red/30 bg-console-red/10' : 'border border-console-amber/30 bg-console-amber/10'}`}>
 			{suggestionMessage}
 		</div>
 	{/if}

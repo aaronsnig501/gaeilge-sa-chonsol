@@ -33,7 +33,9 @@ offset,budget,english,irish,verified,compromised,note
 0x1234,15,SPEAKER SETUP,,,,
 0x125c,11,VIBRATION,,,,
 0x12cc,15,SCREEN ADJUST,,,,
+0x12e8,12,HORIZONTAL,,,,
 0x130c,11,VERTICAL,,,,
+0x1358,12,"HI SPYRO,",,,,
 0x13ac,11,SAVE GAME,SABHAIL,,,
 0x1404,15,REPLAY DRAGON,,,,
 0x1470,15,NO SAVE FILE,,,,
@@ -93,21 +95,108 @@ offset,budget,english,irish,verified,compromised,note
 0x2418,11,TOWN SQUARE,,,,
 0x2424,11,DARK HOLLOW,,,,
 0x2430,11,STONE HILL,,,,
+0x2554,12,BEHIND YOU,I DO DHIAIDH,,,
+0x2560,20,IS JUST UP THE HILL,SUAS AN CNOC,,,
+0x2574,20,THE ENTRANCE PORTAL,AN TAIRSEACH ISTIGH,,,
+0x26a4,16,ON WIZARD PEAK.,AR BHUAIC DRAOI.,,,
+0x26b4,24,WELL TO HUNT FOR EGGS,AG FIAIGH UIBHE.,,true,"Fragment comhrá; giorraíodh é de bharr an bhuiséid agus braitheann an chiall ar na boscaí eile."
+0x26cc,20,I BET YOU WOULD DO,GEALL GO nDÉANFAÍ,,true,"Fragment comhrá; giorraíodh é de bharr an bhuiséid agus braitheann an chiall ar na boscaí eile."
+0x27c4,24,MAGIC CRAFTERS HOME.,I NDOMHAN DRAOI.,,true,"Bh'fhearr liom tagairt níos cruinne do Magic Crafters, ach giorraíodh é chun luí isteach sa spás."
+0x27dc,24,THIEVES RIGHT HERE IN,GADAITHE ANSEO I,,true,"Ilíne scartha; tá an leagan ag brath ar an gcéad bhosca eile chun an abairt a chríochnú."
+0x27f4,24,"THERE ARE A o""'X",TÁ CÚPLA,,true,"Ilíne scartha; tá an leagan ag brath ar an gcéad bhosca eile chun an abairt a chríochnú."
+0x2918,16,IN CLIFF TOWN.,I mBAILE AILL.,,true,"Ilíne scartha; tá an leagan ag brath ar na boscaí eile chun an chiall a chríochnú."
+0x2928,20,A THIEF HIDING OUT,GADAÍ I bhFOLACH,,,
+0x293c,24,I'VE HEARD A RUMOR OF,CHUALA MÉ RÁFLA FAOI,,,
+0x2a64,16,IN DRY CANYON.,I LOG TÍR.,,,
+0x2a74,20,ABOUT A PESKY THIEF,FAOI GHADAÍ DÁNA,,,
+0x2a88,20,MY FRIEND TOLD ME,DÚIRT MO CHARA LIOM,,,
+0x2bc0,12,STONE HILL.,CNOC CLOICH.,,,
+0x2bcc,20,RUNNING AROUND IN,AG RITH TIMPEALL I,,true,"Ilíne scartha; tá an leagan giorraithe agus braitheann sé ar an líne roimhe agus ar an líne ina dhiaidh."
+0x2be0,24,I THINK I SAW A THIEF,CHONAIC MÉ GADAÍ,,true,"Cailleann sé 'I think', ach bhí orm an líne a ghiorrú chun fanacht laistigh den bhuiséad."
+0x2cec,24,PLACE YOU WILL FIND.,A GHEOBHAIDH TÚ.,,true,"Ilíne scartha; giorraíodh é de bharr buiséid agus tá cuid den chomhthéacs fágtha sna boscaí eile."
+0x2d04,20,THE MOST FRIENDLY,AN CEANN IS CÁIRD.,,true,"Compromised: giorraíodh 'the most friendly place' chun luí sa bhuiséad."
+0x2d18,24,GNASTY'S WORLD IS NOT,NÍ hÉ DOMHAN GNASTY AN,,true,"Ilíne scartha; tá an leagan ag brath ar an gcéad bhosca eile chun an abairt a chríochnú."
+0x2ddc,20,LIES AHEAD OF YOU.,ATÁ ROMHAT.,,true,"Ilíne scartha; tá an leagan ag brath ar an líne roimhe seo."
+0x2df0,24,I HOPE YOU KNOW WHAT,TÁ A FHIOS AGAT CAD,,true,"Giorraíodh 'I hope' amach chun an chiall a choinneáil laistigh den bhuiséad."
+0x2e08,20,"WELL DONE, SPYRO!",MAITH THÚ, SPYRO!,,,
+0x2f58,20,"BUT BEWARE, SPYRO.",ACH SEACHAN, SPYRO.,,,
+0x2f6c,24,NICE JOB COLLECTING SO,MAITH THÚ AG BAILIÚ AN,,true,"Ilíne scartha; fanann an chiall iomlán sna boscaí in aice láimhe."
+0x30cc,24,6000 STOLEN TREASURES.,6000 TAISCE GOIDTE.,,,
+0x30e4,20,YOU HAVE RECOVERED,ATÁ AIMSITHE AGAT,,true,"Compromised: giorraíodh an briathar chun fanacht sa bhuiséad."
+0x30f8,24,COME SEE ME AGAIN WHEN,TAR AR AIS NUAR,,,
+0x325c,24,GET ALL THE GOOD JOBS.,NA POIST DEASA UILE.,,true,"Ilíne scartha; cailleann sé cuid den tógáil bhriathartha ach coinníonn sé an bhrí."
+0x3274,24,BALLOONS. THE FAIRIES,BALÚIN. NA SÍOGA,,true,"Ilíne scartha; tá an chiall ag brath ar an líne roimhe seo."
+0x328c,24,I'M TIRED OF RENTING,TÁ TUIRSE ORM CÍOS,,true,"Compromised: giorraíodh an líne agus cailleadh cuid den nádúrthacht mar gheall ar an spás."
+0x33a8,24,DREAM WEAVERS WORLD.,DOMHAN NA bhFÍTHEOIRÍ.,,,
+0x33c0,24,AND I'LL SHOW YOU THE,TAISPEÁNFADH MÉ AN,,true,"Ilíne scartha; tá an chiall iomlán ag brath ar an gcéad bhosca eile."
+0x33d8,20,JUMP IN THE BALLOON,LÉIM SA BHALÚN,,true,"Ilíne scartha; giorraíodh an líne chun fanacht sa bhuiséad."
+0x3524,20,TO PATCH THAT LEAK.,É A DHEISIÚ.,,true,"Compromised: cailleadh 'that leak' go sonrach mar gheall ar an spás."
+0x3538,24,I BARELY HAD A CHANCE,IS AR ÉIGEAN A FUARAS,,,
+0x3550,24,"WOW, THAT WAS QUICK!",A MHANNA, BA THAPA!,,,
+0x368c,20,HAVE BEEN RESCUED.,A SHÁBHÁILTEAR.,,,
+0x36a0,24,THAT SO MANY DRAGONS,GO BHFUIL AN LÍON SIN,,,
+0x36b8,24,I FEEL MUCH BETTER NOW,BRAITHIM FEARR ANOIS,,,
+0x37cc,20,BETTER AT NIGHT.,IS FEARR SAN OÍCHE.,,,
+0x37e0,24,I'LL BE ABLE TO SLEEP,BEIDH CODLADH AGAM,,,
+0x37f8,24,RESCUE 5*QI\=,SÁBHÁIL 50 DHRAGAN,,true,"Compromised: giorraíodh an líne agus braitheann an t-impireas ar na boscaí comharsanacha."
+0x3938,24,FEEL A LITTLE BETTER.,MOTHÓIDH MÉ FEARR.,,,
+0x3950,24,50 DRAGONS THEN I'LL,50 DRAGAN ANSIN BEIDH,,true,"Ilíne scartha; níl an abairt iomlán ann sa bhosca seo amháin."
+0x3968,24,MAYBE ONCE YOU RESCUE,BÉIDIR TAR ÉIS 50,,true,"Compromised: cailleadh an chuid deiridh den choinníoll de bharr an bhuiséid."
+0x3aa8,20,TRAPPED IN CRYSTAL.,I gCRIOSTAL.,,true,"Ilíne scartha; fágadh an chuid eile den abairt sna boscaí eile."
+0x3abc,24,OF THE DRAGONS STILL,DE NA DRAGAIN FÓS,,,
+0x3ad4,24,I FEEL SORRY FOR ALL,TRUA LIOM NA DRAGAIN,,,
+0x3b70,20,BEAST MAKERS WORLD,DOMHAN FIADHAITHE,,,
+0x3c74,16,THAN YOU LOOK.,NÁ A SHÍLFEÁ.,,,
+0x3c84,20,YOU MUST BE FASTER,IS TAPAÍ TÚ,,,
+0x3c98,20,GREAT WORK SPYRO!,OBAIR MHÓR, SPYRO!,,,
+0x3d9c,20,OUR DRAGON EGGS.,ÁR nUACHAIS.,,true,"Compromised: giorraíodh 'dragon eggs' go 'uachaís' chun luí sa bhuiséad."
+0x3db0,24,RECOVERING SO MANY OF,AG BAILIÚ AN CHUID,,true,"Ilíne scartha; tá an chiall iomlán ag brath ar na boscaí eile."
+0x3dc8,24,"THANK YOU, SPYRO, FOR","GO RAIBH MAITH AGAT,",,,
+0x3ef0,24,THOSE 5 DRAGON EGGS.,NA 5 HUACHAIS SIN.,,,
+0x3f08,24,CAN HELP YOU RECOVER,IS FÉIDIR LIOM,,true,"Compromised: giorraíodh an líne agus fágadh an cuspóir don chéad bhosca eile."
+0x3f20,20,"HEY SPYRO, MAYBE I","A SPYRO, BÉIDIR GO",,true,"Ilíne scartha; ní sheasann sé leis féin ach oibríonn sé sa seicheamh."
+0x403c,24,"FROM THEM, WOULD YOU?","UATHU, AN NDÉANFA?",,true,"Ilíne scartha; tá an leagan giorraithe agus ag brath ar an gcomhthéacs roimhe."
+0x4054,24,RECOVER 5 DRAGON EGGS,BAILIGH 5 HUACHAIS,,,
+0x406c,20,DO ME A FAVOR AND,DÉAN FÁBHAR DOM,,true,"Compromised: cailleadh an 'and' de bharr an bhuiséid."
+0x4168,16,OVER THE PLACE.,AR FUD AN ÁIT.,,,
+0x4178,20,ARE HIDING OUT ALL,I bhFOLACH AR FUD,,true,"Ilíne scartha; níl an líne iomlán aici gan an bhosca eile."
+0x418c,24,THOSE SNEAKY THIEVES,NA GADAITHE SLEAMHNA,,,
+0x42a8,20,IF YOU ARE READY.,MÁ TÁ TÚ RÉIDH.,,,
+0x42bc,24,MAGIC CRAFTERS WORLD,DOMHAN NA CEARDAÍOCHTA,,true,"Compromised: úsáidtear an leagan fada anseo ach tá an t-ord focail beagán neamhghnách i gcomhthéacs an bhailúin."
+0x42d4,20,HOP ABOARD FOR THE,LÉIM ISTEACH DON,,true,"Ilíne scartha; fágann sé an ceann scríbe don chéad bhosca eile."
+0x43fc,24,BECOME A REAL DRAGON.,I DO DHRAGAN CEART.,,true,"Compromised: cailleadh an briathar 'become' go soiléir de bharr an bhuiséid."
+0x4414,20,ONE DAY YOU MIGHT,LÁ EIGIN BEIDH TÚ,,true,"Ilíne scartha; tá an líne spleách ar an gcéad bhosca eile."
+0x4428,16,NICE JOB SPYRO!,SPYRO IONTACH!,,true,"Compromised: giorraíodh an frása chun luí sa bhuiséad 16."
+0x4560,24,MUCH STOLEN TREASURE.,AN MÉID SIN TAISCE.,,true,"Compromised: cailleadh 'goidte' chun fanacht sa bhuiséad."
+0x4578,20,FAST YOU FOUND SO,CHOMH TAPA SIN,,true,"Ilíne scartha; níl an tógáil iomlán ann gan an chéad bhosca eile."
+0x458c,20,I CAN'T BELIEVE HOW,NÍ CHREIDIM CHOMH,,true,"Ilíne scartha; braitheann sé ar an gcéad bhosca eile chun an chiall a chomhlíonadh."
+0x46a8,24,1200 STOLEN TREASURES.,1200 TAISCE GOIDTE.,,,
+0x46c0,16,FOR YOU TO FIND,LEAT LE FÁIL,,,
+0x46d0,20,I'M STILL WAITING,FÓS AG FANACHT,,true,"Compromised: cailleadh an chéad phearsa chun an líne a ghiorrú."
+0x47f0,24,I'LL SHOW IT TO @|_,TAISPEÁNFADH MÉ DHUIT,,true,"Compromised: tá an bunlíne dumpáilte go dona sa fhoinse agus ní léir an réad go cinnte."
+0x4808,24,1200 STOLEN TREASURES,1200 TAISCE GOIDTE,,,
+0x4820,20,MAYBE IF YOU FIND,MÁ FHAIGHIDH TÚ,,true,"Ilíne scartha; giorraíodh an tús chun an líne a choinneáil gearr."
+0x4940,20,AND VERY DANGEROUS.,AGUS AN-DHÁNTA.,,,
+0x4954,20,WORLD IS FAR AWAY,I bhFAD UAINN.,,true,"Compromised: giorraíodh an abairt agus fágadh 'world' sa líne roimhe seo."
+0x4968,20,THE MAGIC CRAFTERS,DOMHAN CEARDAÍOCHTA,,true,"Compromised: giorraíodh an t-ainm iomlán chun luí sa bhuiséad."
 0x4a70,19,WORLD IF YOU LIKE.,MÁ SÁILL LEAT.,,,
 0x4a84,19,THE PEACE KEEPERS,NA CAOMHNÓIRÍ,,,
 0x4a98,19,YOU MAY TRAVEL TO,IS FÉIDIR LEAT DUL,,,
 0x4bac,15,COULD DO IT.,DÉANFAÍ É.,,,
 0x4bbc,19,I DIDN'T THINK YOU,NÍOR CHEAP ME GO,,,
 0x4bd0,19,WELL DONE SPYRO!,"MAITH THÚ, SPYRO!",,,
+0x4d00,16,"DRAGONS, SPYRO.","DRAGAIN, SPYRO.",,,
+0x4d10,20,BEEN BUSY RESCUING,AG SÁBHÁIL,,true,"Ilíne scartha; fágadh an briathar gearr chun fanacht sa bhuiséad."
+0x4d24,24,WOW!  I SEE YOU HAVE,"WOW! FEICIM GUR",,true,"Ilíne scartha; tá an chuid eile den abairt sa bhosca ina dhiaidh."
 0x4e24,19,RESCUED 10 DRAGONS.,10 NDRAGAN SAORTHA.,,,
 0x4e38,15,AFTER YOU HAVE,TAR ÉIS DUIT,,,
 0x4e48,19,COME BACK TO SEE ME,TAR AR AIS CHUGAM,,,
 0x4f64,15,TO A NEW WORLD.,GO DOMHAN NUA.,,,
-0x4f74,19,THIS BALLOON TO FLY,AN BALLON SEO,,,
+0x4f74,19,THIS BALLOON TO FLY,AN BALLÚN SEO,,,
 0x4f88,19,THEN YOU MAY USE,IS FÉIDIR LEAT,,,
 0x5080,15,10 DRAGONS...,10 NDRAGAN...,,,
-0x5090,19,WORTH BY RESCUING,DO FHIÚNTAS AGUS,,,
-0x50a4,17,IF YOU PROVE YOUR,MÁ CRUTHAÍONN,,,
+0x5090,19,WORTH BY RESCUING,DO FHIÚNTAS TRÍ,,true,"Ba é an leagan iomlán a bhí uaim ná ""Má chruthaíonn tú do fhiúntas trí 10 ndragan a shábháil..."". Oibríonn an scoilt nua níos fearr ná ""DO FHIÚNTAS AGUS"", ach cailleann sí an t-ábhar ""tú"" de bharr an bhuiséid 17/19/15."
+0x50a4,17,IF YOU PROVE YOUR,MÁ CRUTHAÍONN,,true,"Ba é an leagan iomlán a bhí uaim ná ""Má chruthaíonn tú do fhiúntas trí 10 ndragan a shábháil..."". Oibríonn an scoilt nua níos fearr ná ""DO FHIÚNTAS AGUS"", ach cailleann sí an t-ábhar ""tú"" de bharr an bhuiséid 17/19/15."
 0x6bfa0,4,QUIT,,,,
 0x6bfa8,7,CRASHED,,,,
 0x6bfc0,5,TOTAL,,,,

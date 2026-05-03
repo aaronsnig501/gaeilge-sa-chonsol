@@ -2,8 +2,10 @@ import { browser } from '$app/environment';
 import { createBrowserClient, createServerClient } from '@supabase/ssr';
 import type { Cookies, RequestEvent } from '@sveltejs/kit';
 import type { Session, SupabaseClient } from '@supabase/supabase-js';
-import { env } from '$env/dynamic/public';
 import type { CategoryStatus, GameStatus, StatusBreakdown, StringRecord, StringStatus, SuggestionRecord } from '$lib/types';
+
+declare const __PUBLIC_SUPABASE_URL__: string;
+declare const __PUBLIC_SUPABASE_PUBLISHABLE_KEY__: string;
 
 const FADA_REPLACEMENTS: Record<string, string> = {
 	Á: 'Aa',
@@ -57,11 +59,11 @@ export interface SupabaseSuggestionVoteRow {
 let browserClient: SupabaseClient | null = null;
 
 function publicSupabaseUrl(): string {
-	return env.PUBLIC_SUPABASE_URL ?? '';
+	return __PUBLIC_SUPABASE_URL__ ?? '';
 }
 
 function publicSupabaseKey(): string {
-	return env.PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? '';
+	return __PUBLIC_SUPABASE_PUBLISHABLE_KEY__ ?? '';
 }
 
 export function isSupabaseConfigured(): boolean {
