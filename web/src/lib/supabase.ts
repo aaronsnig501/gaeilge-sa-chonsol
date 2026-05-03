@@ -21,6 +21,7 @@ const FADA_REPLACEMENTS: Record<string, string> = {
 };
 
 export interface SupabaseStringRow {
+	id: string;
 	game_id: string;
 	offset: string;
 	english: string;
@@ -134,6 +135,7 @@ function rebuildCategory(
 		const irish = (row.irish ?? '').trim();
 		return {
 			...entry,
+			rowId: row.id,
 			english: row.english || entry.english,
 			irish,
 			budget: row.budget ?? entry.budget,
