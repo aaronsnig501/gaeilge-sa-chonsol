@@ -3,10 +3,20 @@
 	import { base } from '$app/paths';
 	import '../app.css';
 	import ExternalLink from '$lib/components/ExternalLink.svelte';
-	import { createSupabaseBrowserClient, isSupabaseConfigured } from '$lib/supabase';
+	import { createSupabaseBrowserClient, isSupabaseConfigured, signInWithGitHub } from '$lib/supabase';
 	import { supabaseEnabled, supabaseSession } from '$lib/session';
 
 	let { children } = $props();
+
+	async function signIn(): Promise<void> {
+		await signInWithGitHub(window.location.href);
+	}
+
+	async function signOut(): Promise<void> {
+		const client = createSupabaseBrowserClient();
+		if (!client) return;
+		await client.auth.signOut();
+	}
 
 	onMount(() => {
 		const client = createSupabaseBrowserClient();
@@ -63,6 +73,25 @@
 				>
 					GITHUB
 				</ExternalLink>
+				{#if $supabaseEnabled}
+					{#if $supabaseSession}
+						<button
+							class="font-mono text-[0.72rem] tracking-[0.12em] text-console-muted hover:text-console-green"
+							onclick={signOut}
+							type="button"
+						>
+							LOG OUT
+						</button>
+					{:else}
+						<button
+							class="font-mono text-[0.72rem] tracking-[0.12em] text-console-muted hover:text-console-green"
+							onclick={signIn}
+							type="button"
+						>
+							LOG IN
+						</button>
+					{/if}
+				{/if}
 			</nav>
 			<span class="status-chip border-console-green/30 bg-console-green-glow text-console-green">v0.1</span>
 		</div>
