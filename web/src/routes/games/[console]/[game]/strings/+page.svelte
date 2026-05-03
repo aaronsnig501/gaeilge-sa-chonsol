@@ -591,6 +591,17 @@
 		}
 	}
 
+	function verificationBadgeClass(entry: StringRecord): string {
+		if (entry.verified) {
+			return 'border-console-green/30 bg-console-green-glow text-console-green';
+		}
+		return 'border-console-border-moderate bg-console-border-subtle text-console-tertiary';
+	}
+
+	function verificationBadgeLabel(entry: StringRecord): string {
+		return entry.verified ? 'Fíoraithe sa chluiche' : 'Gan fíorú';
+	}
+
 	function encodeLength(value: string): number {
 		let encoded = value;
 		for (const [original, replacement] of Object.entries(FADA_REPLACEMENTS)) {
@@ -714,6 +725,11 @@
 
 	<div class="mb-8 flex flex-wrap gap-4 font-mono text-[0.58rem] uppercase tracking-[0.1em] text-console-tertiary">
 		<span class="inline-flex items-center gap-2">
+			<span class="inline-flex rounded-sm border border-console-green/30 bg-console-green-glow px-2 py-0.5 text-console-green">
+				✓ Fíoraithe sa chluiche
+			</span>
+		</span>
+		<span class="inline-flex items-center gap-2">
 			<span class="h-2 w-2 rounded-full bg-console-green shadow-[0_0_8px_rgba(46,204,113,0.45)]"></span>
 			Fíoraithe
 		</span>
@@ -773,7 +789,20 @@
 										</td>
 										<td class="w-[28%] px-2 py-3 align-top font-mono text-[0.72rem] text-console-irish">
 											{#if entry.irish}
-												{entry.irish}
+												<div>{entry.irish}</div>
+												<div class="mt-2 flex flex-wrap gap-2">
+													<span
+														class={`inline-flex rounded-sm border px-2 py-0.5 font-mono text-[0.52rem] uppercase tracking-[0.08em] ${verificationBadgeClass(entry)}`}
+														title={verificationTooltip(entry)}
+													>
+														{verificationBadgeLabel(entry)}
+													</span>
+													{#if entry.compromised}
+														<span class="inline-flex rounded-sm border border-console-amber/30 bg-console-amber/10 px-2 py-0.5 font-mono text-[0.52rem] uppercase tracking-[0.08em] text-console-amber">
+															Comhréiteach
+														</span>
+													{/if}
+												</div>
 											{:else}
 												<span class="font-body text-[0.76rem] italic text-console-tertiary">gan aistriú</span>
 											{/if}

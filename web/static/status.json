@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-03T08:44:28Z",
+  "generated": "2026-05-03T09:08:21Z",
   "games": [
     {
       "id": "spyro1",
@@ -13,14 +13,14 @@
       "help_wanted": true,
       "progress": {
         "total": 222,
-        "translated": 109,
-        "percent": 49
+        "translated": 110,
+        "percent": 50
       },
       "status_breakdown": {
         "verified": 0,
-        "draft": 58,
+        "draft": 59,
         "compromised": 51,
-        "untranslated": 113
+        "untranslated": 112
       },
       "flags": {
         "verified": 0,
@@ -30,14 +30,14 @@
         {
           "name": "UI Strings",
           "total": 74,
-          "translated": 1,
+          "translated": 2,
           "verified": 0,
-          "percent": 1,
+          "percent": 3,
           "status_breakdown": {
             "verified": 0,
-            "draft": 1,
+            "draft": 2,
             "compromised": 0,
-            "untranslated": 73
+            "untranslated": 72
           },
           "flags": {
             "verified": 0,
@@ -767,10 +767,10 @@
             {
               "offset": "0x6c3e4",
               "budget": 5,
-              "used": 0,
+              "used": 7,
               "english": "GO TO",
-              "irish": "",
-              "status": "untranslated",
+              "irish": "GO DTÍ",
+              "status": "draft",
               "verified": false,
               "compromised": false
             },
@@ -1811,13 +1811,13 @@
             {
               "offset": "0x4968",
               "budget": 20,
-              "used": 20,
+              "used": 13,
               "english": "THE MAGIC CRAFTERS",
-              "irish": "DOMHAN CEARDAÍOCHTA",
+              "irish": "NA CEARDAITHE",
               "status": "compromised",
               "verified": false,
               "compromised": true,
-              "note": "Compromised: giorraíodh an t-ainm iomlán chun luí sa bhuiséad."
+              "note": "Compromised: giorraíodh an ceann scríbe chun spás sábháilte a fhágáil agus truailliú téacs sa chluiche a sheachaint."
             },
             {
               "offset": "0x4a70",

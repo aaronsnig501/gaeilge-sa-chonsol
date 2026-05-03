@@ -178,7 +178,7 @@ offset,budget,english,irish,verified,compromised,note
 0x4820,20,MAYBE IF YOU FIND,MÁ FHAIGHIDH TÚ,,true,"Ilíne scartha; giorraíodh an tús chun an líne a choinneáil gearr."
 0x4940,20,AND VERY DANGEROUS.,AGUS AN-DHÁNTA.,,,
 0x4954,20,WORLD IS FAR AWAY,I bhFAD UAINN.,,true,"Compromised: giorraíodh an abairt agus fágadh 'world' sa líne roimhe seo."
-0x4968,20,THE MAGIC CRAFTERS,DOMHAN CEARDAÍOCHTA,,true,"Compromised: giorraíodh an t-ainm iomlán chun luí sa bhuiséad."
+0x4968,20,THE MAGIC CRAFTERS,NA CEARDAITHE,,true,"Compromised: giorraíodh an ceann scríbe chun spás sábháilte a fhágáil agus truailliú téacs sa chluiche a sheachaint."
 0x4a70,19,WORLD IF YOU LIKE.,MÁ SÁILL LEAT.,,,
 0x4a84,19,THE PEACE KEEPERS,NA CAOMHNÓIRÍ,,,
 0x4a98,19,YOU MAY TRAVEL TO,IS FÉIDIR LEAT DUL,,,
@@ -218,6 +218,6 @@ offset,budget,english,irish,verified,compromised,note
 0x6c2ec,6,ACTIVE,,,,
 0x6c30c,7,PASSIVE,,,,
 0x6c38c,5,RETRY,,,,
-0x6c3e4,5,GO TO,,,,
+0x6c3e4,5,GO TO,GO DTÍ,,,
 0x6c3f4,7,RESCUED,,,,
 0x6c6a8,7,HOME,,,,
